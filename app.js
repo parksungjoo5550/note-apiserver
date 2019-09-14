@@ -13,8 +13,8 @@ mongoose.Promise = global.Promise
 
 // Connect to Mongodb server
 mongoose.connect(process.env.MONGO_URL)
-	.then(() => console.log('Successfully connected to mongodb.'))
-	.catch(e => console.error(e));
+    .then(() => console.log('Successfully connected to mongodb.'))
+    .catch(e => console.error(e));
 
 // Static File Service
 app.use(express.static('public'));
@@ -22,9 +22,12 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 
+// Set the secret key for jwt
+app.set('jwt-secret', process.env.JWT_SECRET)
+
 // Routing
 app.use('/api', require('./routes/api'));
 
 var server = app.listen(PORT, function() {
-	console.log(`Server listening on ${PORT}`);
+    console.log(`Server listening on ${PORT}`);
 });
