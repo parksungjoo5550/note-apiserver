@@ -1,7 +1,9 @@
 
 
+
 ## REST API server
 The server provides user account and problems information. 
+<br>
 
 ## API entries
 * **/api/auth**
@@ -48,7 +50,7 @@ Generates a jwt token.
 <br>
 
 ### GET /api/auth/check
-Validate a jwt token (required login)
+Validate a jwt token (login required)
 
 #### Parameter
 not required
@@ -61,7 +63,7 @@ not required
 <br>
 
 ### POST /api/student/set
-Set student's information. (required login)
+Set student's information. (login required)
 
 #### Parameter
 | Name | Data type | Description | 
@@ -78,7 +80,7 @@ Set student's information. (required login)
 <br>
 
 ### GET /api/student/view
-View student's information. (required login)
+View student's information. (login required)
 
 #### Parameter
 not required
