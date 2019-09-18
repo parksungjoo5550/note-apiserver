@@ -7,7 +7,7 @@ const User = new Schema({
     admin: { type: Boolean, default: false }
 });
 
-// Create a user document
+// Create a user
 User.statics.create = function (userid, password) {
     const user = new this({
         userid,
@@ -17,7 +17,7 @@ User.statics.create = function (userid, password) {
     return user.save();
 };
 
-// find a user by userid
+// Find a user by userid
 User.statics.findOneByUserid = function (_userid) {
     return this.findOne({
         userid: _userid

@@ -100,6 +100,6 @@ exports.login = async (req, res) => {
 exports.check = (req, res) => {
     res.json({
         success: true,
-        info: req.decoded
+        info: req.token
     })
 }

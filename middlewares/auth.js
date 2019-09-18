@@ -8,7 +8,7 @@ const auth_Middleware = async (req, res, next) => {
             throw new Error('Not logged in.');
         }
         else {
-            req.decoded = await jwt.verify(token, req.app.get('jwt-secret'));
+            req.token = await jwt.verify(token, req.app.get('jwt-secret'));
             next();
         }
     }
