@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+        <form method="POST" action="/api/problem/upload?token=<%= token %>" enctype="multipart/form-data">
+            Problem <input type="file" name="problem"/><br>
+            Solution <input type="file" name="solution"/><br>
+            Answer <input type="text" name="answer"/><br>
+            Unit 1 <input type="text" name="unit1"/><br>
+            Unit 2 <input type="text" name="unit2"/><br>
+            Unit 3 <input type="text" name="unit3"/><br>
+            Difficulty <input type="text" name="difficulty"/><br>
+            Source <input type="text" name="source"/><br>
+            Date <input type="date" name="date"/><br>
+            <input type="submit"/>
+        </form>
+    </body>
+</html>

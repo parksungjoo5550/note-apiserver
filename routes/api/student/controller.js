@@ -1,4 +1,4 @@
-const Student = require('../../../models/student');
+const Student = require('../../../models/').Student;
 
 /* 
     * Set student's information
@@ -21,10 +21,11 @@ exports.set = async (req, res) => {
             throw new Error('Please enter all fields.');
         }
         else if ( await Student.findOneByUserid(userid) ) { // If the student already exist.
-            await Student.update({userid: userid}, {name: name, school: school, classOf: classOf, mathGrade: mathGrade});
+            await Student.update({ name: name, school: school, classOf: classOf, mathGrade: mathGrade },
+                                 { where: { userid: userid } });
         }
         else {
-            await Student.create(userid, name, school, classOf, mathGrade);
+            await Student.create({ userid: userid, name: name, school: school, classOf: classOf, mathGrade: mathGrade });
         }
         res.json({
             success: 'true',
@@ -65,10 +66,10 @@ exports.view = async (req, res) => {
                 message: 'Successfully view user information.',
                 ecode: 200,
                 data: {
-                    name: student.name,
-                    school: student.school,
-                    classOf: student.classOf,
-                    mathGrade: student.mathGrade
+                    name: student.dataValues.name,
+                    school: student.dataValues.school,
+                    classOf: student.dataValues.classOf,
+                    mathGrade: student.dataValues.mathGrade
                 }
             });
         }

@@ -1,32 +1,13 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-
-const Student = new Schema({
-    userid: String,
-    name: String,
-    school: String,
-    classOf: Number,    // Admission Year
-    mathGrade: Number
-});
-
-// Create a student.
-Student.statics.create = function (userid, name, school, classOf, mathGrade) {
-    const student = new this({
-        userid,
-        name,
-        school,
-        classOf,
-        mathGrade
-    });
+module.exports = (sequelize, DataTypes) => {
+    const Student = sequelize.define('student', {
+        userid: { type: DataTypes.STRING },
+        name: { type: DataTypes.STRING },
+        school: { type: DataTypes.STRING },
+        classOf: { type: DataTypes.INTEGER },    // Admission Year
+        mathGrade: { type: DataTypes.INTEGER }
+    }, { timestamps: false });
     
-    return student.save();
+    Student.findOneByUserid = function (userid) {
+        return this.findOne( { attributes: ['userid', 'password'], where: { userid: userid } } );
+    }
 }
-
-// Find a student by userid.
-Student.statics.findOneByUserid = function (_userid) {
-    return this.findOne({
-        userid: _userid
-    });
-}
-
-module.exports = mongoose.model('Student', Student);

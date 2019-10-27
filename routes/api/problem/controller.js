@@ -1,14 +1,26 @@
 const jwt  = require('jsonwebtoken');
-const Problem = require('../../../models/problem');
+const Problem = require('../../../models/').Problem;
 
 exports.upload = async (req, res) => {
-    const { problem, solution, answer, unit1, unit2, unit3, difficulty, source, date } = req.body;
+    const answer = req.body.answer;
+    const unit1 = req.body.unit1;
+    const unit2 = req.body.unit2;
+    const unit3 = req.body.unit3;
+    const difficulty = req.body.difficulty;
+    const source = req.body.source;
+    const date = req.body.date;
     
+    const problem = req.files['problem'][0];
+    const solution = req.files['solution'][0];
+    
+    console.log(date);
     try {
         if ( !problem || !solution || !answer || !unit1 || !unit2 || !unit3 || !difficulty || !source || !date)
             throw new Error('Please enter all fields.');
         
-        await Problem.create(problem, solution, answer, unit1, unit2, unit3, difficulty, source, date);
+        await Problem.create({ problem: problem.path, solution: solution.path, answer: answer,
+                              unit1: unit1, unit2: unit2, unit3: unit3,
+                              difficulty: difficulty, source:source, date:date });
         
         res.json({
             success: 'true',
@@ -27,7 +39,7 @@ exports.upload = async (req, res) => {
 
 exports.inquiry = async (req, res) => {
     const { id, unit1, unit2, unit3, difficulty, source, start_date, end_date } = req.body;
-    
+    /*
     try {
         let problems = Problem.find();
         
@@ -57,4 +69,5 @@ exports.inquiry = async (req, res) => {
             ecode: 403
         });
     }
+    */
 }
