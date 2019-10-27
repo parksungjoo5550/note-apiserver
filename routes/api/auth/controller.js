@@ -1,5 +1,5 @@
 const jwt  = require('jsonwebtoken');
-const User = require('../../../models/user');
+const User = require('../../../models/').User;
 
 /* 
     * Create a user account
@@ -29,15 +29,19 @@ exports.register = async (req, res) => {
             throw new Error('Userid already exists.');
         }
         else {
-            await User.create(userid, password);
+            await User.create( { userid: userid, password: password } );
             res.json({
-                message: 'Registered successfully.'
+                success: 'true',
+                message: 'Registered successfully.',
+                ecode: 200
             });
         }
     }
     catch (error) {
         res.status(403).json({
-            message: error.message
+            success: 'false',
+            message: error.message,
+            ecode: 403
         });
     }
 }
@@ -78,14 +82,18 @@ exports.login = async (req, res) => {
             );
             
             res.json({
+                success: 'true',
                 message: 'Logged in successfully.',
-                token
+                ecode: 200,
+                data: { token: token }
             });
         }
     }
     catch (error) {
         res.status(403).json({
-            message: error.message
+            success: 'false',
+            message: error.message,
+            ecode: 403
         });
     }
 }
@@ -99,7 +107,7 @@ exports.login = async (req, res) => {
 
 exports.check = (req, res) => {
     res.json({
-        success: true,
-        info: req.token
+        success: 'true',
+        data: { token: req.token }
     })
 }

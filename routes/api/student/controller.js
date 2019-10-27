@@ -27,12 +27,16 @@ exports.set = async (req, res) => {
             await Student.create(userid, name, school, classOf, mathGrade);
         }
         res.json({
-           message: 'success' 
+            success: 'true',
+            message: 'Successfully set user information.',
+            ecode: 200
         });
     }
     catch (error) {
         res.status(403).json({
-            message: error.message
+            success: 'false',
+            message: error.message,
+            ecode: 403
         });
     }
 }
@@ -57,16 +61,23 @@ exports.view = async (req, res) => {
         }
         else {
             res.json({
-                name: student.name,
-                school: student.school,
-                classOf: student.classOf,
-                mathGrade: student.mathGrade
+                success: 'true',
+                message: 'Successfully view user information.',
+                ecode: 200,
+                data: {
+                    name: student.name,
+                    school: student.school,
+                    classOf: student.classOf,
+                    mathGrade: student.mathGrade
+                }
             });
         }
     }
     catch (error) {
         res.status(403).json({
-            message: error.message
+            success: 'false',
+            message: error.message,
+            ecode: 403
         });
     }
 }

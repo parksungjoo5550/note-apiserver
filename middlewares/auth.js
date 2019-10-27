@@ -1,22 +1,43 @@
 const jwt = require('jsonwebtoken');
 
-const auth_Middleware = async (req, res, next) => {
+exports.login = async (req, res, next) => {
     const token = req.headers['x-access-token'] || req.query.token;
     
     try {
-        if(!token){
+        if (!token)
             throw new Error('Not logged in.');
-        }
-        else {
-            req.token = await jwt.verify(token, req.app.get('jwt-secret'));
-            next();
-        }
+        
+        req.token = await jwt.verify(token, req.app.get('jwt-secret'));
+        next();
     }
     catch (error) {
         res.status(403).json({
-            message: error.message
+            success: 'false',
+            message: error.message,
+            ecode: 403
         });
     }
 }
 
-module.exports = auth_Middleware;
+exports.admin = async (req, res, next) => {
+    const token = req.headers['x-access-token'] || req.query.token;
+    
+    try {
+        if (!token)
+            throw new Error('Not logged in.');
+        
+        req.token = await jwt.verify(token, req.app.get('jwt-secret'));
+        
+        if (req.token.admin == false)
+            throw new Error('You are not a admin.');
+        else
+            next();
+    }
+    catch (error) {
+        res.status(403).json({
+            success: 'false',
+            message: error.message,
+            ecode: 403
+        });
+    }
+}

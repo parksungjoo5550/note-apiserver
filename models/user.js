@@ -1,31 +1,22 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-
-const User = new Schema({
-    userid: String,
-    password: String,
-    admin: { type: Boolean, default: false }
-});
-
-// Create a user
-User.statics.create = function (userid, password) {
-    const user = new this({
-        userid,
-        password // must be hashed.
-    });
+module.exports = (sequelize, DataTypes) => {
+    const User = sequelize.define('user', {
+            userid: { type: DataTypes.STRING },
+            password: { type: DataTypes.STRING },
+            admin: { type: DataTypes.BOOLEAN,
+                     default: false
+                   },
+        }, {
+            timestamps: false
+        }
+    );
     
-    return user.save();
-};
-
-// Find a user by userid
-User.statics.findOneByUserid = function (_userid) {
-    return this.findOne({
-        userid: _userid
-    });
+    User.findOneByUserid = function (userid) {
+        return this.find( { attributes: ['userid'], where: { userid: userid } } );
+    }
+    
+    User.prototype.verify = function (password) {
+        return this.password === password;
+    }
+    
+    return User;
 }
-
-User.methods.verify = function (password) {
-    return this.password == password;
-}
-
-module.exports = mongoose.model('User', User);
