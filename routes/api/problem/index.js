@@ -1,6 +1,7 @@
 const path = require('path');
-const router = require('express').Router();
 const multer = require('multer');
+const router = require('express').Router();
+
 const controller = require('./controller');
 const auth = require('../../../middlewares/auth');
 
@@ -15,15 +16,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.use('/upload', auth.admin);
-router.get('/upload', function (req, res) {
-       res.render('upload', {
+router.use('/create', auth.admin);
+router.get('/create', function (req, res) {
+       res.render('problem/create', {
            token: req.query.token
        }); 
 });
-router.post('/upload',
+router.post('/create',
             upload.fields([{ name: 'problem' }, { name: 'solution' }]),
-            controller.upload);
+            controller.create);
 
 router.use('/inquiry', auth.login)
 router.post('/inquiry', controller.inquiry);

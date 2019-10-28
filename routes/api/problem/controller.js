@@ -1,8 +1,11 @@
+const path = require('path');
 const jwt  = require('jsonwebtoken');
 const Problem = require('../../../models/').Problem;
 
-exports.upload = async (req, res) => {
+exports.create = async (req, res) => {
+    const is_choice = req.body.is_choice;
     const answer = req.body.answer;
+    const grade = req.body.grade;
     const unit1 = req.body.unit1;
     const unit2 = req.body.unit2;
     const unit3 = req.body.unit3;
@@ -15,16 +18,24 @@ exports.upload = async (req, res) => {
     
     console.log(date);
     try {
-        if ( !problem || !solution || !answer || !unit1 || !unit2 || !unit3 || !difficulty || !source || !date)
+        if ( !is_choice || !problem || !solution || !answer || !grade || !unit1 || !unit2 || !unit3 || !difficulty || !source || !date)
             throw new Error('Please enter all fields.');
         
-        await Problem.create({ problem: problem.path, solution: solution.path, answer: answer,
-                              unit1: unit1, unit2: unit2, unit3: unit3,
-                              difficulty: difficulty, source:source, date:date });
+        await Problem.create({ is_choice: is_choice == "true" ? true: false,
+                              problem: path.join('/uploads/' + problem.filename),
+                              solution: path.join('/uploads/' + solution.filename),
+                              answer: answer,
+                              grade: grade,
+                              unit1: unit1,
+                              unit2: unit2,
+                              unit3: unit3,
+                              difficulty: difficulty,
+                              source: source,
+                              date: date });
         
         res.json({
             success: 'true',
-            message: 'Successfully upload a problem.',
+            message: 'Successfully created a problem.',
             ecode: 200
         });
     }
@@ -38,29 +49,41 @@ exports.upload = async (req, res) => {
 }
 
 exports.inquiry = async (req, res) => {
-    const { id, unit1, unit2, unit3, difficulty, source, start_date, end_date } = req.body;
-    /*
+    const { grade, unit1, unit2, unit3, difficulty, source, start_date, end_date } = req.body;
+    
     try {
-        let problems = Problem.find();
+        let options = {};
         
-        if ( id !== undefined )
-            problems = problems.where('_id').equals(id);
-        else if ( unit1 !== undefined )
-            problems = problems.where('unit1').equals(unit1);
-        else if ( unit2 !== undefined )
-            problems = problems.where('unit2').equals(unit2);
-        else if ( unit3 !== undefined )
-            problems = problems.where('unit3').equals(unit3);
-        else if ( difficulty !== undefined )
-            problems = problems.where('difficulty').equals(difficulty);
-        else if ( source !== undefined )
-            problems = problems.where('source').equals(source);
-        else if ( start_date !== undefined )
-            problems = problems.where('date').gt(start_date);
-        else if ( end_date !== undefined )
-            problems = problems.where('date').lt(end_date);
+        if ( grade !== undefined )
+            options.grade = grade;
+        if ( unit1 !== undefined )
+            options.unit1 = unit1;
+        if ( unit2 !== undefined )
+            options.unit2 = unit2;
+        if ( unit3 !== undefined )
+            options.unit3 = unit3;
+        if ( difficulty !== undefined )
+            options.difficulty = difficulty;
+        if ( source !== undefined )
+            options.source = source;
+        if ( start_date !== undefined )
+            options.date = { $gt: start_date };
+        if ( end_date !== undefined )
+            options.date = { $lt: end_date };
         
-        console.log(problems);
+        let results = await Problem.findAll({ where: options });
+        let problems = [];
+        
+        for (let i = 0; i < results.length; i++)
+            problems.push(results[i].dataValues);
+        
+        res.json({
+            success: 'true',
+            message: 'Successfully inquiried a problem database',
+            ecode: 200,
+            data: { problems: problems },
+        });
+        
     }
     catch (error) {
         res.status(403).json({
@@ -69,5 +92,5 @@ exports.inquiry = async (req, res) => {
             ecode: 403
         });
     }
-    */
+    
 }

@@ -8,6 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     }, { timestamps: false });
     
     Student.findOneByUserid = function (userid) {
-        return this.findOne( { attributes: ['userid', 'password'], where: { userid: userid } } );
+        return this.findOne({ attributes: ['userid', 'password'], where: { userid: userid } });
     }
+    
+    return Student;
 }

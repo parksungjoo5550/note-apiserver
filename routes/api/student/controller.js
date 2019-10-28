@@ -5,10 +5,10 @@ const Student = require('../../../models/').Student;
     
     POST /api/student/set
     {
-        name,
-        school,
-        classOf,
-        mathGrade
+        name        {string},
+        school      {string},
+        classOf     {integer},
+        mathGrade   {integer}
     }
 */
 
@@ -47,7 +47,7 @@ exports.set = async (req, res) => {
     
     POST /api/student/view
     {
-        
+        * not required *
     }
 */
 

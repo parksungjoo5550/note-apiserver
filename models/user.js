@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         }, { timestamps: false });
     
     User.findOneByUserid = function (userid) {
-        return this.findOne( { attributes: ['userid', 'password'], where: { userid: userid } } );
+        return this.findOne({ attributes: ['userid', 'password'], where: { userid: userid } });
     }
     
     User.prototype.verify = function (password) {

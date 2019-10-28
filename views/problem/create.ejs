@@ -4,9 +4,12 @@
     </head>
     <body>
         <form method="POST" action="/api/problem/upload?token=<%= token %>" enctype="multipart/form-data">
-            Problem <input type="file" name="problem"/><br>
-            Solution <input type="file" name="solution"/><br>
-            Answer <input type="text" name="answer"/><br>
+            문제 파일 : <input type="file" name="problem"/><br>
+            해설 파일 : <input type="file" name="solution"/><br>
+            <input type="radio" name="is_choice" value="true">객관식 
+            <input type="radio" name="is_choice" value="false">주관식 <br>
+            정답 : <input type="text" name="answer"/><br>
+            Grade <input type="text" name="grade"/><br>
             Unit 1 <input type="text" name="unit1"/><br>
             Unit 2 <input type="text" name="unit2"/><br>
             Unit 3 <input type="text" name="unit3"/><br>

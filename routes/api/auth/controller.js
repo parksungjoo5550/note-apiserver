@@ -108,6 +108,8 @@ exports.login = async (req, res) => {
 exports.check = (req, res) => {
     res.json({
         success: 'true',
+        message: '',
+        ecode: 200,
         data: { token: req.token }
-    })
+    });
 }

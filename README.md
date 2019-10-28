@@ -13,83 +13,184 @@ The server provides user account and problems information.
 
 * **/api/student**
   * [/api/student/set](#post-apistudentset)
-  * [/api/student/view](#get-apistudentview)
-  
+  * [/api/student/view](#post-apistudentview)
+
+* **/api/problem**
+  * [/api/problem/create](#post-apiproblemcreate)
+  * [/api/problem/inquiry](#post-apiprobleminquiry)
+
+* **/api/exam**
+  * [/api/exam/create](#post-apiexamcreate)
+  * [/api/exam/list](#post-apiexamlist)
 <br>
 
 ## API documentation
 ### POST /api/auth/register
-Requests registration of a user account.
+계정을 생성합니다.
 
 #### Parameter 
 | Name | Data type | Description | 
 ---|---|---
-| userid | String | | 
-| password | String | |  
-| password2 | String | | 
+| userid | String | 아이디 | 
+| password | String | 비밀번호 |  
+| password2 | String | 확인용 비밀번호 | 
 
 #### Response
 | Name | Data type | Description | 
 ---|---|---
-| message| String | response message| 
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
 <br>
 
 ### POST /api/auth/login
-Generates a jwt token.
+로그인하여 jwt 토큰을 반환합니다.
 
 #### Parameter 
 | Name | Data type | Description | 
 ---|---|---
-| userid | String | | 
-| password | String | | 
+| userid | String | 아이디 | 
+| password | String | 비밀번호 | 
 
 #### Response
 | Name | Data type | Description | 
 ---|---|---
-| message| String | response message| 
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.token | Json | jwt 토큰 | 
 <br>
 
 ### GET /api/auth/check
-Validate a jwt token (login required)
+로그인한 계정의 토큰 정보를 반환합니다.
 
 #### Parameter
-not required
+Not required
 
 #### Response
 | Name | Data type | Description | 
 ---|---|---
-| success| Boolean | |  
-| info | Json | Details of jwt token | 
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.token | Json | Decrypt된 jwt 토큰 | 
 <br>
 
 ### POST /api/student/set
-Set student's information. (login required)
+계정 정보를 변경합니다.
 
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
-| name | String | | 
-| school | String | | 
-| classOf | Number | Admission year | 
-| mathGrade | Number | Grade of math |
+| name | String | 이름 | 
+| school | String | 학교 | 
+| classOf | Number | 입학년도| 
+| mathGrade | Number | 수학 등급 |
 
 #### Response
 | Name | Data type | Description | 
 ---|---|---
-| message| String | response message| 
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
 <br>
 
-### GET /api/student/view
-View student's information. (login required)
+### POST /api/student/view
+로그인한 계정 정보를 반환합니다.
 
 #### Parameter
-not required
+Not required
 
 #### Response
 | Name | Data type | Description | 
 ---|---|---
-| name | String | | 
-| school | String | | 
-| classOf | Number | Admission year | 
-| mathGrade | Number | Grade of math | 
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.name | String | 이름 | 
+| data.school | String | 학교 | 
+| data.classOf | Number | 입학년도| 
+| data.mathGrade | Number | 수학 등급 |
+<br>
+
+### POST /api/problem/create
+문제를 생성합니다.
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| problem | File | 문제 이미지 파일 | 
+| solution | File | 해답 이미지 파일 | 
+| is_choice | Boolean | 객관식 여부 | 
+| answer | String | 답 |
+| grade | String | 학년 | 
+| unit1 | Number | 대단원 | 
+| unit2 | Number | 중단원 | 
+| unit3 | Number | 소단원 | 
+| difficulty | Number | 난이도 | 
+| source | Number | 문제 출처 | 
+| date | Number | 출제년도 | 
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+<br>
+
+### POST /api/problem/inquiry
+조건에 맞는 문제를 반환합니다.
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| grade | String | 학년 | 
+| unit1 | Number | 대단원 | 
+| unit2 | Number | 중단원 | 
+| unit3 | Number | 소단원 | 
+| difficulty | Number | 난이도 | 
+| source | Number | 문제 출처 | 
+| start_date | Number | 출체범위 시작 | 
+| end_date | Number | 출체범위 끝 | 
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.problems | JSON Array | 조건에 맞는 모든 문제 | 
+<br>
+
+### POST /api/exam/create
+시험지를 생성합니다.
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| title | String | 시험지 제목 | 
+| problems | Array | 시험지에 포함될 문제의 고유 번호 | 
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+<br>
+
+### POST /api/exam/list
+로그인한 계정이 생성한 시험지 리스트를 반환합니다.
+
+#### Parameter
+Not required
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.papers | JSON Array | 조건에 맞는 모든 시험지 | 
 <br>
