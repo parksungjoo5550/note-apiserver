@@ -1,37 +1,40 @@
+const fs =  require('fs');
 const path = require('path');
 const jwt  = require('jsonwebtoken');
 const Problem = require('../../../models/').Problem;
 
 exports.create = async (req, res) => {
-    const is_choice = req.body.is_choice;
-    const answer = req.body.answer;
-    const grade = req.body.grade;
-    const unit1 = req.body.unit1;
-    const unit2 = req.body.unit2;
-    const unit3 = req.body.unit3;
-    const difficulty = req.body.difficulty;
-    const source = req.body.source;
-    const date = req.body.date;
+    const { problemFilename, solutionFilename,
+            problemBase64, solutionBase64,
+            is_choice, answer, grade, unit1, unit2, unit3, difficulty, source, date } = req.body;
     
-    const problem = req.files['problem'][0];
-    const solution = req.files['solution'][0];
-    
-    console.log(date);
     try {
-        if ( !is_choice || !problem || !solution || !answer || !grade || !unit1 || !unit2 || !unit3 || !difficulty || !source || !date)
+        if ( !problemFilename || !solutionFilename ||
+             !problemBase64 || !solutionBase64 || 
+             !is_choice || !answer || !grade || !unit1 || !unit2 || !unit3 || !difficulty || !source || !date)
             throw new Error('Please enter all fields.');
         
-        await Problem.create({ is_choice: is_choice == "true" ? true: false,
-                              problem: path.join('/uploads/' + problem.filename),
-                              solution: path.join('/uploads/' + solution.filename),
-                              answer: answer,
-                              grade: grade,
-                              unit1: unit1,
-                              unit2: unit2,
-                              unit3: unit3,
-                              difficulty: difficulty,
-                              source: source,
-                              date: date });
+        problemPath = path.join('/uploads', problemFilename);
+        fs.writeFile( path.join(__basedir, problemPath), 
+                      new Buffer(problemBase64, 'base64'), 
+                      (err) => { if (err) throw err; });
+        
+        solutionPath = path.join('/uploads', solutionFilename);
+        fs.writeFile( path.join(__basedir, solutionPath),
+                      new Buffer(solutionBase64, 'base64'),
+                      (err) => { if (err) throw err; });
+        
+        await Problem.create({ problem: problemPath,
+                               solution: solutionPath,
+                               is_choice: is_choice == "true" ? true: false,
+                               answer: answer,
+                               grade: grade,
+                               unit1: unit1,
+                               unit2: unit2,
+                               unit3: unit3,
+                               difficulty: difficulty,
+                               source: source,
+                               date: date });
         
         res.json({
             success: 'true',
@@ -46,6 +49,10 @@ exports.create = async (req, res) => {
             ecode: 403
         });
     }
+}
+
+exports.update = async (req, res) => {
+    
 }
 
 exports.inquiry = async (req, res) => {

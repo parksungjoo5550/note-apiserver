@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 exports.login = async (req, res, next) => {
-    const token = req.headers['x-access-token'] || req.query.token;
+    const token = req.headers['x-access-token'] || req.cookies.token;
     
     try {
         if (!token)

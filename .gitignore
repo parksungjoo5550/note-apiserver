@@ -1,5 +1,11 @@
+# File
 goorm.manifest
 .env
-test.js
 details.txt
+
 uploads/*
+
+# Frontend
+middlewares/frontAuth.js
+routes/front/
+views/*

@@ -9,7 +9,7 @@ The server provides user account and problems information.
 * **/api/auth**
   * [/api/auth/register](#post-apiauthregister)
   * [/api/auth/login](#post-apiauthlogin) 
-  * [/api/auth/check](#get-apiauthcheck) 
+  * [/api/auth/validate](#get-apiauthvalidate) 
 
 * **/api/student**
   * [/api/student/set](#post-apistudentset)
@@ -34,6 +34,7 @@ The server provides user account and problems information.
 | userid | String | 아이디 | 
 | password | String | 비밀번호 |  
 | password2 | String | 확인용 비밀번호 | 
+| name | String | 이름 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -61,7 +62,7 @@ The server provides user account and problems information.
 | data.token | Json | jwt 토큰 | 
 <br>
 
-### GET /api/auth/check
+### GET /api/auth/validate
 로그인한 계정의 토큰 정보를 반환합니다.
 
 #### Parameter

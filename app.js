@@ -7,6 +7,7 @@ global.__basedir = __dirname;
 const express = require('express');
 
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 var app = express();
 var PORT = process.env.SERVER_PORT;
@@ -23,17 +24,24 @@ app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 
+// Cookie parser
+app.use(cookieParser());
 
 // Set the secret key for jwt
 app.set('jwt-secret', process.env.JWT_SECRET)
 
 // Routing
 app.use('/api', require('./routes/api'));
+app.use('/front', require('./routes/front'));
+
+app.get('/', (req, res) => {
+    res.redirect('/front');
+});
 
 var server = app.listen(PORT, function() {
     console.log(`Server listening on ${PORT}`);
     
-    require('./models').sequelize.sync({force: false})
+    require('./models').sequelize.sync({force: true})
       .then(() => {
         console.log('Databases sync');
       });

@@ -1,9 +1,21 @@
 <html>
     <head>
         <meta charset="utf-8"/>
+        
+        <style type="text/css">
+            a { text-decoration:none }
+        </style>
     </head>
     <body>
-        <form method="POST" action="/api/problem/upload?token=<%= token %>" enctype="multipart/form-data">
+        <h2>
+            문제 만들기
+        </h2>
+        
+        <h3 style="color: red">
+            <%= message %>
+        </h3>
+        
+        <form method="POST" action="/front/problem/create" enctype="multipart/form-data">
             문제 파일 : <input type="file" name="problem"/><br>
             해설 파일 : <input type="file" name="solution"/><br>
             <input type="radio" name="is_choice" value="true">객관식 
@@ -18,5 +30,7 @@
             Date <input type="date" name="date"/><br>
             <input type="submit"/>
         </form>
+        
+        <a href="/front"> 메인 페이지 </a>
     </body>
 </html>

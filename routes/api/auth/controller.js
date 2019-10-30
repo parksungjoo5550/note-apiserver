@@ -1,5 +1,6 @@
 const jwt  = require('jsonwebtoken');
 const User = require('../../../models/').User;
+const Student = require('../../../models/').Student;
 
 /* 
     * Create a user account
@@ -8,15 +9,16 @@ const User = require('../../../models/').User;
     {
         userid,
         password,
-        password2
+        password2,
+        name
     }
 */
 
 exports.register = async (req, res) => {
-    const { userid, password, password2 } = req.body;
+    const { userid, password, password2, name } = req.body;
     
     try {
-        if ( !userid || !password || !password2 ) {
+        if ( !userid || !password || !password2 || !name ) {
             throw new Error('Please enter all fields.');
         }
         else if ( password != password2 ) {
@@ -28,14 +30,16 @@ exports.register = async (req, res) => {
         else if ( await User.findOneByUserid(userid) ) {
             throw new Error('Userid already exists.');
         }
-        else {
-            await User.create( { userid: userid, password: password } );
-            res.json({
-                success: 'true',
-                message: 'Registered successfully.',
-                ecode: 200
-            });
-        }
+        
+        await User.create( { userid: userid, password: password } );
+        await Student.create({ userid: userid, name: name });
+        
+        res.json({
+            success: 'true',
+            message: 'Registered successfully.',
+            ecode: 200
+        });
+        
     }
     catch (error) {
         res.status(403).json({
@@ -99,13 +103,13 @@ exports.login = async (req, res) => {
 }
 
 /*
-    GET /api/auth/check
+    GET /api/auth/validate
     {
         token
     }
 */
 
-exports.check = (req, res) => {
+exports.validate = (req, res) => {
     res.json({
         success: 'true',
         message: '',
