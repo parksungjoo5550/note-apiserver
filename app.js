@@ -19,6 +19,7 @@ app.engine('html', require('ejs').renderFile);
 
 // Static File Service
 app.use('/uploads', express.static('uploads'));
+app.use('/static', express.static('public'));
 
 // Body-parser
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -41,7 +42,7 @@ app.get('/', (req, res) => {
 var server = app.listen(PORT, function() {
     console.log(`Server listening on ${PORT}`);
     
-    require('./models').sequelize.sync({force: true})
+    require('./models').sequelize.sync({force: false})
       .then(() => {
         console.log('Databases sync');
       });

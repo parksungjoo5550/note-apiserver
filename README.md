@@ -162,6 +162,26 @@ Not required
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
 | data.problems | JSON Array | 조건에 맞는 모든 문제 | 
+
+##### Response example
+```
+{ success: true,
+ message: "success",
+ ecode: 200,
+ data.problems: [ { index: 1,
+                    problem: '/uploads/problem.jpg',
+                    solution: '/uploads/solution.jpg',
+                    is_choice: false,
+                    answer: 'answer',
+                    grade: 'grade',
+                    unit1: 'unit1',
+                    unit2: 'unit2',
+                    unit3: 'unit3',
+                    difficulty: 0,
+                    source: 'source',
+                    date: 2019-10-02T00:00:00.000Z,
+                    rate: null } ] }
+```
 <br>
 
 ### POST /api/exam/create

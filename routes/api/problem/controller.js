@@ -56,26 +56,28 @@ exports.update = async (req, res) => {
 }
 
 exports.inquiry = async (req, res) => {
-    const { grade, unit1, unit2, unit3, difficulty, source, start_date, end_date } = req.body;
-    
+    const { grade, is_choice, unit1, unit2, unit3, difficulty, source, start_date, end_date } = req.body;
+
     try {
         let options = {};
         
-        if ( grade !== undefined )
+        if ( grade !== undefined && grade !== '' )
             options.grade = grade;
-        if ( unit1 !== undefined )
+        if ( is_choice !== undefined && is_choice !== '' )
+            options.is_choice = is_choice == "true"? true: false;
+        if ( unit1 !== undefined && unit1 !== '' )
             options.unit1 = unit1;
-        if ( unit2 !== undefined )
+        if ( unit2 !== undefined && unit2 !== '' )
             options.unit2 = unit2;
-        if ( unit3 !== undefined )
+        if ( unit3 !== undefined && unit3 !== '' )
             options.unit3 = unit3;
-        if ( difficulty !== undefined )
+        if ( difficulty !== undefined && difficulty !== '' )
             options.difficulty = difficulty;
-        if ( source !== undefined )
+        if ( source !== undefined && source !== '' )
             options.source = source;
-        if ( start_date !== undefined )
+        if ( start_date !== undefined && start_date !== '' )
             options.date = { $gt: start_date };
-        if ( end_date !== undefined )
+        if ( end_date !== undefined && end_date !== '' )
             options.date = { $lt: end_date };
         
         let results = await Problem.findAll({ where: options });

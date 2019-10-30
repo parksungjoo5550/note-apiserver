@@ -8,4 +8,5 @@ uploads/*
 # Frontend
 middlewares/frontAuth.js
 routes/front/
+public/*
 views/*
