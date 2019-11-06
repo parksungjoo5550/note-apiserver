@@ -22,9 +22,8 @@ app.use('/uploads', express.static('uploads'));
 app.use('/static', express.static('public'));
 
 // Body-parser
-app.use(bodyParser.urlencoded({ extended: true}));
-app.use(bodyParser.json());
-
+app.use(bodyParser.json({limit: '10mb', extended: true}));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 // Cookie parser
 app.use(cookieParser());
 

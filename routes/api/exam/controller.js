@@ -77,7 +77,7 @@ exports.list = async (req, res) => {
 /* 
     * Get problem image files by examid
     
-    POST /api/exam/
+    POST /api/exam/:examid
     {
         * not required *
     }
