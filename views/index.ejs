@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        
+        <link rel="stylesheet" href="static/style.css">
+        
+    </head>
+    
+    <body>
+        <h1>
+            안녕하세요. <%= token.userid %> 님
+        </h1>
+        
+        <h3 style="color: red" id="message">
+            <% if ( locals.message ) { %>
+                <%= message %>
+            <% } %>
+        </h3>
+        
+        <% if ( token.admin ) { %>
+                <a href="/front/problem/create"> 문제 만들기 </a><br>
+        <% } %>
+        <a href="/front/problem/inquiry"> 문제 리스트 조회 </a> <br>
+        <a href="/front/exam/create"> 시험지 만들기  </a><br>
+        <a href="/front/exam/list"> 내가 만든 시험지 조회  </a><br>
+        <a href="/front/auth/logout"> 로그아웃 </a><br>
+        
+    </body>
+</html>

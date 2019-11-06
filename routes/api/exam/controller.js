@@ -38,7 +38,7 @@ exports.create = async (req, res) => {
 }
 
 /* 
-    * List exam papers made by user
+    * List exam papers made by userid
     
     POST /api/exam/list
     {
@@ -73,3 +73,5 @@ exports.list = async (req, res) => {
         });
     }
 }
+
+

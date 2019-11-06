@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        
+        <link rel="stylesheet" href="static/style.css">
+        <style>
+            table {
+                width: 100%;
+                border: 1px solid #444444;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid #444444;
+                padding: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>
+            문제 조회
+        </h2>
+        
+        <h3 style="color: red" id="message">
+            <% if ( locals.message ) { %>
+                <%= message %>
+            <% } %>
+        </h3>
+        
+        <!-- Query  -->
+        <form method="POST" action="/front/problem/inquiry">
+            학년 : <input type="text" name="grade"/><br>
+            <input type="radio" name="is_choice" value="true">객관식 
+            <input type="radio" name="is_choice" value="false">주관식 <br>
+            정답 : <input type="text" name="answer"/><br>
+            대단원 : <input type="text" name="unit1"/><br>
+            중단원 : <input type="text" name="unit2"/><br>
+            소단원 : <input type="text" name="unit3"/><br>
+            난이도 : <input type="text" name="difficulty"/><br>
+            출처 : <input type="text" name="source"/><br>
+            출제년도 범위 : <input type="date" name="start_date"/> ~ <input type="date" name="end_date"/><br>
+            <input type="submit"/>
+        </form>
+        
+        <a href="/front"> 메인 페이지 </a>
+        
+        <!-- Result  -->
+        <% if ( locals.problems ) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>문제 번호</th>
+                        <th>문제 경로</th>
+                        <th>해답 경로</th>
+                        <th>객관식/주관식</th>
+                        <th>답</th>
+                        <th>학년</th>
+                        <th>대단원</th>
+                        <th>중단원</th>
+                        <th>소단원</th>
+                        <th>난이도</th>
+                        <th>출처</th>
+                        <th>출제년도</th>
+                        <th>정답률</th>
+                    </tr>
+                </thead>
+            <% for (let i = 0; i < problems.length; i++ ) { %>
+                <tr>
+                    <td><%= problems[i].index %></td>
+                    <td><%= problems[i].problem %></td>
+                    <td><%= problems[i].solution %></td>
+                    <td><%= problems[i].is_choice %></td>
+                    <td><%= problems[i].answer %></td>
+                    <td><%= problems[i].grade %></td>
+                    <td><%= problems[i].unit1 %></td>
+                    <td><%= problems[i].unit2 %></td>
+                    <td><%= problems[i].unit3 %></td>
+                    <td><%= problems[i].difficulty %></td>
+                    <td><%= problems[i].source %></td>
+                    <td><%= problems[i].date %></td>
+                    <td><%= problems[i].rate %></td>
+                </tr>
+            <% } %>
+            </table>
+        <% } %>
+    </body>
+</html>

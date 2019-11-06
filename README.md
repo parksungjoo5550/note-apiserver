@@ -166,9 +166,9 @@ Not required
 ##### Response example
 ```
 { success: true,
- message: "success",
- ecode: 200,
- data.problems: [ { index: 1,
+  message: "success",
+  ecode: 200,
+  data.problems: [ { index: 1,
                     problem: '/uploads/problem.jpg',
                     solution: '/uploads/solution.jpg',
                     is_choice: false,

@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        
+        <link rel="stylesheet" href="static/style.css">
+        
+    </head>
+    <body>
+        <h2>
+            문제 만들기
+        </h2>
+        
+        <h3 style="color: red" id="message">
+            <% if ( locals.message ) { %>
+                <%= message %>
+            <% } %>
+        </h3>
+        
+        <form method="POST" action="/front/problem/create" enctype="multipart/form-data">
+            문제 파일 : <input type="file" name="problem"/><br>
+            해설 파일 : <input type="file" name="solution"/><br>
+            <input type="radio" name="is_choice" value="true">객관식 
+            <input type="radio" name="is_choice" value="false">주관식 <br>
+            정답 : <input type="text" name="answer"/><br>
+            학년 : <input type="text" name="grade"/><br>
+            대단원 : <input type="text" name="unit1"/><br>
+            중단원 : <input type="text" name="unit2"/><br>
+            소단원 : <input type="text" name="unit3"/><br>
+            난이도 : <input type="text" name="difficulty"/><br>
+            출처 : <input type="text" name="source"/><br>
+            출제년도 : <input type="date" name="date"/><br>
+            <input type="submit"/>
+        </form>
+        
+        <a href="/front"> 메인 페이지 </a>
+    </body>
+</html>

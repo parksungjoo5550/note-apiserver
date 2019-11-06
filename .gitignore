@@ -4,9 +4,3 @@ goorm.manifest
 details.txt
 
 uploads/*
-
-# Frontend
-middlewares/frontAuth.js
-routes/front/
-public/*
-views/*
