@@ -74,4 +74,39 @@ exports.list = async (req, res) => {
     }
 }
 
+/* 
+    * Get problem image files by examid
+    
+    POST /api/exam/
+    {
+        * not required *
+    }
+*/
 
+exports.list = async (req, res) => {
+    const userid = req.token.userid;
+    
+    try {
+        let results = await Exam.findAll({ where: { userid: userid } });
+        let papers = [];
+        
+        for (let i = 0; i < results.length; i++){
+            results[i].dataValues.problems = results[i].dataValues.problems.split(' ');
+            papers.push(results[i].dataValues);
+        }
+        
+        res.json({
+            success: 'true',
+            message: 'Successfully listed papers',
+            ecode: 200,
+            data: { papers: papers }
+        });
+    }
+    catch (error) {
+        res.status(403).json({
+            success: 'false',
+            message: error.message,
+            ecode: 403
+        });
+    }
+}
