@@ -1,9 +1,17 @@
+const path = require('path');
 const multer = require('multer');
 const request = require('request')
 const router = require('express').Router();
 const frontAuth = require('../../../middlewares/frontAuth');
 
 const upload = multer({ storage: multer.memoryStorage({}), 
+                        fileFilter: function (req, file, callback) {
+                        let ext = path.extname(file.originalname);
+                        if( ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' ) {
+                            return callback(new Error('Only .png, .jpg, .jpeg images are allowed'));
+                        }
+                        callback(null, true);
+                        },
                         limits: {
                             fieldSize: 8 * 1024 * 1024,
                         } });

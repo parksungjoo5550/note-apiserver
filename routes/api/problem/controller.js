@@ -84,19 +84,17 @@ exports.inquiry = async (req, res) => {
         let problems = [];
         
         for (let i = 0; i < results.length; i++)
-            problems.push({ problemURL: results[i].dataValues.problemURL, 
-                            solutionURL: results[i].dataValues.solutionURL,
+            problems.push({ problemID: results[i].dataValues.index,
+                            problemURL: results[i].dataValues.problemURL, 
                             isMultipleQuestion: results[i].dataValues.isMultipleQuestion,
-                            answer: results[i].dataValues.answer,
                             problemCondition: {
                                 age: results[i].dataValues.age,
                                 bigChapter: results[i].dataValues.bigChapter,
                                 middleChapter: results[i].dataValues.middleChapter,
                                 smallChapter: results[i].dataValues.smallChapter,
-                                level: results[i].dataValues.level
-                            },
-                            source: results[i].dataValues.source,
-                            date: results[i].dataValues.date,
+                                level: results[i].dataValues.level,
+                                source: results[i].dataValues.source
+                            }                      
                           });
         
         res.json({
