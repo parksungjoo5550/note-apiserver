@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        
+        <link rel="stylesheet" href="static/style.css">
+        <style>
+            table {
+                width: 100%;
+                border: 1px solid #444444;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid #444444;
+                padding: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>
+            내가 만든 시험지 조회
+        </h2>
+        
+        <h3 style="color: red" id="message">
+            <% if ( locals.message ) { %>
+                <%= message %>
+            <% } %>
+        </h3>
+        
+        <!-- Query  -->
+        <form method="POST" action="/front/exam/list">
+            <input type="submit" value="조회"/>
+        </form>
+        
+        <a href="/front"> 메인 페이지 </a>
+        
+        <!-- Result  -->
+        <% if ( locals.papers ) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>시험지 번호</th>
+                        <th>시험지 제목</th>
+                        <th>문제</th>
+                    </tr>
+                </thead>
+            <% for (let i = 0; i < papers.length; i++ ) { %>
+                <tr>
+                    <td><%= papers[i].index %></td>
+                    <td><%= papers[i].title %></td>
+                    <td><%= papers[i].problems %></td>
+                </tr>
+            <% } %>
+            </table>
+        <% } %>
+    </body>
+</html>

@@ -22,6 +22,7 @@ The server provides user account and problems information.
 * **/api/exam**
   * [/api/exam/create](#post-apiexamcreate)
   * [/api/exam/list](#post-apiexamlist)
+  * [/api/exam/:userid](#post-apiexamuserid)
 <br>
 
 ## API documentation
@@ -215,3 +216,38 @@ Not required
 | ecode | Integer | 응답 코드 | 
 | data.papers | JSON Array | 조건에 맞는 모든 시험지 | 
 <br>
+
+### POST /api/exam/:examid
+시험지 번호에 해당하는 시험지의 정보를 반환합니다.
+
+#### Parameter
+Not required
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.title | String | 시험지 제목 | 
+| data.problems | JSON Array | 시험지에 포함된 모든 문제 | 
+
+##### Response example
+```
+{
+    "success": "true",
+    "message": "Successfully listed papers",
+    "ecode": 200,
+    "data": {
+        "title": "title",
+        "problems": [
+            {
+                "index": "1",
+                "problem": "/uploads/problem.jpg"
+            }
+        ]
+    }
+}
+```
+<br>
+

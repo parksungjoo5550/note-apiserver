@@ -48,7 +48,7 @@ router.post('/create', upload.fields([{ name: 'problem' }, { name: 'solution' }]
     }); 
 });
 
-router.use('/create', frontAuth.login);
+router.use('/inquiry', frontAuth.login);
 router.get('/inquiry', (req, res) => {
     res.render('problem/inquiry');
 });

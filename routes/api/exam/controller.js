@@ -1,4 +1,5 @@
 const Exam = require('../../../models/').Exam;
+const Problem = require('../../../models/').Problem;
 
 /* 
     * Create a exam paper
@@ -19,7 +20,7 @@ exports.create = async (req, res) => {
             throw new Error('Please enter all fields.');
         }
         else {
-            await Exam.create({ userid: userid, title: title, problems: problems.join(' ') });
+            await Exam.create({ userid: userid, title: title, problems: problems.trim() });
         }
         
         res.json({
@@ -83,23 +84,25 @@ exports.list = async (req, res) => {
     }
 */
 
-exports.list = async (req, res) => {
-    const userid = req.token.userid;
+exports.get = async (req, res) => {
+    const examid = req.params.examid;
     
     try {
-        let results = await Exam.findAll({ where: { userid: userid } });
-        let papers = [];
+        let result = await Exam.findOne({ where: { index: examid } });
+        let problemsId = result.dataValues.problems.trim().split(' ');
+        let problems = [];
         
-        for (let i = 0; i < results.length; i++){
-            results[i].dataValues.problems = results[i].dataValues.problems.split(' ');
-            papers.push(results[i].dataValues);
+        for (let i = 0; i < problemsId.length; i++){
+            let problem = await Problem.findOne({ where: { index: problemsId[i] } });
+            problems.push({ index: problemsId[i], problem: problem.dataValues.problem });
         }
         
         res.json({
             success: 'true',
             message: 'Successfully listed papers',
             ecode: 200,
-            data: { papers: papers }
+            data: { title: result.dataValues.title,
+                    problems: problems }
         });
     }
     catch (error) {

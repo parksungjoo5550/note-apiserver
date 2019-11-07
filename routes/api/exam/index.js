@@ -8,4 +8,7 @@ router.post('/create', controller.create);
 router.use('/list', auth.login);
 router.post('/list', controller.list);
 
+router.use('/:examid', auth.login);
+router.post('/:examid', controller.get);
+
 module.exports = router;
