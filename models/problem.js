@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         level: { type: DataTypes.INTEGER },
         source: { type: DataTypes.STRING },
         date: { type: DataTypes.DATE },
-        rate: { type: DataTypes.INTEGER }
+        successRate: { type: DataTypes.INTEGER }
     }, { timestamps: false });
     
     Problem.findOneByindex = function (index) {

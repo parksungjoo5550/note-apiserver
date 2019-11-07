@@ -37,7 +37,7 @@
             소단원 : <input type="text" name="smallChapter"/><br>
             난이도 : <input type="text" name="level"/><br>
             출처 : <input type="text" name="source"/><br>
-            출제년도 범위 : <input type="date" name="start_date"/> ~ <input type="date" name="end_date"/><br>
+            출제년도 범위 : <input type="date" name="startDate"/> ~ <input type="date" name="endDate"/><br>
             <input type="submit"/>
         </form>
         
@@ -65,7 +65,7 @@
                 </thead>
             <% for (let i = 0; i < problems.length; i++ ) { %>
                 <tr>
-                    <td><%= problems[i].index %></td>
+                    <td><%= problems[i].problemID %></td>
                     <td><%= problems[i].problemURL %></td>
                     <td><%= problems[i].solutionURL %></td>
                     <td><%= problems[i].isMultipleQuestion %></td>
@@ -75,9 +75,9 @@
                     <td><%= problems[i].problemCondition.middleChapter %></td>
                     <td><%= problems[i].problemCondition.smallChapter %></td>
                     <td><%= problems[i].problemCondition.level %></td>
-                    <td><%= problems[i].source %></td>
+                    <td><%= problems[i].problemCondition.source %></td>
                     <td><%= problems[i].date %></td>
-                    <td><%= problems[i].rate %></td>
+                    <td><%= problems[i].successRate %></td>
                 </tr>
             <% } %>
             </table>

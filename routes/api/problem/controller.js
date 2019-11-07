@@ -1,6 +1,9 @@
+// Modules
 const fs =  require('fs');
 const path = require('path');
 const jwt  = require('jsonwebtoken');
+
+// Models
 const Problem = require('../../../models/').Problem;
 
 exports.create = async (req, res) => {
@@ -14,6 +17,7 @@ exports.create = async (req, res) => {
              !isMultipleQuestion || !answer || !age || !bigChapter || !middleChapter || !smallChapter || !level || !source || !date)
             throw new Error('Please enter all fields.');
         
+        // Save Problem and Solution file.
         problemPath = path.join('/uploads', problemFilename);
         fs.writeFile( path.join(__basedir, problemPath), 
                       new Buffer(problemBase64, 'base64'), 
@@ -56,7 +60,7 @@ exports.update = async (req, res) => {
 }
 
 exports.inquiry = async (req, res) => {
-    const { age, isMultipleQuestion, bigChapter, middleChapter, smallChapter, level, source, start_date, end_date } = req.body;
+    const { age, isMultipleQuestion, bigChapter, middleChapter, smallChapter, level, source, startDate, endDate } = req.body;
 
     try {
         let options = {};
@@ -75,10 +79,10 @@ exports.inquiry = async (req, res) => {
             options.level = level;
         if ( source !== undefined && source !== '' )
             options.source = source;
-        if ( start_date !== undefined && start_date !== '' )
-            options.date = { $gt: start_date };
-        if ( end_date !== undefined && end_date !== '' )
-            options.date = { $lt: end_date };
+        if ( startDate !== undefined && startDate !== '' )
+            options.date = { $gt: startDate };
+        if ( endDate !== undefined && endDate !== '' )
+            options.date = { $lt: endDate };
         
         let results = await Problem.findAll({ where: options });
         let problems = [];

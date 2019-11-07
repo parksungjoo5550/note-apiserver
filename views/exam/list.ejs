@@ -40,14 +40,14 @@
                     <tr>
                         <th>시험지 번호</th>
                         <th>시험지 제목</th>
-                        <th>문제</th>
+                        <th>만든 날짜</th>
                     </tr>
                 </thead>
             <% for (let i = 0; i < papers.length; i++ ) { %>
                 <tr>
-                    <td><%= papers[i].index %></td>
+                    <td><%= papers[i].examid %></td>
                     <td><%= papers[i].title %></td>
-                    <td><%= papers[i].problems %></td>
+                    <td><%= papers[i].createdAt %></td>
                 </tr>
             <% } %>
             </table>

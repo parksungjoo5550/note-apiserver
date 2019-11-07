@@ -6,7 +6,7 @@ const frontAuth = require('../../../middlewares/frontAuth');
 
 const upload = multer({ storage: multer.memoryStorage({}), 
                         fileFilter: function (req, file, callback) {
-                        let ext = path.extname(file.originalname);
+                        let ext = path.extname(file.originalname).toLowerCase();
                         if( ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' ) {
                             return callback(new Error('Only .png, .jpg, .jpeg images are allowed'));
                         }
@@ -74,8 +74,8 @@ router.post('/inquiry', (req, res) => {
             smallChapter: req.body.smallChapter,
             level: req.body.level,
             source: req.body.source,
-            start_date: req.body.start_date,
-            end_date: req.body.end_date
+            startDate: req.body.startDate,
+            endDate: req.body.endDate
         },
         json: true
     }

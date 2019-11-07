@@ -7,10 +7,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         userid: { type: DataTypes.STRING },
         title: { type: DataTypes.STRING },
-        problems: { type: DataTypes.STRING },
-        date: { 
-            type: DataTypes.DATE,
-            defalut: DataTypes.NOW 
+        problemList: { type: DataTypes.STRING },
+        examURL: { type: DataTypes.STRING }, 
+        createdAt: { 
+            type: DataTypes.DATE
         }
     }, { timestamps: false });
     

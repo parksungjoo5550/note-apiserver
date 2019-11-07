@@ -5,28 +5,34 @@ const Student = require('../../../models/').Student;
     
     POST /api/student/set
     {
-        name        {string},
-        school      {string},
-        classOf     {integer},
-        mathGrade   {integer}
+        name              {string},
+        school            {string},
+        admissionYear     {integer},
+        mathGrade         {integer}
     }
 */
 
 exports.set = async (req, res) => {
     const userid = req.token.userid;
-    const { name, school, classOf, mathGrade } = req.body;
+    const { name, school, admissionYear, mathGrade } = req.body;
    
     try {
-        if ( !name || !school || !classOf || !mathGrade ) {
-            throw new Error('Please enter all fields.');
-        }
-        else if ( await Student.findOneByUserid(userid) ) { // If the student already exist.
-            await Student.update({ name: name, school: school, classOf: classOf, mathGrade: mathGrade },
-                                 { where: { userid: userid } });
-        }
-        else {
-            await Student.create({ userid: userid, name: name, school: school, classOf: classOf, mathGrade: mathGrade });
-        }
+        let options = {};
+        
+        if ( name !== undefined && name !== '' )
+            options.name = name;
+        if ( school !== undefined && school !== '' )
+            options.school = school;
+        if ( admissionYear !== undefined && admissionYear !== '' )
+            options.admissionYear = admissionYear;
+        if ( mathGrade !== undefined && mathGrade !== '' )
+            options.mathGrade = mathGrade;
+        
+        if ( await Student.findOneByUserid(userid) )
+            await Student.update(options, { where: { userid: userid } });
+        else
+            throw new Error('Some errors occur in /api/student/set api.');
+        
         res.json({
             success: 'true',
             message: 'Successfully set user information.',
@@ -68,7 +74,7 @@ exports.view = async (req, res) => {
                 data: {
                     name: student.dataValues.name,
                     school: student.dataValues.school,
-                    classOf: student.dataValues.classOf,
+                    admissionYear: student.dataValues.admissionYear,
                     mathGrade: student.dataValues.mathGrade
                 }
             });

@@ -1,4 +1,7 @@
+// Modules
 const jwt  = require('jsonwebtoken');
+
+// Models
 const User = require('../../../models/').User;
 const Student = require('../../../models/').Student;
 
@@ -31,7 +34,9 @@ exports.register = async (req, res) => {
             throw new Error('Userid already exists.');
         }
         
+        // Create a user.
         await User.create( { userid: userid, password: password } );
+        // Create a student.
         await Student.create({ userid: userid, name: name });
         
         res.json({
@@ -71,6 +76,7 @@ exports.login = async (req, res) => {
             throw new Error('Incorrect password.');
         }
         else {
+            // Create a jwt token.
             const token = await jwt.sign(
                 {
                     _id: user._id,

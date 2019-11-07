@@ -17,7 +17,7 @@ router.post('/create', (req, res) => {
         body: 'POST',
         form: {
             title: req.body.title,
-            problems: req.body.problems
+            problemList: req.body.problemList.trim().split(' ')
         },
         json: true
     }

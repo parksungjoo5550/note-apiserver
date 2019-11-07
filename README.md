@@ -86,7 +86,7 @@ Not required
 ---|---|---
 | name | String | 이름 | 
 | school | String | 학교 | 
-| classOf | Number | 입학년도| 
+| admissionYear | Number | 입학년도| 
 | mathGrade | Number | 수학 등급 |
 
 #### Response
@@ -111,7 +111,7 @@ Not required
 | ecode | Integer | 응답 코드 | 
 | data.name | String | 이름 | 
 | data.school | String | 학교 | 
-| data.classOf | Number | 입학년도| 
+| data.admissionYear | Number | 입학년도| 
 | data.mathGrade | Number | 수학 등급 |
 <br>
 
@@ -121,8 +121,10 @@ Not required
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
-| problemURL | File | 문제 이미지 파일 | 
-| solutionURL | File | 해답 이미지 파일 | 
+| problemFilename | File | 문제 파일 이름 | 
+| solutionFilename | File | 해답 파일 이름 | 
+| problemBase64 | File | Base64로 인코딩된 문제 파일 | 
+| solutionBase64 | File | Base64로 인코딩된 해답 파일 | 
 | isMultipleQuestion | Boolean | 객관식 여부 | 
 | answer | String | 답 |
 | age | String | 학년 | 
@@ -130,7 +132,7 @@ Not required
 | middleChapter | Number | 중단원 | 
 | smallChapter | Number | 소단원 | 
 | level | Number | 난이도 | 
-| source | Number | 문제 출처 | 
+| source | Number | 출처 | 
 | date | Number | 출제년도 | 
 
 #### Response
@@ -153,8 +155,8 @@ Not required
 | smallChapter | Number | 소단원 | 
 | level | Number | 난이도 | 
 | source | Number | 문제 출처 | 
-| start_date | Number | 출체범위 시작 | 
-| end_date | Number | 출체범위 끝 | 
+| startDate | Number | 출체범위 시작 | 
+| endDate | Number | 출체범위 끝 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -162,27 +164,16 @@ Not required
 | success | Boolean | api 성공 여부 | 
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
-| data.problems | JSON Array | 조건에 맞는 모든 문제 | 
-
-##### Response example
-```
-{ success: true,
-  message: "success",
-  ecode: 200,
-  data.problems: [ { index: 1,
-                    problem: '/uploads/problem.jpg',
-                    solution: '/uploads/solution.jpg',
-                    isMultipleQuestion: false,
-                    answer: 'answer',
-                    age: 'grade',
-                    bigChapter: 'unit1',
-                    middleChapter: 'unit2',
-                    smallChapter: 'unit3',
-                    level: 0,
-                    source: 'source',
-                    date: 2019-10-02T00:00:00.000Z,
-                    rate: null } ] }
-```
+| data.problems | Array | 조건에 맞는 모든 문제 | 
+| data.problems[i].problemID | Integer | 문제 고유 번호 | 
+| data.problems[i].problemURL | String | 문제 파일 경로 | 
+| data.problems[i].isMultipleQuestion | Boolean | 객관식 여부 | 
+| data.problems[i].problemCondition.age | String | 학년 | 
+| data.problems[i].problemCondition.bigChapter | String | 대단원 | 
+| data.problems[i].problemCondition.middleChapter | String | 중단원 | 
+| data.problems[i].problemCondition.smallChapter | String | 소단원 | 
+| data.problems[i].problemCondition.level | Integer | 난이도 | 
+| data.problems[i].problemCondition.source | String | 출처 | 
 <br>
 
 ### POST /api/exam/create
@@ -192,7 +183,7 @@ Not required
 | Name | Data type | Description | 
 ---|---|---
 | title | String | 시험지 제목 | 
-| problems | Array | 시험지에 포함될 문제의 고유 번호 | 
+| problemList | Array | 시험지에 포함될 문제의 고유 번호 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -214,7 +205,10 @@ Not required
 | success | Boolean | api 성공 여부 | 
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
-| data.papers | JSON Array | 조건에 맞는 모든 시험지 | 
+| data.papers | Array | 조건에 맞는 모든 시험지 | 
+| data.papers[i].examid | Integer | 시험지 고유 번호 | 
+| data.papers[i].title | String | 시험지 제목 | 
+| data.papers[i].createdAt | Date | 만든 날짜 | 
 <br>
 
 ### POST /api/exam/:examid
@@ -230,24 +224,8 @@ Not required
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
 | data.title | String | 시험지 제목 | 
-| data.problems | JSON Array | 시험지에 포함된 모든 문제 | 
-
-##### Response example
-```
-{
-    "success": "true",
-    "message": "Successfully listed papers",
-    "ecode": 200,
-    "data": {
-        "title": "title",
-        "problems": [
-            {
-                "index": "1",
-                "problem": "/uploads/problem.jpg"
-            }
-        ]
-    }
-}
-```
+| data.problems | Array | 시험지에 포함된 모든 문제 | 
+| data.problems[i].problemID | Integet | 문제 고유 번호 | 
+| data.problems[i].problemURL | Integet | 문제 파일 경로 | 
 <br>
 
