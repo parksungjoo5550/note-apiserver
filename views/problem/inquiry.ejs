@@ -28,14 +28,14 @@
         
         <!-- Query  -->
         <form method="POST" action="/front/problem/inquiry">
-            학년 : <input type="text" name="grade"/><br>
-            <input type="radio" name="is_choice" value="true">객관식 
-            <input type="radio" name="is_choice" value="false">주관식 <br>
+            학년 : <input type="text" name="age"/><br>
+            <input type="radio" name="isMultipleQuestion" value="true">객관식 
+            <input type="radio" name="isMultipleQuestion" value="false">주관식 <br>
             정답 : <input type="text" name="answer"/><br>
-            대단원 : <input type="text" name="unit1"/><br>
-            중단원 : <input type="text" name="unit2"/><br>
-            소단원 : <input type="text" name="unit3"/><br>
-            난이도 : <input type="text" name="difficulty"/><br>
+            대단원 : <input type="text" name="bigChapter"/><br>
+            중단원 : <input type="text" name="middleChapter"/><br>
+            소단원 : <input type="text" name="smallChapter"/><br>
+            난이도 : <input type="text" name="level"/><br>
             출처 : <input type="text" name="source"/><br>
             출제년도 범위 : <input type="date" name="start_date"/> ~ <input type="date" name="end_date"/><br>
             <input type="submit"/>
@@ -66,15 +66,15 @@
             <% for (let i = 0; i < problems.length; i++ ) { %>
                 <tr>
                     <td><%= problems[i].index %></td>
-                    <td><%= problems[i].problem %></td>
-                    <td><%= problems[i].solution %></td>
-                    <td><%= problems[i].is_choice %></td>
+                    <td><%= problems[i].problemURL %></td>
+                    <td><%= problems[i].solutionURL %></td>
+                    <td><%= problems[i].isMultipleQuestion %></td>
                     <td><%= problems[i].answer %></td>
-                    <td><%= problems[i].grade %></td>
-                    <td><%= problems[i].unit1 %></td>
-                    <td><%= problems[i].unit2 %></td>
-                    <td><%= problems[i].unit3 %></td>
-                    <td><%= problems[i].difficulty %></td>
+                    <td><%= problems[i].age %></td>
+                    <td><%= problems[i].bigChapter %></td>
+                    <td><%= problems[i].middleChapter %></td>
+                    <td><%= problems[i].smallChapter %></td>
+                    <td><%= problems[i].level %></td>
                     <td><%= problems[i].source %></td>
                     <td><%= problems[i].date %></td>
                     <td><%= problems[i].rate %></td>

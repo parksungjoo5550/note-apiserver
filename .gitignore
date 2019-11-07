@@ -3,4 +3,4 @@ goorm.manifest
 .env
 details.txt
 
-
+uploads/*

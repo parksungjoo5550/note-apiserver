@@ -5,26 +5,26 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        problem: {
+        problemURL: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        solution: {
+        solutionURL: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        is_choice: {
+        isMultipleQuestion: {
             type: DataTypes.BOOLEAN,
         },
         answer: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        grade: { type: DataTypes.STRING },
-        unit1: { type: DataTypes.STRING },
-        unit2: { type: DataTypes.STRING },
-        unit3: { type: DataTypes.STRING },
-        difficulty: { type: DataTypes.INTEGER },
+        age: { type: DataTypes.STRING },
+        bigChapter: { type: DataTypes.STRING },
+        middleChapter: { type: DataTypes.STRING },
+        smallChapter: { type: DataTypes.STRING },
+        level: { type: DataTypes.INTEGER },
         source: { type: DataTypes.STRING },
         date: { type: DataTypes.DATE },
         rate: { type: DataTypes.INTEGER }

@@ -6,12 +6,12 @@ const Problem = require('../../../models/').Problem;
 exports.create = async (req, res) => {
     const { problemFilename, solutionFilename,
             problemBase64, solutionBase64,
-            is_choice, answer, grade, unit1, unit2, unit3, difficulty, source, date } = req.body;
+            isMultipleQuestion, answer, age, bigChapter, middleChapter, smallChapter, level, source, date } = req.body;
     
     try {
         if ( !problemFilename || !solutionFilename ||
              !problemBase64 || !solutionBase64 || 
-             !is_choice || !answer || !grade || !unit1 || !unit2 || !unit3 || !difficulty || !source || !date)
+             !isMultipleQuestion || !answer || !age || !bigChapter || !middleChapter || !smallChapter || !level || !source || !date)
             throw new Error('Please enter all fields.');
         
         problemPath = path.join('/uploads', problemFilename);
@@ -24,15 +24,15 @@ exports.create = async (req, res) => {
                       new Buffer(solutionBase64, 'base64'),
                       (err) => { if (err) throw err; });
         
-        await Problem.create({ problem: problemPath,
-                               solution: solutionPath,
-                               is_choice: is_choice == "true" ? true: false,
+        await Problem.create({ problemURL: problemPath,
+                               solutionURL: solutionPath,
+                               isMultipleQuestion: isMultipleQuestion == "true" ? true: false,
                                answer: answer,
-                               grade: grade,
-                               unit1: unit1,
-                               unit2: unit2,
-                               unit3: unit3,
-                               difficulty: difficulty,
+                               age:age,
+                               bigChapter: bigChapter,
+                               middleChapter: middleChapter,
+                               smallChapter: smallChapter,
+                               level: level,
                                source: source,
                                date: date });
         
@@ -56,23 +56,23 @@ exports.update = async (req, res) => {
 }
 
 exports.inquiry = async (req, res) => {
-    const { grade, is_choice, unit1, unit2, unit3, difficulty, source, start_date, end_date } = req.body;
+    const { age, isMultipleQuestion, bigChapter, middleChapter, smallChapter, level, source, start_date, end_date } = req.body;
 
     try {
         let options = {};
         
-        if ( grade !== undefined && grade !== '' )
-            options.grade = grade;
-        if ( is_choice !== undefined && is_choice !== '' )
-            options.is_choice = is_choice == "true"? true: false;
-        if ( unit1 !== undefined && unit1 !== '' )
-            options.unit1 = unit1;
-        if ( unit2 !== undefined && unit2 !== '' )
-            options.unit2 = unit2;
-        if ( unit3 !== undefined && unit3 !== '' )
-            options.unit3 = unit3;
-        if ( difficulty !== undefined && difficulty !== '' )
-            options.difficulty = difficulty;
+        if ( age !== undefined && age !== '' )
+            options.age = age;
+        if ( isMultipleQuestion !== undefined && isMultipleQuestion !== '' )
+            options.isMultipleQuestion = isMultipleQuestion == "true"? true: false;
+        if ( bigChapter !== undefined && bigChapter !== '' )
+            options.bigChapter = bigChapter;
+        if ( middleChapter !== undefined && middleChapter !== '' )
+            options.middleChapter = middleChapter;
+        if ( smallChapter !== undefined && smallChapter !== '' )
+            options.smallChapter = smallChapter;
+        if ( level !== undefined && level !== '' )
+            options.level = level;
         if ( source !== undefined && source !== '' )
             options.source = source;
         if ( start_date !== undefined && start_date !== '' )

@@ -22,7 +22,7 @@ The server provides user account and problems information.
 * **/api/exam**
   * [/api/exam/create](#post-apiexamcreate)
   * [/api/exam/list](#post-apiexamlist)
-  * [/api/exam/:userid](#post-apiexamuserid)
+  * [/api/exam/:examid](#post-apiexamexamid)
 <br>
 
 ## API documentation
@@ -121,15 +121,15 @@ Not required
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
-| problem | File | 문제 이미지 파일 | 
-| solution | File | 해답 이미지 파일 | 
-| is_choice | Boolean | 객관식 여부 | 
+| problemURL | File | 문제 이미지 파일 | 
+| solutionURL | File | 해답 이미지 파일 | 
+| isMultipleQuestion | Boolean | 객관식 여부 | 
 | answer | String | 답 |
-| grade | String | 학년 | 
-| unit1 | Number | 대단원 | 
-| unit2 | Number | 중단원 | 
-| unit3 | Number | 소단원 | 
-| difficulty | Number | 난이도 | 
+| age | String | 학년 | 
+| bigChapter | Number | 대단원 | 
+| middleChapter | Number | 중단원 | 
+| smallChapter | Number | 소단원 | 
+| level | Number | 난이도 | 
 | source | Number | 문제 출처 | 
 | date | Number | 출제년도 | 
 
@@ -147,11 +147,11 @@ Not required
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
-| grade | String | 학년 | 
-| unit1 | Number | 대단원 | 
-| unit2 | Number | 중단원 | 
-| unit3 | Number | 소단원 | 
-| difficulty | Number | 난이도 | 
+| age | String | 학년 | 
+| bigChapter | Number | 대단원 | 
+| middleChapter | Number | 중단원 | 
+| smallChapter | Number | 소단원 | 
+| level | Number | 난이도 | 
 | source | Number | 문제 출처 | 
 | start_date | Number | 출체범위 시작 | 
 | end_date | Number | 출체범위 끝 | 
@@ -172,13 +172,13 @@ Not required
   data.problems: [ { index: 1,
                     problem: '/uploads/problem.jpg',
                     solution: '/uploads/solution.jpg',
-                    is_choice: false,
+                    isMultipleQuestion: false,
                     answer: 'answer',
-                    grade: 'grade',
-                    unit1: 'unit1',
-                    unit2: 'unit2',
-                    unit3: 'unit3',
-                    difficulty: 0,
+                    age: 'grade',
+                    bigChapter: 'unit1',
+                    middleChapter: 'unit2',
+                    smallChapter: 'unit3',
+                    level: 0,
                     source: 'source',
                     date: 2019-10-02T00:00:00.000Z,
                     rate: null } ] }
