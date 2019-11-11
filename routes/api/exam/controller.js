@@ -180,7 +180,7 @@ exports.take = async (req, res) => {
             if ( problem == null ) // if the problem is removed
                 continue; 
             
-            problemList.push({ problemID: problemIDList[i],
+            problemList.push({ problemID: parseInt(problemIDList[i]),
                                problemURL: problem.dataValues.problemURL,
                                isMultipleQuestion: problem.dataValues.isMultipleQuestion
                              });
@@ -243,7 +243,7 @@ exports.confirm = async (req, res) => {
                                     createdAt: new Date().toISOString()
                                  });
                 
-                problemIDList.push(answerList[i].problemID);
+                problemIDList.push(parseInt(answerList[i].problemID));
             }
             else {
                 await Note.create({ userid: userid,
