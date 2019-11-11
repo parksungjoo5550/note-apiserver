@@ -7,8 +7,8 @@ const Student = require('../../../models/').Student;
     {
         name              {string},
         school            {string},
-        admissionYear     {integer},
-        mathGrade         {integer}
+        admissionYear     {string},
+        mathGrade         {string}
     }
 */
 
@@ -31,7 +31,7 @@ exports.set = async (req, res) => {
         if ( await Student.findOneByUserid(userid) )
             await Student.update(options, { where: { userid: userid } });
         else
-            throw new Error('Some errors occur in /api/student/set api.');
+            throw new Error('Some errors occur in /api/student/set api. (Report to admin)');
         
         res.json({
             success: 'true',
@@ -64,7 +64,7 @@ exports.view = async (req, res) => {
         student = await Student.findOneByUserid(userid);
         
         if (student == null){
-            throw new Error('Please set your information.');
+            throw new Error('Some errors occur in /api/student/view api. (Report to admin)');
         }
         else {
             res.json({

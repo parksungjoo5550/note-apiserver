@@ -1,7 +1,6 @@
 // Modules
 const fs =  require('fs');
 const path = require('path');
-const jwt  = require('jsonwebtoken');
 
 // Models
 const Problem = require('../../../models/').Problem;
@@ -16,6 +15,11 @@ exports.create = async (req, res) => {
              !problemBase64 || !solutionBase64 || 
              !isMultipleQuestion || !answer || !age || !bigChapter || !middleChapter || !smallChapter || !level || !source || !date)
             throw new Error('Please enter all fields.');
+        
+        if ( problemFilename.indexOf('/') >=0 || problemFilename.indexOf('\\') >= 0 )
+            throw new Error('Bad problemFilename.');
+        if ( solutionFilename.indexOf('/') >=0 || solutionFilename.indexOf('\\') >= 0 )
+            throw new Error('Bad solutionFilename.');
         
         // Save Problem and Solution file.
         problemPath = path.join('/uploads', problemFilename);
@@ -56,11 +60,10 @@ exports.create = async (req, res) => {
 }
 
 exports.get = async (req, res) => {
-    // url, is
     const { problemID } = req.body;
     
     try {
-        problem =  await Problem.findOneByindex(problemList[i]);
+        problem =  await Problem.findOneByindex(problemID);
         if ( problem == null ) 
             throw new Error('That problem doesn\'t exist.');
         
@@ -108,19 +111,19 @@ exports.inquiry = async (req, res) => {
             options.date = { $lt: endDate };
         
         let results = await Problem.findAll({ where: options });
-        let problems = [];
+        let problemList = [];
         
         for (let i = 0; i < results.length; i++)
-            problems.push({ problemID: results[i].dataValues.index,
-                            problemURL: results[i].dataValues.problemURL, 
-                            isMultipleQuestion: results[i].dataValues.isMultipleQuestion,
-                            problemCondition: {
-                                age: results[i].dataValues.age,
-                                bigChapter: results[i].dataValues.bigChapter,
-                                middleChapter: results[i].dataValues.middleChapter,
-                                smallChapter: results[i].dataValues.smallChapter,
-                                level: results[i].dataValues.level,
-                                source: results[i].dataValues.source
+            problemList.push({ problemID: results[i].dataValues.index,
+                               problemURL: results[i].dataValues.problemURL, 
+                               isMultipleQuestion: results[i].dataValues.isMultipleQuestion,
+                               problemCondition: {
+                               age: results[i].dataValues.age,
+                               bigChapter: results[i].dataValues.bigChapter,
+                               middleChapter: results[i].dataValues.middleChapter,
+                               smallChapter: results[i].dataValues.smallChapter,
+                               level: results[i].dataValues.level,
+                               source: results[i].dataValues.source
                             }                      
                           });
         
@@ -128,7 +131,7 @@ exports.inquiry = async (req, res) => {
             success: 'true',
             message: 'Successfully inquiried a problem database',
             ecode: 200,
-            data: { problems: problems },
+            data: { problemList: problemList },
         });
         
     }

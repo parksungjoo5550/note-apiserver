@@ -17,7 +17,7 @@ router.post('/create', (req, res) => {
         body: 'POST',
         form: {
             title: req.body.title,
-            problemList: req.body.problemList.trim().split(' ')
+            problemIDList: req.body.problemIDList.trim().split(' ')
         },
         json: true
     }
@@ -48,9 +48,16 @@ router.post('/list', (req, res) => {
     }
     
     request.post(options, (err, httpResponse, body) => {
+        if ( body.success == 'false' ) {
+            res.render('exam/list', {
+                message: body.message,
+            });
+            return;
+        }
+        
         res.render('exam/list', {
             message: body.message,
-            papers: body.data.papers
+            examList: body.data.examList
         });
     }); 
 });

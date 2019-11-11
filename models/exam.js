@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         userid: { type: DataTypes.STRING },
         title: { type: DataTypes.STRING },
-        problemList: { type: DataTypes.STRING },
+        problemIDList: { type: DataTypes.STRING },
         examURL: { type: DataTypes.STRING }, 
         createdAt: { 
             type: DataTypes.DATE

@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         userid: { type: DataTypes.STRING },
         problemID: { type: DataTypes.INTEGER },
         answer: { type: DataTypes.STRING },
+        correct: { type: DataTypes.BOOLEAN },
         createdAt: { type: DataTypes.DATE }
     });
     

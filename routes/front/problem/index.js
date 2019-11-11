@@ -81,9 +81,16 @@ router.post('/inquiry', (req, res) => {
     }
     
     request.post(options, (err, httpResponse, body) => {
+        if ( body.success == "false" ) {
+            res.render('auth/login', {
+                message: body.message
+            });
+            return;
+        }
+        
         res.render('problem/inquiry', {
             message: body.message,
-            problems: body.data.problems
+            problemList: body.data.problemList
         });
     });
 })

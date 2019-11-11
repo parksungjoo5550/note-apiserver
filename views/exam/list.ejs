@@ -34,7 +34,7 @@
         <a href="/front"> 메인 페이지 </a>
         
         <!-- Result  -->
-        <% if ( locals.papers ) { %>
+        <% if ( locals.examList ) { %>
             <table>
                 <thead>
                     <tr>
@@ -43,11 +43,11 @@
                         <th>만든 날짜</th>
                     </tr>
                 </thead>
-            <% for (let i = 0; i < papers.length; i++ ) { %>
+            <% for (let i = 0; i < examList.length; i++ ) { %>
                 <tr>
-                    <td><%= papers[i].examid %></td>
-                    <td><%= papers[i].title %></td>
-                    <td><%= papers[i].createdAt %></td>
+                    <td><%= examList[i].examID %></td>
+                    <td><%= examList[i].title %></td>
+                    <td><%= examList[i].createdAt %></td>
                 </tr>
             <% } %>
             </table>

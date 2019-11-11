@@ -7,8 +7,8 @@ config.user.password = '123456';
 config.user.name = 'name';
 
 // Problem information
-config.problem.problemURL = path.join(__basedir, '/uploads/example/problem.png');
-config.problem.solutionURL = path.join(__basedir, '/uploads/example/solution.png');
+config.problem.problemURL = '/uploads/example/problem.png';
+config.problem.solutionURL = '/uploads/example/solution.png';
 config.problem.isMultipleQuestion = false;
 config.problem.answer = 'answer';
 config.problem.age = 'age';
@@ -21,7 +21,7 @@ config.problem.date = new Date().toISOString();
 
 // Exam information
 config.exam.title = 'title';
-config.exam.problemList = '1 1';
-config.exam.examURL = path.join(__basedir, '/uploads/example/pdf.pdf');
+config.exam.problemIDList = '1 2';
+config.exam.examURL = '/uploads/example/pdf.pdf';
 
 module.exports = config;

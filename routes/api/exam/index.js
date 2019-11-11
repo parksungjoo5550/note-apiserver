@@ -9,7 +9,7 @@ router.use('/list', auth.login);
 router.post('/list', controller.list);
 
 router.use('/take', auth.login);
-router.post('/take', controller.get);
+router.post('/take', controller.take);
 
 router.use('/confirm', auth.login);
 router.post('/confirm', controller.confirm);

@@ -6,6 +6,9 @@ router.post('/register', controller.register);
 
 router.post('/login', controller.login);
 
+router.use('/resign', auth.login);
+router.post('/resign', controller.resign);
+
 router.use('/validate', auth.login);
 router.get('/validate', controller.validate);
 

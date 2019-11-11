@@ -9,24 +9,25 @@ const Problem = require('../../../models/').Problem;
 const Note = require('../../../models/').Note;
 
 /* 
-    * Create a exam paper
+    * Create a exam
     
     POST /api/exam/create
     {
         title        {string},
-        problemList  {Array}
+        problemIDList  {Array}
     }
 */
 
 exports.create = async (req, res) => {
     const userid = req.token.userid;
-    const { title, problemList } = req.body;
+    const { title, problemIDList } = req.body;
     
+    console.log(problemIDList);
     try {
-        if ( !title || !problemList )
+        if ( !title || !problemIDList )
             throw new Error('Please enter all fields.');
 
-        problemList2 = problemList;
+        problemIDList2 = problemIDList.slice();
             
         // Create a PDF file.
         doc = new pdfDocument();
@@ -41,7 +42,7 @@ exports.create = async (req, res) => {
         // Make a page contain 2 images.
         pageNumber = 1;
             
-        while (problemList2.length > 0){
+        while (problemIDList2.length > 0){
             // Footer
             doc.fontSize(12);                                                 
             doc.page.margins.bottom = 0;
@@ -58,27 +59,27 @@ exports.create = async (req, res) => {
                .stroke()
                 
             // Image 1
-            problem = await Problem.findOneByindex(problemList2[0]);
+            problem = await Problem.findOneByindex(problemIDList2[0]);
             if ( problem == null )
-                throw new Error(`Problem ${problemList2[0]} doesn't exist.`);
+                throw new Error(`Problem ${problemIDList2[0]} doesn't exist.`);
             
-            problemList2.shift();
+            problemIDList2.shift();
             doc.image(path.join(__basedir, problem.dataValues.problemURL), 10, 50, 
                          { width: doc.page.width/2 - 20 });
    
             // Image 2
-            if ( problemList2.length > 0 ) {
-                problem = await Problem.findOneByindex(problemList2[0]);
+            if ( problemIDList2.length > 0 ) {
+                problem = await Problem.findOneByindex(problemIDList2[0]);
                 if ( problem == null )
-                    throw new Error(`Problem ${problemList2[0]} doesn't exist.`);
+                    throw new Error(`Problem ${problemIDList2[0]} doesn't exist.`);
                 
-                problemList2.shift();
+                problemIDList2.shift();
                 doc.image(path.join(__basedir, problem.dataValues.problemURL),
                           doc.page.width/2 + 10, 50,
                           { width: doc.page.width/2 - 20 });
             }
                 
-            if ( problemList2.length == 0 )
+            if ( problemIDList2.length == 0 )
                 break;
                 
             doc.addPage();
@@ -86,10 +87,11 @@ exports.create = async (req, res) => {
         }
             
         doc.end();
-            
+        
+        console.log(problemIDList.join(' '));
         await Exam.create({ userid: userid, 
                             title: title, 
-                            problemList: problemList.join(' '),
+                            problemIDList: problemIDList.join(' '),
                             examURL: examURL,
                             createdAt: new Date().toISOString()
                          });
@@ -109,7 +111,7 @@ exports.create = async (req, res) => {
 }
 
 /* 
-    * List exam papers made by userid
+    * List exam list made by logged in user
     
     POST /api/exam/list
     {
@@ -127,7 +129,7 @@ exports.list = async (req, res) => {
         
         // Make a array contains problemList.
         for (let i = 0; i < results.length; i++){
-            results[i].dataValues.problemList = results[i].dataValues.problemList.split(' ');
+            results[i].dataValues.problemIDList = results[i].dataValues.problemIDList.split(' ');
             examList.push({ examID: results[i].dataValues.index,
                           title: results[i].dataValues.title,
                           createdAt: results[i].dataValues.createdAt
@@ -159,7 +161,7 @@ exports.list = async (req, res) => {
     }
 */
 
-exports.get = async (req, res) => {
+exports.take = async (req, res) => {
     const userid = req.token.userid;
     const { examID } = req.body;
     
@@ -170,15 +172,18 @@ exports.get = async (req, res) => {
             throw new Error('That exam doesn\'t exist.');
         
         // Make a array contains problemURL
-        problems = [];
-        problemList = exam.dataValues.problemList.trim().split(' ');
+        problemList = [];
+        problemIDList = exam.dataValues.problemIDList.trim().split(' ');
         
-        for (let i = 0; i < problemList.length; i++){
-            problem =  await Problem.findOneByindex(problemList[i]);
+        for (let i = 0; i < problemIDList.length; i++){
+            problem =  await Problem.findOneByindex(problemIDList[i]);
             if ( problem == null ) // if the problem is removed
                 continue; 
             
-            problems.push({ problemID: problemList[i], problemURL: problem.dataValues.problemURL });
+            problemList.push({ problemID: problemIDList[i],
+                               problemURL: problem.dataValues.problemURL,
+                               isMultipleQuestion: problem.dataValues.isMultipleQuestion
+                             });
         }
         
         res.json({
@@ -186,7 +191,7 @@ exports.get = async (req, res) => {
             message: 'Successfully got exam\'s information.',
             ecode: 200,
             data: { title: exam.dataValues.title,
-                    problems: problems }
+                    problemList: problemList }
         });
     }
     catch (error) {
@@ -204,7 +209,7 @@ exports.get = async (req, res) => {
     POST /api/exam/confirm/
     {
         examID {integer},
-        answers [
+        answerList [
             problemID {integer},
             answer    {string}
             ] {array}
@@ -213,39 +218,40 @@ exports.get = async (req, res) => {
 
 exports.confirm = async (req, res) => {
     const userid = req.token.userid;
-    const { examID, answers } = req.body;
+    const { examID, answerList } = req.body;
     
     try {
-        if ( !answers )
+        if ( !answerList )
             throw new Error('Please enter all fields.');
 
         exam = await Exam.findOne({ where: { index: examID, userid: userid } });
         if ( exam == null ) 
             throw new Error('That exam doesn\'t exist.');
         
-        // Check every problemID.
-        answers.sort();
-        problemList = exam.dataValues.problemList.trim().split(' ').sort();
-        for ( let i = 0; i < answers.length; i++ ) {
-            if ( answers[i].problemID != problemList[i])
-                throw new Error('Wrong problemID.');
-        }
-        
-        problemList = [];
-        for ( let i = 0; i < answers.length; i++ ) {
-            problem = await Problem.findOneByindex(answers[i].problemID);
+        problemIDList = [];
+        for ( let i = 0; i < answerList.length; i++ ) {
+            problem = await Problem.findOneByindex(answerList[i].problemID);
             if ( problem == null ) 
                 throw new Error('Some problem doesn\'t exist.');
             
             // if the problem's answer is wrong, write to Note db.
-            if ( problem.dataValues.answer.trim() != answers[i].answer.trim() ) { 
+            if ( problem.dataValues.answer.trim() != answerList[i].answer.trim() ) { 
                 await Note.create({ userid: userid,
-                                    problemID: answers[i].problemID,
-                                    answer: answers[i].answer.trim(), 
+                                    problemID: answerList[i].problemID,
+                                    answer: answerList[i].answer.trim(),
+                                    correct: false,
                                     createdAt: new Date().toISOString()
                                  });
                 
-                problemList.push(answers[i].problemID);
+                problemIDList.push(answerList[i].problemID);
+            }
+            else {
+                await Note.create({ userid: userid,
+                                    problemID: answerList[i].problemID,
+                                    answer: '',
+                                    correct: true,
+                                    createdAt: new Date().toISOString()
+                                 });
             }
         }
         
@@ -253,7 +259,7 @@ exports.confirm = async (req, res) => {
             success: 'true',
             message: 'Successfully completed confirming the exam\'s answer.',
             ecode: 200,
-            data: { problemList: problemList }
+            data: { problemIDList: problemIDList }
         });
     }
     catch (error) {

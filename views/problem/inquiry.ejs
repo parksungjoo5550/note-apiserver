@@ -44,7 +44,7 @@
         <a href="/front"> 메인 페이지 </a>
         
         <!-- Result  -->
-        <% if ( locals.problems ) { %>
+        <% if ( locals.problemList ) { %>
             <table>
                 <thead>
                     <tr>
@@ -60,24 +60,22 @@
                         <th>난이도</th>
                         <th>출처</th>
                         <th>출제년도</th>
-                        <th>정답률</th>
                     </tr>
                 </thead>
-            <% for (let i = 0; i < problems.length; i++ ) { %>
+            <% for (let i = 0; i < problemList.length; i++ ) { %>
                 <tr>
-                    <td><%= problems[i].problemID %></td>
-                    <td><%= problems[i].problemURL %></td>
-                    <td><%= problems[i].solutionURL %></td>
-                    <td><%= problems[i].isMultipleQuestion %></td>
-                    <td><%= problems[i].answer %></td>
-                    <td><%= problems[i].problemCondition.age %></td>
-                    <td><%= problems[i].problemCondition.bigChapter %></td>
-                    <td><%= problems[i].problemCondition.middleChapter %></td>
-                    <td><%= problems[i].problemCondition.smallChapter %></td>
-                    <td><%= problems[i].problemCondition.level %></td>
-                    <td><%= problems[i].problemCondition.source %></td>
-                    <td><%= problems[i].date %></td>
-                    <td><%= problems[i].successRate %></td>
+                    <td><%= problemList[i].problemID %></td>
+                    <td><%= problemList[i].problemURL %></td>
+                    <td><%= problemList[i].solutionURL %></td>
+                    <td><%= problemList[i].isMultipleQuestion %></td>
+                    <td><%= problemList[i].answer %></td>
+                    <td><%= problemList[i].problemCondition.age %></td>
+                    <td><%= problemList[i].problemCondition.bigChapter %></td>
+                    <td><%= problemList[i].problemCondition.middleChapter %></td>
+                    <td><%= problemList[i].problemCondition.smallChapter %></td>
+                    <td><%= problemList[i].problemCondition.level %></td>
+                    <td><%= problemList[i].problemCondition.source %></td>
+                    <td><%= problemList[i].date %></td>
                 </tr>
             <% } %>
             </table>
