@@ -41,8 +41,9 @@ app.get('/', (req, res) => {
 var server = app.listen(PORT, function() {
     console.log(`Server listening on ${PORT}`);
     
-    require('./models').sequelize.sync({force: false})
+    require('./models').sequelize.sync({force: true})
       .then(() => {
         console.log('Databases sync');
+        require('./init/init.js');
       });
 });

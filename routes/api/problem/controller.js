@@ -55,8 +55,31 @@ exports.create = async (req, res) => {
     }
 }
 
-exports.update = async (req, res) => {
+exports.get = async (req, res) => {
+    // url, is
+    const { problemID } = req.body;
     
+    try {
+        problem =  await Problem.findOneByindex(problemList[i]);
+        if ( problem == null ) 
+            throw new Error('That problem doesn\'t exist.');
+        
+        res.json({
+            success: 'true',
+            message: 'Successfully got problem information',
+            ecode: 200,
+            data: { problemID: problem.dataValues.index,
+                    problemURL: problem.dataValues.problemURL,
+                    isMultipleQuestion: problem.dataValues.isMultipleQuestion },
+        });
+    }
+    catch (error) {
+        res.status(403).json({
+            success: 'false',
+            message: error.message,
+            ecode: 403
+        });
+    }
 }
 
 exports.inquiry = async (req, res) => {

@@ -3,8 +3,8 @@ module.exports = (sequelize, DataTypes) => {
         userid: { type: DataTypes.STRING },
         name: { type: DataTypes.STRING },
         school: { type: DataTypes.STRING },
-        admissionYear: { type: DataTypes.INTEGER },    // Admission Year
-        mathGrade: { type: DataTypes.INTEGER }
+        admissionYear: { type: DataTypes.STRING },
+        mathGrade: { type: DataTypes.STRING }
     }, { timestamps: false });
     
     Student.findOneByUserid = function (userid) {

@@ -3,5 +3,3 @@ goorm.manifest
 test.js
 .env
 details.txt
-
-uploads/*

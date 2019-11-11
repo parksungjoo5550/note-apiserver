@@ -24,10 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         bigChapter: { type: DataTypes.STRING },
         middleChapter: { type: DataTypes.STRING },
         smallChapter: { type: DataTypes.STRING },
-        level: { type: DataTypes.INTEGER },
+        level: { type: DataTypes.STRING },
         source: { type: DataTypes.STRING },
         date: { type: DataTypes.DATE },
-        successRate: { type: DataTypes.INTEGER }
+        successRate: { type: DataTypes.STRING }
     }, { timestamps: false });
     
     Problem.findOneByindex = function (index) {

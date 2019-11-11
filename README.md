@@ -86,8 +86,8 @@ Not required
 ---|---|---
 | name | String | 이름 | 
 | school | String | 학교 | 
-| admissionYear | Number | 입학년도| 
-| mathGrade | Number | 수학 등급 |
+| admissionYear | String | 입학년도| 
+| mathGrade | String | 수학 등급 |
 
 #### Response
 | Name | Data type | Description | 
@@ -111,8 +111,8 @@ Not required
 | ecode | Integer | 응답 코드 | 
 | data.name | String | 이름 | 
 | data.school | String | 학교 | 
-| data.admissionYear | Number | 입학년도| 
-| data.mathGrade | Number | 수학 등급 |
+| data.admissionYear | String | 입학년도| 
+| data.mathGrade | String | 수학 등급 |
 <br>
 
 ### POST /api/problem/create
@@ -121,19 +121,19 @@ Not required
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
-| problemFilename | File | 문제 파일 이름 | 
-| solutionFilename | File | 해답 파일 이름 | 
-| problemBase64 | File | Base64로 인코딩된 문제 파일 | 
-| solutionBase64 | File | Base64로 인코딩된 해답 파일 | 
+| problemFilename | String | 문제 파일 이름 | 
+| solutionFilename | String | 해답 파일 이름 | 
+| problemBase64 | String | Base64로 인코딩된 문제 파일 | 
+| solutionBase64 | String | Base64로 인코딩된 해답 파일 | 
 | isMultipleQuestion | Boolean | 객관식 여부 | 
 | answer | String | 답 |
 | age | String | 학년 | 
-| bigChapter | Number | 대단원 | 
-| middleChapter | Number | 중단원 | 
-| smallChapter | Number | 소단원 | 
-| level | Number | 난이도 | 
-| source | Number | 출처 | 
-| date | Number | 출제년도 | 
+| bigChapter | String | 대단원 | 
+| middleChapter | String | 중단원 | 
+| smallChapter | String | 소단원 | 
+| level | String | 난이도 | 
+| source | String | 출처 | 
+| date | Date | 출제년도 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -143,6 +143,25 @@ Not required
 | ecode | Integer | 응답 코드 | 
 <br>
 
+### POST /api/problem/get
+문제 번호에 해당하는 문제를 반환합니다.
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| problemID | Integer | 문제 번호 | 
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.problemID | Integer | 문제 번호 | 
+| data.problemURL | String | 문제 파일 경로 | 
+| data.isMultipleQuestion | Boolean | 객관식 여부 | 
+<br>
+
 ### POST /api/problem/inquiry
 조건에 맞는 문제를 반환합니다.
 
@@ -150,13 +169,13 @@ Not required
 | Name | Data type | Description | 
 ---|---|---
 | age | String | 학년 | 
-| bigChapter | Number | 대단원 | 
-| middleChapter | Number | 중단원 | 
-| smallChapter | Number | 소단원 | 
-| level | Number | 난이도 | 
-| source | Number | 문제 출처 | 
-| startDate | Number | 출체범위 시작 | 
-| endDate | Number | 출체범위 끝 | 
+| bigChapter | String | 대단원 | 
+| middleChapter | String | 중단원 | 
+| smallChapter | String | 소단원 | 
+| level | String | 난이도 | 
+| source | String | 문제 출처 | 
+| startDate | Date | 출체범위 시작 | 
+| endDate | Date | 출체범위 끝 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -172,7 +191,7 @@ Not required
 | data.problems[i].problemCondition.bigChapter | String | 대단원 | 
 | data.problems[i].problemCondition.middleChapter | String | 중단원 | 
 | data.problems[i].problemCondition.smallChapter | String | 소단원 | 
-| data.problems[i].problemCondition.level | Integer | 난이도 | 
+| data.problems[i].problemCondition.level | String | 난이도 | 
 | data.problems[i].problemCondition.source | String | 출처 | 
 <br>
 
@@ -206,12 +225,12 @@ Not required
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
 | data.papers | Array | 조건에 맞는 모든 시험지 | 
-| data.papers[i].examid | Integer | 시험지 고유 번호 | 
+| data.papers[i].examID | Integer | 시험지 고유 번호 | 
 | data.papers[i].title | String | 시험지 제목 | 
 | data.papers[i].createdAt | Date | 만든 날짜 | 
 <br>
 
-### POST /api/exam/:examid
+### POST /api/exam/take
 시험지 번호에 해당하는 시험지의 정보를 반환합니다.
 
 #### Parameter
