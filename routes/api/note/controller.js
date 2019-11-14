@@ -3,26 +3,27 @@ const Note = require('../../../models/').Note;
 
 exports.view = async (req, res) => {
     const userid = req.token.userid;
-    const { problemID } = req.body;
+    const { examID } = req.body;
     
     try {
         // Query incorrect answer notes.
-        results = await Note.findAll({ where: { userid: userid, problemID: problemID, correct: false } });
+        exam = await Note.findAll({ where: { userid: userid, examID: examID } });
         
         // Make a array contains noteList.
-        noteList = [];
+        problemList = [];
         
-        for (let i = 0; i < results.length; i++){
-            noteList.push({ answer: results[i].dataValues.answer,
-                            createdAt: results[i].dataValues.createdAt
-                         });
+        for (let i = 0; i < exam.length; i++){
+            problemList.push({ problemID: exam[i].dataValues.problemID,
+                               answer: exam[i].dataValues.answer,
+                               state: exam[i].dataValues.state,
+                             });
         }
         
         res.json({
             success: 'true',
             message: 'Successfully listed noteList.',
             ecode: 200,
-            data: { noteList: noteList }
+            data: { problemList: problemList }
         });
     }
     catch (error) {
@@ -42,7 +43,7 @@ exports.rate = async (req, res) => {
         // Query all answer notes.
         allNote =  await Note.findAndCountAll({ where: { userid: userid, problemID: problemID } });
         // Query correct answer notes.
-        correctNote = await Note.findAndCountAll({ where: { userid: userid, problemID: problemID, correct: true } });
+        correctNote = await Note.findAndCountAll({ where: { userid: userid, problemID: problemID, state: Note.CORRECT } });
         
         if ( allNote.count != 0 )
             correctRate = correctNote.count / allNote.count;

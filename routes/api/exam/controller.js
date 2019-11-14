@@ -31,7 +31,7 @@ exports.create = async (req, res) => {
             
         // Create a PDF file.
         doc = new pdfDocument();
-        examURL = path.join("/pdfs", ["pdf", Date.now() + '.pdf'].join('-'));
+        examURL = path.join("/uploads/pdfs", ["pdf", Date.now() + '.pdf'].join('-'));
             
         doc.pipe(fs.createWriteStream(path.join(__basedir, examURL)));
             
@@ -131,9 +131,10 @@ exports.list = async (req, res) => {
         for (let i = 0; i < results.length; i++){
             results[i].dataValues.problemIDList = results[i].dataValues.problemIDList.split(' ');
             examList.push({ examID: results[i].dataValues.index,
-                          title: results[i].dataValues.title,
-                          createdAt: results[i].dataValues.createdAt
-                        });
+                            title: results[i].dataValues.title,
+                            isDone: results[i].dataValues.isDone,
+                            createdAt: results[i].dataValues.createdAt
+                          });
         }
         
         res.json({
@@ -175,7 +176,7 @@ exports.take = async (req, res) => {
         problemList = [];
         problemIDList = exam.dataValues.problemIDList.trim().split(' ');
         
-        for (let i = 0; i < problemIDList.length; i++){
+        for (let i = 0; i < problemIDList.length; i++) {
             problem =  await Problem.findOneByindex(problemIDList[i]);
             if ( problem == null ) // if the problem is removed
                 continue; 
@@ -209,57 +210,72 @@ exports.take = async (req, res) => {
     POST /api/exam/confirm/
     {
         examID {integer},
-        answerList [
-            problemID {integer},
-            answer    {string}
-            ] {array}
+        problemIDList {array},
+        answerList {array}
     }
 */
 
 exports.confirm = async (req, res) => {
     const userid = req.token.userid;
-    const { examID, answerList } = req.body;
+    const { examID, problemIDList, answerList } = req.body;
     
     try {
-        if ( !answerList )
+        if ( !problemIDList || !answerList )
             throw new Error('Please enter all fields.');
 
         exam = await Exam.findOne({ where: { index: examID, userid: userid } });
         if ( exam == null ) 
             throw new Error('That exam doesn\'t exist.');
         
-        problemIDList = [];
-        for ( let i = 0; i < answerList.length; i++ ) {
-            problem = await Problem.findOneByindex(answerList[i].problemID);
+        for ( let i = 0; i < problemIDList.length; i++ ) {
+            problem = await Problem.findOneByindex(problemIDList[i]);
             if ( problem == null ) 
                 throw new Error('Some problem doesn\'t exist.');
             
-            // if the problem's answer is wrong, write to Note db.
-            if ( problem.dataValues.answer.trim() != answerList[i].answer.trim() ) { 
+            // if the problem's type isn't MultipleQuestion
+            if ( problem.dataValues.isMultipleQuestion == false ) {
+                answerPath = path.join('/uploads/answers', ['answer', Date.now() + '.jpg'].join('-'));
+                fs.writeFile( path.join(__basedir, answerPath ), 
+                              new Buffer(answerList[i], 'base64'), 
+                              (err) => { if (err) throw err; });
+                
                 await Note.create({ userid: userid,
-                                    problemID: answerList[i].problemID,
-                                    answer: answerList[i].answer.trim(),
-                                    correct: false,
+                                    examID: examID,
+                                    problemID: problemIDList[i],
+                                    answer: answerPath,
+                                    state: Note.READY,
                                     createdAt: new Date().toISOString()
                                  });
-                
-                problemIDList.push(parseInt(answerList[i].problemID));
             }
             else {
-                await Note.create({ userid: userid,
-                                    problemID: answerList[i].problemID,
-                                    answer: '',
-                                    correct: true,
-                                    createdAt: new Date().toISOString()
-                                 });
+                // if the problem's answer is wrong, write to Note db.
+                if ( problem.dataValues.answer.trim() != answerList[i].answer.trim() ) { 
+                    await Note.create({ userid: userid,
+                                        examID: examID,
+                                        problemID: problemIDList[i],
+                                        answer: answerList[i].trim(),
+                                        state: Note.INCORRECT,
+                                        createdAt: new Date().toISOString()
+                                     });
+                }
+                else {
+                    await Note.create({ userid: userid,
+                                        examID: examID,
+                                        problemID: problemIDList[i],
+                                        answer: '',
+                                        state: Note.CORRECT,
+                                        createdAt: new Date().toISOString()
+                                     });
+                }
             }
         }
+        // Set isDone flag
+        Exam.update({ isDone: true }, { where: { index: examID, userid: userid } });
         
         res.json({
             success: 'true',
             message: 'Successfully completed confirming the exam\'s answer.',
-            ecode: 200,
-            data: { problemIDList: problemIDList }
+            ecode: 200
         });
     }
     catch (error) {

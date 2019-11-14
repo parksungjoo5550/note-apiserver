@@ -9,9 +9,11 @@ module.exports = (sequelize, DataTypes) => {
         title: { type: DataTypes.STRING },
         problemIDList: { type: DataTypes.STRING },
         examURL: { type: DataTypes.STRING }, 
-        createdAt: { 
-            type: DataTypes.DATE
-        }
+        isDone: { 
+            type: DataTypes.BOOLEAN,
+            default: false
+        },
+        createdAt: { type: DataTypes.DATE }
     }, { timestamps: false });
     
     Exam.findOneByUserid = function (userid) {

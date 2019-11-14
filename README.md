@@ -250,6 +250,7 @@ Not required
 | data.examList | Array | 조건에 맞는 모든 시험지 | 
 | data.examList[i].examID | Integer | 시험지 고유 번호 | 
 | data.examList[i].title | String | 시험지 제목 | 
+| data.examList[i].isDone | Boolean | 제출 완료 여뷰 | 
 | data.examList[i].createdAt | Date | 만든 날짜 | 
 <br>
 
@@ -279,9 +280,8 @@ Not required
 | Name | Data type | Description | 
 ---|---|---
 | examID | Integer | 시험지 고유 번호 | 
-| answerList | Array | 응답 메시지 | 
-| answerList[i].problemID | Integer | 문제 고유 번호 | 
-| answerList[i].answer | String | 제출 답안 | 
+| data.problemIDList | Array | 문제 번호 리스트 | 
+| data.answerList | Array | 제출 답안 리스트 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -289,17 +289,15 @@ Not required
 | success | Boolean | api 성공 여부 | 
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
-| data.problemIDList | Array | 오답인 문제의 번호 리스트 | 
-| data.problemIDList[i].problemID | Integer | 문제 고유 번호 | 
 <br>
 
 ### POST /api/note/view
-특정 문제에 대한 오답 노트를 확인합니다.
+제출된 시험지에 대한 정보를 조회합니다.
 
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
-| problemID | Integer | 문제 고유 번호 | 
+| examID | Integer | 시험 번호 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -307,9 +305,10 @@ Not required
 | success | Boolean | api 성공 여부 | 
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
-| data.noteList | Array | 오답인 문제의 번호 리스트 | 
-| data.noteList[i].answer | String | 오답 | 
-| data.noteList[i].createdAt | Date | 오답 채점 날짜 | 
+| data.problemList | Array | 오답인 문제의 번호 리스트 | 
+| data.problemList[i].problemID | String | 문제 고유 번호 | 
+| data.problemList[i].answer | Date | 제출된 답 | 
+| data.problemList[i].state | Date | 문제 처리 상태 | 
 <br>
 
 ### POST /api/note/rate

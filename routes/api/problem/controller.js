@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
     try {
         if ( !problemFilename || !solutionFilename ||
              !problemBase64 || !solutionBase64 || 
-             !isMultipleQuestion || !answer || !age || !bigChapter || !middleChapter || !smallChapter || !level || !source || !date)
+             !isMultipleQuestion )
             throw new Error('Please enter all fields.');
         
         if ( problemFilename.indexOf('/') >=0 || problemFilename.indexOf('\\') >= 0 )
@@ -22,12 +22,12 @@ exports.create = async (req, res) => {
             throw new Error('Bad solutionFilename.');
         
         // Save Problem and Solution file.
-        problemPath = path.join('/uploads', problemFilename);
+        problemPath = path.join('/uploads/problems', problemFilename);
         fs.writeFile( path.join(__basedir, problemPath), 
                       new Buffer(problemBase64, 'base64'), 
                       (err) => { if (err) throw err; });
         
-        solutionPath = path.join('/uploads', solutionFilename);
+        solutionPath = path.join('/uploads/solutions', solutionFilename);
         fs.writeFile( path.join(__basedir, solutionPath),
                       new Buffer(solutionBase64, 'base64'),
                       (err) => { if (err) throw err; });
@@ -36,7 +36,7 @@ exports.create = async (req, res) => {
                                solutionURL: solutionPath,
                                isMultipleQuestion: isMultipleQuestion == "true" ? true: false,
                                answer: answer,
-                               age:age,
+                               age: age,
                                bigChapter: bigChapter,
                                middleChapter: middleChapter,
                                smallChapter: smallChapter,

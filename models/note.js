@@ -6,11 +6,16 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         userid: { type: DataTypes.STRING },
+        examID: { type: DataTypes.INTEGER },
         problemID: { type: DataTypes.INTEGER },
         answer: { type: DataTypes.STRING },
-        correct: { type: DataTypes.BOOLEAN },
+        state: { type: DataTypes.INTEGER },
         createdAt: { type: DataTypes.DATE }
     });
+    
+    Note.INCORRECT = 0;
+    Note.CORRECT = 1;
+    Note.READY = 2;
     
     return Note;
 }

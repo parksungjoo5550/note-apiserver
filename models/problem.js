@@ -16,10 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         isMultipleQuestion: {
             type: DataTypes.BOOLEAN,
         },
-        answer: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
+        answer: { type: DataTypes.STRING },
         age: { type: DataTypes.STRING },
         bigChapter: { type: DataTypes.STRING },
         middleChapter: { type: DataTypes.STRING },
