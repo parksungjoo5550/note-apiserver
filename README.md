@@ -308,8 +308,14 @@ Not required
 | ecode | Integer | 응답 코드 | 
 | data.problemList | Array | 오답인 문제의 번호 리스트 | 
 | data.problemList[i].problemID | String | 문제 고유 번호 | 
-| data.problemList[i].answer | String | 제출된 답 | 
+| data.problemList[i].answer | String | 문제 정답 | 
+| data.problemList[i].submit | String | 사용자가 제출한 답 | 
+| data.problemList[i].problemURL | String | 문제 파일 경로 | 
+| data.problemList[i].solutionURL | String | 해설 파일 경로 | 
 | data.problemList[i].state | Integer | 문제 처리 상태 | 
+| data.correctCnt | Integer | 맞은 문제 개수 | 
+| data.incorrectCnt | Integer | 맞은 문제 개수 | 
+| data.unconfirmedCnt | Integer | 채점 대기중인 문제 개수 | 
 <br>
 
 ### POST /api/note/rate

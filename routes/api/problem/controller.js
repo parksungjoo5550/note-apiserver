@@ -1,6 +1,8 @@
 // Modules
 const fs =  require('fs');
 const path = require('path');
+const sequelize = require("sequelize");
+const Op = sequelize.Op;
 
 // Models
 const Problem = require('../../../models/').Problem;
@@ -106,9 +108,9 @@ exports.inquiry = async (req, res) => {
         if ( source !== undefined && source !== '' )
             options.source = source;
         if ( startDate !== undefined && startDate !== '' )
-            options.date = { $gt: startDate };
+            options.date = { [Op.gte]: startDate };
         if ( endDate !== undefined && endDate !== '' )
-            options.date = { $lt: endDate };
+            options.date = { [Op.lte]: endDate };
         
         let results = await Problem.findAll({ where: options });
         let problemList = [];
