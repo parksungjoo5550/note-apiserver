@@ -23,8 +23,9 @@ This server is used to support educational institute.
 * **/api/exam**
   * [/api/exam/create](#post-apiexamcreate)
   * [/api/exam/list](#post-apiexamlist)
-  * [/api/exam/:examid](#post-apiexamexamid)
- 
+  * [/api/exam/take](#post-apiexamtake)
+  * [/api/exam/confirm](#post-apiexamconfirm)
+   
 * **/api/note**
   * [/api/note/view](#post-apinoteview)
   * [/api/note/rate](#post-apinoterate)
@@ -155,7 +156,7 @@ Not required
 | smallChapter | String | 소단원 | 
 | level | String | 난이도 | 
 | source | String | 출처 | 
-| date | Date | 출제년도 | 
+| date | String | 출제년도 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -196,8 +197,8 @@ Not required
 | smallChapter | String | 소단원 | 
 | level | String | 난이도 | 
 | source | String | 문제 출처 | 
-| startDate | Date | 출체범위 시작 | 
-| endDate | Date | 출체범위 끝 | 
+| startDate | String | 출체범위 시작 | 
+| endDate | String | 출체범위 끝 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -251,7 +252,7 @@ Not required
 | data.examList[i].examID | Integer | 시험지 고유 번호 | 
 | data.examList[i].title | String | 시험지 제목 | 
 | data.examList[i].isDone | Boolean | 제출 완료 여뷰 | 
-| data.examList[i].createdAt | Date | 만든 날짜 | 
+| data.examList[i].createdAt | String | 만든 날짜 | 
 <br>
 
 ### POST /api/exam/take
@@ -307,8 +308,8 @@ Not required
 | ecode | Integer | 응답 코드 | 
 | data.problemList | Array | 오답인 문제의 번호 리스트 | 
 | data.problemList[i].problemID | String | 문제 고유 번호 | 
-| data.problemList[i].answer | Date | 제출된 답 | 
-| data.problemList[i].state | Date | 문제 처리 상태 | 
+| data.problemList[i].answer | String | 제출된 답 | 
+| data.problemList[i].state | Integer | 문제 처리 상태 | 
 <br>
 
 ### POST /api/note/rate

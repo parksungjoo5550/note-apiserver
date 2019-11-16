@@ -236,20 +236,20 @@ exports.confirm = async (req, res) => {
             if ( problem.dataValues.isMultipleQuestion == false ) {
                 answerPath = path.join('/uploads/answers', ['answer', Date.now() + '.jpg'].join('-'));
                 fs.writeFile( path.join(__basedir, answerPath ), 
-                              new Buffer(answerList[i], 'base64'), 
+                              new Buffer(answerList[i].trim(), 'base64'), 
                               (err) => { if (err) throw err; });
                 
                 await Note.create({ userid: userid,
                                     examID: examID,
                                     problemID: problemIDList[i],
                                     answer: answerPath,
-                                    state: Note.READY,
+                                    state: Note.UNCONFIRMED,
                                     createdAt: new Date().toISOString()
                                  });
             }
             else {
                 // if the problem's answer is wrong, write to Note db.
-                if ( problem.dataValues.answer.trim() != answerList[i].answer.trim() ) { 
+                if ( problem.dataValues.answer.trim() != answerList[i].trim() ) { 
                     await Note.create({ userid: userid,
                                         examID: examID,
                                         problemID: problemIDList[i],

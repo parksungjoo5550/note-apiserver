@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     
     Note.INCORRECT = 0;
     Note.CORRECT = 1;
-    Note.READY = 2;
+    Note.UNCONFIRMED = 2;
     
     return Note;
 }
