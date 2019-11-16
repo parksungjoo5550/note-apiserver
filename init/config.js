@@ -6,7 +6,7 @@ config.user.userid = 'admin';
 config.user.password = '123456';
 config.user.name = 'name';
 
-// Problem information
+// Problem information (multipleQuestion)
 config.problem.problemURL = '/uploads/example/problem.png';
 config.problem.solutionURL = '/uploads/example/solution.png';
 config.problem.isMultipleQuestion = false;

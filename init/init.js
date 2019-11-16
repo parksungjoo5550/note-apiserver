@@ -27,7 +27,7 @@ const config = require('./config.js');
     
     await models.Problem.create({ problemURL: config.problem.problemURL,
                            solutionURL: config.problem.solutionURL,
-                           isMultipleQuestion: config.problem.isMultipleQuestion,
+                           isMultipleQuestion: !config.problem.isMultipleQuestion,
                            answer: config.problem.answer,
                            age: config.problem.age,
                            bigChapter: config.problem.bigChapter,

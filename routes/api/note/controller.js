@@ -3,11 +3,19 @@ const Note = require('../../../models/').Note;
 
 exports.view = async (req, res) => {
     const userid = req.token.userid;
+    const mode = req.params.mode;
     const { examID } = req.body;
     
     try {
         // Query incorrect answer notes.
-        exam = await Note.findAll({ where: { userid: userid, examID: examID } });
+        if ( mode == "correct")
+            exam = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.CORRECT } });
+        else if ( mode == "incorrect" )
+            exam = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.INCORRECT } });
+        else if ( mode == "unconfirmed" )
+            exam = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.UNCONFIRMED } });
+        else
+            exam = await Note.findAll({ where: { userid: userid, examID: examID } });
         
         // Make a array contains noteList.
         problemList = [];
