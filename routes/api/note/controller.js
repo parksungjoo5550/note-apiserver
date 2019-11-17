@@ -16,8 +16,13 @@ exports.view = async (req, res) => {
         incorrectCnt = undefined;
         unconfirmedCnt = undefined;
         
+        options = { where: { userid: userid, state: { [Op.ne]: Note.UNCONFIRMED } } };
+        
+        // Filter by examID
+        if ( examID !== undefined )
+            options.where.examID = examID;
+        
         // Filter by date information.
-        options = { where: { userid: userid, examID: examID, state: { [Op.ne]: Note.UNCONFIRMED } } }; // default options
         if ( startDate !== undefined && endDate !== undefined )
             options.where.createdAt = { [Op.gte]: startDate, [Op.lte]: endDate};
         else if ( startDate !== undefined )
