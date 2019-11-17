@@ -318,6 +318,38 @@ Not required
 | data.unconfirmedCnt | Integer | 채점 대기중인 문제 개수 | 
 <br>
 
+### POST /api/note/view/:mode
+제출된 시험지에 대한 정보를 상태에 따라 조회합니다. 상태는 아래와 같습니다.<br>
+correct - 맞은 문제 <br>
+incorrect - 틀린 문제 <br>
+unconfirmed - 채점중인 문제
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| examID | Integer | 시험 번호 | 
+| startDate | String | 검색 시작 범위 (optional) | 
+| endDate | String | 검색 끝 범위 (optional) |  
+| bigChapter | String | 문제 대단원 (optional) | 
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.problemList | Array | 오답인 문제의 번호 리스트 | 
+| data.problemList[i].problemID | Integer | 문제 고유 번호 | 
+| data.problemList[i].answer | String | 문제 정답 | 
+| data.problemList[i].submit | String | 사용자가 제출한 답 | 
+| data.problemList[i].problemURL | String | 문제 파일 경로 | 
+| data.problemList[i].solutionURL | String | 해설 파일 경로 | 
+| data.problemList[i].state | Integer | 문제 처리 상태 | 
+| data.correctCnt | Integer | 맞은 문제 개수 | 
+| data.incorrectCnt | Integer | 맞은 문제 개수 | 
+| data.unconfirmedCnt | Integer | 채점 대기중인 문제 개수 | 
+<br>
+
 ### POST /api/note/rate
 특정 문제에 대한 정답률을 확인합니다.
 
