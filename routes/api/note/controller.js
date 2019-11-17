@@ -9,26 +9,36 @@ const Problem = require('../../../models/').Problem;
 exports.view = async (req, res) => {
     const userid = req.token.userid;
     const mode = req.params.mode;
-    const { examID } = req.body;
+    const { examID, startDate, endDate, bigChapter } = req.body;
     
     try {
         correctCnt = undefined;
         incorrectCnt = undefined;
         unconfirmedCnt = undefined;
         
+        // Filter by date information.
+        options = { where: { userid: userid, examID: examID, state: { [Op.ne]: Note.UNCONFIRMED } } }; // default options
+        if ( startDate !== undefined && endDate !== undefined )
+            options.where.createdAt = { [Op.gte]: startDate, [Op.lte]: endDate};
+        else if ( startDate !== undefined )
+            options.where.createdAt = { [Op.gte]: startDate};
+        else if ( endDate !== undefined )
+            options.where.createdAt = { [Op.lte]: endDate};
+        
+        // Filter by mode.
         if ( mode == "correct")
-            notes = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.CORRECT } });
+            options.where.state = Note.CORRECT;
         else if ( mode == "incorrect" )
-            notes = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.INCORRECT } });
+            options.where.state = Note.INCORRECT;
         else if ( mode == "unconfirmed" )
-            notes = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.UNCONFIRMED } });
-        else { // except none multpleQustion problem.
-            notes = await Note.findAll({ where: { userid: userid, examID: examID, state: { [Op.ne]: Note.UNCONFIRMED } } });
-            
+            options.where.state = Note.UNCONFIRMED;
+        else { 
             correctCnt = (await Note.findAndCountAll({ where: { userid: userid, examID: examID, state: Note.CORRECT } })).count;
             incorrectCnt = (await Note.findAndCountAll({ where: { userid: userid, examID: examID, state: Note.INCORRECT } })).count;
             unconfirmedCnt = (await Note.findAndCountAll({ where: { userid: userid, examID: examID, state: Note.UNCONFIRMED } })).count;
         }
+        notes = await Note.findAll(options);
+            
         
         // Make a array contains noteList.
         noteList = [];
@@ -36,6 +46,11 @@ exports.view = async (req, res) => {
         for (let i = 0; i < notes.length; i++){
             problem = await Problem.findOneByindex(notes[i].dataValues.problemID);
             
+            // filter when mode isn't a undefined
+            if ( mode !== undefined ) {
+                if ( bigChapter !== undefined && problem.dataValues.bigChapter != bigChapter )
+                    continue;
+            }
             
             noteList.push({ problemID: notes[i].dataValues.problemID,
                             answer: problem.dataValues.answer,

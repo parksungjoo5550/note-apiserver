@@ -244,7 +244,7 @@ exports.confirm = async (req, res) => {
                                     problemID: problemIDList[i],
                                     submit: answerPath,
                                     state: Note.UNCONFIRMED,
-                                    createdAt: new Date().toISOString()
+                                    createdAt: new Date().toISOString().split('T')[0]
                                  });
             }
             else {
@@ -259,7 +259,7 @@ exports.confirm = async (req, res) => {
                                     problemID: problemIDList[i],
                                     submit: answerList[i].trim(),
                                     state: state,
-                                    createdAt: new Date().toISOString()
+                                    createdAt: new Date().toISOString().split('T')[0]
                                   });
             }
         }

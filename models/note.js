@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         problemID: { type: DataTypes.INTEGER },
         submit: { type: DataTypes.STRING },
         state: { type: DataTypes.INTEGER },
-        createdAt: { type: DataTypes.DATE }
+        createdAt: { type: DataTypes.STRING }
     });
     
     Note.INCORRECT = 0;
