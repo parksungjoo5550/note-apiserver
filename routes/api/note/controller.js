@@ -17,13 +17,13 @@ exports.view = async (req, res) => {
         unconfirmedCnt = undefined;
         
         if ( mode == "correct")
-            exam = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.CORRECT } });
+            notes = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.CORRECT } });
         else if ( mode == "incorrect" )
-            exam = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.INCORRECT } });
+            notes = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.INCORRECT } });
         else if ( mode == "unconfirmed" )
-            exam = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.UNCONFIRMED } });
+            notes = await Note.findAll({ where: { userid: userid, examID: examID, state: Note.UNCONFIRMED } });
         else { // except none multpleQustion problem.
-            exam = await Note.findAll({ where: { userid: userid, examID: examID, state: { [Op.ne]: Note.UNCONFIRMED } } });
+            notes = await Note.findAll({ where: { userid: userid, examID: examID, state: { [Op.ne]: Note.UNCONFIRMED } } });
             
             correctCnt = (await Note.findAndCountAll({ where: { userid: userid, examID: examID, state: Note.CORRECT } })).count;
             incorrectCnt = (await Note.findAndCountAll({ where: { userid: userid, examID: examID, state: Note.INCORRECT } })).count;
@@ -33,16 +33,16 @@ exports.view = async (req, res) => {
         // Make a array contains noteList.
         noteList = [];
         
-        for (let i = 0; i < exam.length; i++){
-            problem = await Problem.findOneByindex(exam[i].dataValues.problemID);
+        for (let i = 0; i < notes.length; i++){
+            problem = await Problem.findOneByindex(notes[i].dataValues.problemID);
             
             
-            noteList.push({ problemID: exam[i].dataValues.problemID,
+            noteList.push({ problemID: notes[i].dataValues.problemID,
                             answer: problem.dataValues.answer,
-                            submit: exam[i].dataValues.answer,
+                            submit: notes[i].dataValues.submit,
                             problemURL: problem.dataValues.problemURL,
                             solutionURL: problem.dataValues.solutionURL,
-                            state: exam[i].dataValues.state,            
+                            state: notes[i].dataValues.state,            
                          });
         }
         

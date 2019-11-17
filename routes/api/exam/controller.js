@@ -242,31 +242,25 @@ exports.confirm = async (req, res) => {
                 await Note.create({ userid: userid,
                                     examID: examID,
                                     problemID: problemIDList[i],
-                                    answer: answerPath,
+                                    submit: answerPath,
                                     state: Note.UNCONFIRMED,
                                     createdAt: new Date().toISOString()
                                  });
             }
             else {
+                state = Note.CORRECT;
+                
                 // if the problem's answer is wrong, write to Note db.
-                if ( problem.dataValues.answer.trim() != answerList[i].trim() ) { 
-                    await Note.create({ userid: userid,
-                                        examID: examID,
-                                        problemID: problemIDList[i],
-                                        answer: answerList[i].trim(),
-                                        state: Note.INCORRECT,
-                                        createdAt: new Date().toISOString()
-                                     });
-                }
-                else {
-                    await Note.create({ userid: userid,
-                                        examID: examID,
-                                        problemID: problemIDList[i],
-                                        answer: '',
-                                        state: Note.CORRECT,
-                                        createdAt: new Date().toISOString()
-                                     });
-                }
+                if ( problem.dataValues.answer.trim() != answerList[i].trim() ) 
+                    state = Note.INCORRECT;
+
+                await Note.create({ userid: userid,
+                                    examID: examID,
+                                    problemID: problemIDList[i],
+                                    submit: answerList[i].trim(),
+                                    state: state,
+                                    createdAt: new Date().toISOString()
+                                  });
             }
         }
         // Set isDone flag

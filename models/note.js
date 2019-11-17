@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         userid: { type: DataTypes.STRING },
         examID: { type: DataTypes.INTEGER },
         problemID: { type: DataTypes.INTEGER },
-        answer: { type: DataTypes.STRING },
+        submit: { type: DataTypes.STRING },
         state: { type: DataTypes.INTEGER },
         createdAt: { type: DataTypes.DATE }
     });
