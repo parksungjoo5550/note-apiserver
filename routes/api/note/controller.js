@@ -37,7 +37,7 @@ exports.view = async (req, res) => {
             options.where.state = Note.INCORRECT;
         else if ( mode == "unconfirmed" )
             options.where.state = Note.UNCONFIRMED;
-        else { 
+        else if ( examID !== undefined ) { 
             correctCnt = (await Note.findAndCountAll({ where: { userid: userid, examID: examID, state: Note.CORRECT } })).count;
             incorrectCnt = (await Note.findAndCountAll({ where: { userid: userid, examID: examID, state: Note.INCORRECT } })).count;
             unconfirmedCnt = (await Note.findAndCountAll({ where: { userid: userid, examID: examID, state: Note.UNCONFIRMED } })).count;
