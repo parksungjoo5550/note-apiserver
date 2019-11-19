@@ -92,7 +92,7 @@ exports.create = async (req, res) => {
         await Exam.create({ userid: userid, 
                             title: title, 
                             problemIDList: problemIDList.join(' '),
-                            examURL: examURL,
+                            examURL: path.join(__baseurl, examURL),
                             createdAt: new Date().toISOString()
                          });
         res.json({

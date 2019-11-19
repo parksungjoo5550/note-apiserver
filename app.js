@@ -2,6 +2,7 @@
 require('dotenv').config();
 
 global.__basedir = __dirname;
+global.__baseurl = "http://apiserver.run.goorm.io/";
 
 // Dependencies
 const express = require('express');

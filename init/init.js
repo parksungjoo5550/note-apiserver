@@ -13,29 +13,19 @@ const config = require('./config.js');
     await models.Student.create({ userid: config.user.userid, name: config.user.name });
     
     // Create a problem.
-    await models.Problem.create({ problemURL: config.problem.problemURL,
-                           solutionURL: config.problem.solutionURL,
-                           isMultipleQuestion: config.problem.isMultipleQuestion,
-                           answer: config.problem.answer,
-                           age: config.problem.age,
-                           bigChapter: config.problem.bigChapter,
-                           middleChapter: config.problem.middleChapter,
-                           smallChapter: config.problem.smallChapter,
-                           level: config.problem.level,
-                           source: config.problem.source,
-                           date: config.problem.date });
-    
-    await models.Problem.create({ problemURL: config.problem.problemURL,
-                           solutionURL: config.problem.solutionURL,
-                           isMultipleQuestion: !config.problem.isMultipleQuestion,
-                           answer: config.problem.answer,
-                           age: config.problem.age,
-                           bigChapter: config.problem.bigChapter,
-                           middleChapter: config.problem.middleChapter,
-                           smallChapter: config.problem.smallChapter,
-                           level: config.problem.level,
-                           source: config.problem.source,
-                           date: config.problem.date });
+    for ( let i = 0; i < config.problem.length; i++ ) { 
+        await models.Problem.create({ problemURL: config.problem[i].problemURL,
+                               solutionURL: config.problem[i].solutionURL,
+                               isMultipleQuestion: config.problem[i].isMultipleQuestion,
+                               answer: config.problem[i].answer,
+                               age: config.problem[i].age,
+                               bigChapter: config.problem[i].bigChapter,
+                               middleChapter: config.problem[i].middleChapter,
+                               smallChapter: config.problem[i].smallChapter,
+                               level: config.problem[i].level,
+                               source: config.problem[i].source,
+                               date: config.problem[i].date });
+    }
     
     // Create a exam
     await models.Exam.create({ userid: config.user.userid, 

@@ -34,8 +34,8 @@ exports.create = async (req, res) => {
                       new Buffer(solutionBase64, 'base64'),
                       (err) => { if (err) throw err; });
         
-        await Problem.create({ problemURL: problemPath,
-                               solutionURL: solutionPath,
+        await Problem.create({ problemURL: path.join(__baseurl, problemPath),
+                               solutionURL: path.join(__baseurl, solutionPath),
                                isMultipleQuestion: isMultipleQuestion == "true" ? true: false,
                                answer: answer,
                                age: age,
@@ -145,4 +145,46 @@ exports.inquiry = async (req, res) => {
         });
     }
     
+}
+
+exports.category = async (req, res) => {
+    try {
+        results = await Problem.findAll({ attributes: [[sequelize.literal('DISTINCT `bigChapter`'), 'bigChapter']] });
+        bigChapterList = results.map((v) => {
+            return v.dataValues.bigChapter;
+        });
+        
+        results = await Problem.findAll({ attributes: [[sequelize.literal('DISTINCT `middleChapter`'), 'middleChapter']] });
+        middleChapterList = results.map((v) => {
+            return v.dataValues.middleChapter;
+        });
+        
+        results = await Problem.findAll({ attributes: [[sequelize.literal('DISTINCT `smallChapter`'), 'smallChapter']] });
+        smallChapterList = results.map((v) => {
+            return v.dataValues.smallChapter;
+        });
+        
+        results = await Problem.findAll({ attributes: [[sequelize.literal('DISTINCT `source`'), 'source']] });
+        sourceList = results.map((v) => {
+            return v.dataValues.source;
+        });
+        
+        res.json({
+            success: 'true',
+            message: 'Successfully inquiried a problem database',
+            ecode: 200,
+            data: { bigChapterList: bigChapterList,
+                    middleChapterList: middleChapterList,
+                    smallChapterList: smallChapterList,
+                    sourceList: sourceList
+                  }
+        });
+    }
+    catch (error) {
+        res.status(403).json({
+            success: 'false',
+            message: error.message,
+            ecode: 403
+        });
+    }
 }
