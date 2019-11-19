@@ -18,7 +18,9 @@ This server is used to support educational institute.
 
 * **/api/problem**
   * [/api/problem/create](#post-apiproblemcreate)
+  * [/api/problem/get](#post-apiproblemget)
   * [/api/problem/inquiry](#post-apiprobleminquiry)
+  * [/api/problem/category](#post-apiproblemcategory)
 
 * **/api/exam**
   * [/api/exam/create](#post-apiexamcreate)
@@ -218,6 +220,24 @@ Not required
 | data.problemList[i].problemCondition.source | String | 출처 | 
 <br>
 
+### POST /api/problem/category
+등록된 문제의 카테고리를 반환합니다.
+
+#### Parameter
+Not required.
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.bigChapterList | 대단원 리스트 |
+| data.middleChapterList | Array | 중단원 리스트 | 
+| data.smallChapterList | Array | 소단원 리스트 | 
+| data.sourceList | Array | 출처 리스트 | 
+<br>
+s
 ### POST /api/exam/create
 시험지를 생성합니다.
 
