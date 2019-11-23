@@ -32,7 +32,7 @@ const config = require('./config.js');
                         title: config.exam.title, 
                         problemIDList: config.exam.problemIDList,
                         examURL: config.exam.examURL,
-                        createdAt: new Date().toISOString()
+                        createdAt: new Date().toISOString().substring(0, 19).replace('T',' ')
                       });
     
 })();
