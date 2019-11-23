@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             default: false
         },
-        createdAt: { type: DataTypes.DATE }
+        createdAt: { type: DataTypes.STRING }
     }, { timestamps: false });
     
     Exam.findOneByUserid = function (userid) {

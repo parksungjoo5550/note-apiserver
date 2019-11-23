@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         smallChapter: { type: DataTypes.STRING },
         level: { type: DataTypes.STRING },
         source: { type: DataTypes.STRING },
-        date: { type: DataTypes.DATE }
+        date: { type: DataTypes.STRING }
     }, { timestamps: false });
     
     Problem.findOneByindex = function (index) {
