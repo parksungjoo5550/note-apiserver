@@ -9,8 +9,8 @@ config.user.name = 'name';
 // Problem information (multipleQuestion)
 config.problem = [];
 config.problem[0] = {};
-config.problem[0].problemURL = path.join(__baseurl, '/uploads/example/problem.png');
-config.problem[0].solutionURL = path.join(__baseurl, '/uploads/example/solution.png');
+config.problem[0].problemURL = __baseurl + 'uploads/example/problem.png';
+config.problem[0].solutionURL = __baseurl + 'uploads/example/solution.png';
 config.problem[0].isMultipleQuestion = false;
 config.problem[0].answer = 'answer';
 config.problem[0].age = 'age';
@@ -19,11 +19,11 @@ config.problem[0].middleChapter = 'middleChapter';
 config.problem[0].smallChapter = 'smallChapter';
 config.problem[0].level = 'level';
 config.problem[0].source = 'source';
-config.problem[0].date = new Date().toISOString();
+config.problem[0].date = new Date().toISOString().split('T')[0];
 
 config.problem[1] = {};
-config.problem[1].problemURL = path.join(__baseurl, '/uploads/example/problem.png');
-config.problem[1].solutionURL = path.join(__baseurl, '/uploads/example/solution.png');
+config.problem[1].problemURL = __baseurl + 'uploads/example/problem.png';
+config.problem[1].solutionURL = __baseurl + 'uploads/example/solution.png';
 config.problem[1].isMultipleQuestion = true;
 config.problem[1].answer = 'answer2';
 config.problem[1].age = 'age2';
@@ -32,11 +32,11 @@ config.problem[1].middleChapter = 'middleChapter2';
 config.problem[1].smallChapter = 'smallChapter2';
 config.problem[1].level = 'level2';
 config.problem[1].source = 'source';
-config.problem[1].date = new Date().toISOString();
+config.problem[1].date = new Date().toISOString().split('T')[0];
 
 config.problem[2] = {};
-config.problem[2].problemURL = path.join(__baseurl, '/uploads/example/problem.png');
-config.problem[2].solutionURL = path.join(__baseurl, '/uploads/example/solution.png');
+config.problem[2].problemURL = __baseurl + 'uploads/example/problem.png';
+config.problem[2].solutionURL = __baseurl + 'uploads/example/solution.png';
 config.problem[2].isMultipleQuestion = true;
 config.problem[2].answer = 'answer2';
 config.problem[2].age = 'age2';
@@ -45,7 +45,7 @@ config.problem[2].middleChapter = 'middleChapter3';
 config.problem[2].smallChapter = 'smallChapter3';
 config.problem[2].level = 'level3';
 config.problem[2].source = 'source';
-config.problem[2].date = new Date().toISOString();
+config.problem[2].date = new Date().toISOString().split('T')[0];
 
 // Exam information
 config.exam.title = 'title';

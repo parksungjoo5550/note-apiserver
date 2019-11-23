@@ -34,8 +34,8 @@ exports.create = async (req, res) => {
                       new Buffer(solutionBase64, 'base64'),
                       (err) => { if (err) throw err; });
         
-        await Problem.create({ problemURL: path.join(__baseurl, problemPath),
-                               solutionURL: path.join(__baseurl, solutionPath),
+        await Problem.create({ problemURL: __baseurl + problemPath,
+                               solutionURL: __baseurl + solutionPath,
                                isMultipleQuestion: isMultipleQuestion == "true" ? true: false,
                                answer: answer,
                                age: age,

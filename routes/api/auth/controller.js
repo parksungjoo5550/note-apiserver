@@ -18,15 +18,18 @@ const Note = require('../../../models/').Note;
         userid,
         password,
         password2,
-        name
+        name,
+        school,
+        admissionYear,
+        mathGrade
     }
 */
 
 exports.register = async (req, res) => {
-    const { userid, password, password2, name } = req.body;
+    const { userid, password, password2, name, school, admissionYear, mathGrade } = req.body;
     
     try {
-        if ( !userid || !password || !password2 || !name ) {
+        if ( !userid || !password || !password2 || !name || !school || !admissionYear || !mathGrade ) {
             throw new Error('Please enter all fields.');
         }
         else if ( password != password2 ) {
@@ -42,7 +45,7 @@ exports.register = async (req, res) => {
         // Create a user.
         await User.create( { userid: userid, password: password } );
         // Create a student.
-        await Student.create({ userid: userid, name: name });
+        await Student.create({ userid: userid, name: name, school: school, admissionYear: admissionYear, mathGrade: mathGrade });
         
         res.json({
             success: 'true',

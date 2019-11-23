@@ -22,7 +22,6 @@ exports.create = async (req, res) => {
     const userid = req.token.userid;
     const { title, problemIDList } = req.body;
     
-    console.log(problemIDList);
     try {
         if ( !title || !problemIDList )
             throw new Error('Please enter all fields.');
@@ -64,7 +63,7 @@ exports.create = async (req, res) => {
                 throw new Error(`Problem ${problemIDList2[0]} doesn't exist.`);
             
             problemIDList2.shift();
-            doc.image(path.join(__basedir, problem.dataValues.problemURL), 10, 50, 
+            doc.image(path.join(__basedir, problem.dataValues.problemURL.replace(__baseurl, '')), 10, 50, 
                          { width: doc.page.width/2 - 20 });
    
             // Image 2
@@ -74,7 +73,7 @@ exports.create = async (req, res) => {
                     throw new Error(`Problem ${problemIDList2[0]} doesn't exist.`);
                 
                 problemIDList2.shift();
-                doc.image(path.join(__basedir, problem.dataValues.problemURL),
+                doc.image(path.join(__basedir, problem.dataValues.problemURL.replace(__baseurl, '')),
                           doc.page.width/2 + 10, 50,
                           { width: doc.page.width/2 - 20 });
             }
@@ -93,7 +92,7 @@ exports.create = async (req, res) => {
                             title: title, 
                             problemIDList: problemIDList.join(' '),
                             examURL: path.join(__baseurl, examURL),
-                            createdAt: new Date().toISOString()
+                            createdAt: new Date().toISOString().substring(0, 19).replace('T',' ')
                          });
         res.json({
             success: 'true',
@@ -231,7 +230,7 @@ exports.confirm = async (req, res) => {
             problem = await Problem.findOneByindex(problemIDList[i]);
             if ( problem == null ) 
                 throw new Error('Some problem doesn\'t exist.');
-            
+    
             // if the problem's type isn't MultipleQuestion
             if ( problem.dataValues.isMultipleQuestion == false ) {
                 answerPath = path.join('/uploads/answers', ['answer', Date.now() + '.jpg'].join('-'));

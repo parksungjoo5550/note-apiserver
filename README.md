@@ -41,9 +41,12 @@ This server is used to support educational institute.
 | Name | Data type | Description | 
 ---|---|---
 | userid | String | 아이디 | 
-| password | String | 비밀번호 |  
+| password | String | 비밀번호 | 
 | password2 | String | 확인용 비밀번호 | 
 | name | String | 이름 | 
+| school | String | 학교 | 
+| admissionYear | String | 입학년도 | 
+| mathGrade | String | 수학등급 | 
 
 #### Response
 | Name | Data type | Description | 
