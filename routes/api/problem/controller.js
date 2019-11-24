@@ -34,8 +34,8 @@ exports.create = async (req, res) => {
                       new Buffer(solutionBase64, 'base64'),
                       (err) => { if (err) throw err; });
         
-        await Problem.create({ problemURL: __baseurl + problemPath,
-                               solutionURL: __baseurl + solutionPath,
+        await Problem.create({ problemURL: problemPath,
+                               solutionURL: solutionPath,
                                isMultipleQuestion: isMultipleQuestion == "true" ? true: false,
                                answer: answer,
                                age: age,
@@ -47,14 +47,14 @@ exports.create = async (req, res) => {
                                date: date });
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully created a problem.',
             ecode: 200
         });
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
@@ -70,7 +70,7 @@ exports.get = async (req, res) => {
             throw new Error('That problem doesn\'t exist.');
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully got problem information',
             ecode: 200,
             data: { problemID: problem.dataValues.index,
@@ -80,7 +80,7 @@ exports.get = async (req, res) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
@@ -130,7 +130,7 @@ exports.inquiry = async (req, res) => {
                           });
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully inquiried a problem database',
             ecode: 200,
             data: { problemList: problemList },
@@ -139,7 +139,7 @@ exports.inquiry = async (req, res) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
@@ -170,7 +170,7 @@ exports.category = async (req, res) => {
         });
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully inquiried a problem database',
             ecode: 200,
             data: { bigChapterList: bigChapterList,
@@ -182,7 +182,7 @@ exports.category = async (req, res) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });

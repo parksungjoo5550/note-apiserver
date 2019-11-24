@@ -67,7 +67,7 @@ exports.view = async (req, res) => {
         }
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully listed noteList.',
             ecode: 200,
             data: { 
@@ -80,7 +80,7 @@ exports.view = async (req, res) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403,
         });
@@ -103,7 +103,7 @@ exports.rate = async (req, res) => {
             correctRate = 0;
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully calculated a percentage of correct answers',
             ecode: 200,
             data: { correctRate: correctRate * 100 }
@@ -111,7 +111,7 @@ exports.rate = async (req, res) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });

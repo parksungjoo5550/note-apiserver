@@ -63,7 +63,7 @@ exports.create = async (req, res) => {
                 throw new Error(`Problem ${problemIDList2[0]} doesn't exist.`);
             
             problemIDList2.shift();
-            doc.image(path.join(__basedir, problem.dataValues.problemURL.replace(__baseurl, '')), 10, 50, 
+            doc.image(path.join(__basedir, problem.dataValues.problemURL), 10, 50, 
                          { width: doc.page.width/2 - 20 });
    
             // Image 2
@@ -73,7 +73,7 @@ exports.create = async (req, res) => {
                     throw new Error(`Problem ${problemIDList2[0]} doesn't exist.`);
                 
                 problemIDList2.shift();
-                doc.image(path.join(__basedir, problem.dataValues.problemURL.replace(__baseurl, '')),
+                doc.image(path.join(__basedir, problem.dataValues.problemURL),
                           doc.page.width/2 + 10, 50,
                           { width: doc.page.width/2 - 20 });
             }
@@ -91,18 +91,18 @@ exports.create = async (req, res) => {
         await Exam.create({ userid: userid, 
                             title: title, 
                             problemIDList: problemIDList.join(' '),
-                            examURL: path.join(__baseurl, examURL),
+                            examURL: examURL,
                             createdAt: new Date().toISOString().substring(0, 19).replace('T',' ')
                          });
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully created a exam.',
             ecode: 200
         });
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
@@ -137,7 +137,7 @@ exports.list = async (req, res) => {
         }
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully listed examList',
             ecode: 200,
             data: { examList: examList }
@@ -145,7 +145,7 @@ exports.list = async (req, res) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
@@ -187,7 +187,7 @@ exports.take = async (req, res) => {
         }
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully got exam\'s information.',
             ecode: 200,
             data: { title: exam.dataValues.title,
@@ -196,7 +196,7 @@ exports.take = async (req, res) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
@@ -266,14 +266,14 @@ exports.confirm = async (req, res) => {
         Exam.update({ isDone: true }, { where: { index: examID, userid: userid } });
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully completed confirming the exam\'s answer.',
             ecode: 200
         });
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });

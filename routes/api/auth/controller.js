@@ -48,7 +48,7 @@ exports.register = async (req, res) => {
         await Student.create({ userid: userid, name: name, school: school, admissionYear: admissionYear, mathGrade: mathGrade });
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Registered successfully.',
             ecode: 200
         });
@@ -56,7 +56,7 @@ exports.register = async (req, res) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
@@ -98,7 +98,7 @@ exports.login = async (req, res) => {
         );
             
         res.json({
-            success: 'true',
+            success: true,
             message: 'Logged in successfully.',
             ecode: 200,
             data: { token: token }
@@ -106,7 +106,7 @@ exports.login = async (req, res) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
@@ -148,14 +148,14 @@ exports.resign = async (req, res) => {
         await User.destroy({ where: { userid: userid } });
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully resigned.',
             ecode: 200
         });
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
@@ -173,7 +173,7 @@ exports.resign = async (req, res) => {
 
 exports.validate = (req, res) => {
     res.json({
-        success: 'true',
+        success: true,
         message: '',
         ecode: 200,
         data: { token: req.token }

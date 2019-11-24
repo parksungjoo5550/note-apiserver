@@ -34,14 +34,14 @@ exports.set = async (req, res) => {
             throw new Error('Some errors occur in /api/student/set api. (Report to admin)');
         
         res.json({
-            success: 'true',
+            success: true,
             message: 'Successfully set user information.',
             ecode: 200
         });
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
@@ -68,7 +68,7 @@ exports.view = async (req, res) => {
         }
         else {
             res.json({
-                success: 'true',
+                success: true,
                 message: 'Successfully view user information.',
                 ecode: 200,
                 data: {
@@ -82,7 +82,7 @@ exports.view = async (req, res) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
