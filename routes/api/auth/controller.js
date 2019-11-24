@@ -30,16 +30,16 @@ exports.register = async (req, res) => {
     
     try {
         if ( !userid || !password || !password2 || !name || !school || !admissionYear || !mathGrade ) {
-            throw new Error('Please enter all fields.');
+            throw new Error('모든 항목을 입력해주세요.');
         }
         else if ( password != password2 ) {
-            throw new Error('Passwords don\'t match.');
+            throw new Error('확인 비밀번호가 일치하지 않습니다.');
         }
         else if ( password.length < 6 ) {
-            throw new Error('Password must be at least 6 characters.');
+            throw new Error('비밀번호가 최소 6자리 이상이여야 합니다.');
         }
         else if ( await User.findOneByUserid(userid) ) {
-            throw new Error('Userid already exists.');
+            throw new Error('이미 존재하는 아이디입니다.');
         }
         
         // Create a user.
@@ -49,7 +49,7 @@ exports.register = async (req, res) => {
         
         res.json({
             success: true,
-            message: 'Registered successfully.',
+            message: '회원 가입이 완료됐습니다.',
             ecode: 200
         });
         
@@ -78,9 +78,9 @@ exports.login = async (req, res) => {
         const user = await User.findOneByUserid(userid);
         
         if (!user)
-            throw new Error('Incorrect userid.');
+            throw new Error('존재하지 않는 사용자 아이디입니다.');
         if (!user.verify(password))
-            throw new Error('Incorrect password.');
+            throw new Error('비밀번호가 일치하지 않습니다.');
         
         // Create a jwt token.
         const token = await jwt.sign(
@@ -99,7 +99,7 @@ exports.login = async (req, res) => {
             
         res.json({
             success: true,
-            message: 'Logged in successfully.',
+            message: '로그인 됐습니다.',
             ecode: 200,
             data: { token: token }
         });
@@ -149,7 +149,7 @@ exports.resign = async (req, res) => {
         
         res.json({
             success: true,
-            message: 'Successfully resigned.',
+            message: '회원 탈퇴 됐습니다.',
             ecode: 200
         });
     }

@@ -68,7 +68,7 @@ exports.view = async (req, res) => {
         
         res.json({
             success: true,
-            message: 'Successfully listed noteList.',
+            message: '조건에 맞는 채점 기록을 조회 완료했습니다.',
             ecode: 200,
             data: { 
                       noteList: noteList,
@@ -104,7 +104,7 @@ exports.rate = async (req, res) => {
         
         res.json({
             success: true,
-            message: 'Successfully calculated a percentage of correct answers',
+            message: '해당 문제에 정답률을 조회 완료했습니다.',
             ecode: 200,
             data: { correctRate: correctRate * 100 }
         });

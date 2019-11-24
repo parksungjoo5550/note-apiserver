@@ -16,12 +16,12 @@ exports.create = async (req, res) => {
         if ( !problemFilename || !solutionFilename ||
              !problemBase64 || !solutionBase64 || 
              !isMultipleQuestion )
-            throw new Error('Please enter all fields.');
+            throw new Error('모든 항목을 입력해주세요.');
         
         if ( problemFilename.indexOf('/') >=0 || problemFilename.indexOf('\\') >= 0 )
-            throw new Error('Bad problemFilename.');
+            throw new Error('잘못된 문제 파일 이름입니다.');
         if ( solutionFilename.indexOf('/') >=0 || solutionFilename.indexOf('\\') >= 0 )
-            throw new Error('Bad solutionFilename.');
+            throw new Error('잘못된 문제 파일 이름입니다.');
         
         // Save Problem and Solution file.
         problemPath = path.join('/uploads/problems', problemFilename);
@@ -48,7 +48,7 @@ exports.create = async (req, res) => {
         
         res.json({
             success: true,
-            message: 'Successfully created a problem.',
+            message: '새로운 문제를 생성하였습니다.',
             ecode: 200
         });
     }
@@ -67,11 +67,11 @@ exports.get = async (req, res) => {
     try {
         problem =  await Problem.findOneByindex(problemID);
         if ( problem == null ) 
-            throw new Error('That problem doesn\'t exist.');
+            throw new Error('해당 문제는 존재하지 않습니다.');
         
         res.json({
             success: true,
-            message: 'Successfully got problem information',
+            message: '문제 정보 조회를 완료했습니다.',
             ecode: 200,
             data: { problemID: problem.dataValues.index,
                     problemURL: problem.dataValues.problemURL,
@@ -131,7 +131,7 @@ exports.inquiry = async (req, res) => {
         
         res.json({
             success: true,
-            message: 'Successfully inquiried a problem database',
+            message: '조건에 맞는 문제 리스트를 조회 완료했습니다.',
             ecode: 200,
             data: { problemList: problemList },
         });
@@ -171,7 +171,7 @@ exports.category = async (req, res) => {
         
         res.json({
             success: true,
-            message: 'Successfully inquiried a problem database',
+            message: '문제 카테고리를 조회 완료했습니다.',
             ecode: 200,
             data: { bigChapterList: bigChapterList,
                     middleChapterList: middleChapterList,

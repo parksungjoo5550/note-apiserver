@@ -31,11 +31,11 @@ exports.set = async (req, res) => {
         if ( await Student.findOneByUserid(userid) )
             await Student.update(options, { where: { userid: userid } });
         else
-            throw new Error('Some errors occur in /api/student/set api. (Report to admin)');
+            throw new Error('학생 정보 변경 중 오류가 발생했습니다.');
         
         res.json({
             success: true,
-            message: 'Successfully set user information.',
+            message: '학생 정보 변경이 완료됐습니다.',
             ecode: 200
         });
     }
@@ -64,12 +64,12 @@ exports.view = async (req, res) => {
         student = await Student.findOneByUserid(userid);
         
         if (student == null){
-            throw new Error('Some errors occur in /api/student/view api. (Report to admin)');
+            throw new Error('학생 정보 조회 중 오류가 발생했습니다.');
         }
         else {
             res.json({
                 success: true,
-                message: 'Successfully view user information.',
+                message: '학생 정보 조회를 완료했습니다.',
                 ecode: 200,
                 data: {
                     name: student.dataValues.name,

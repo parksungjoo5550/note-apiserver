@@ -96,7 +96,7 @@ exports.create = async (req, res) => {
                          });
         res.json({
             success: true,
-            message: 'Successfully created a exam.',
+            message: '새로운 시험지를 생성했습니다.',
             ecode: 200
         });
     }
@@ -138,7 +138,7 @@ exports.list = async (req, res) => {
         
         res.json({
             success: true,
-            message: 'Successfully listed examList',
+            message: '모든 시험지 리스트를 조회 완료했습니다.',
             ecode: 200,
             data: { examList: examList }
         });
@@ -169,7 +169,7 @@ exports.take = async (req, res) => {
         // Query by examid.
         exam = await Exam.findOne({ where: { index: examID, userid: userid } });
         if ( exam == null ) 
-            throw new Error('That exam doesn\'t exist.');
+            throw new Error('해당 시험지가 존재하지 않습니다.');
         
         // Make a array contains problemURL
         problemList = [];
@@ -188,7 +188,7 @@ exports.take = async (req, res) => {
         
         res.json({
             success: true,
-            message: 'Successfully got exam\'s information.',
+            message: '해당 시험지의 정보를 조회 완료했습니다.',
             ecode: 200,
             data: { title: exam.dataValues.title,
                     problemList: problemList }
@@ -220,16 +220,16 @@ exports.confirm = async (req, res) => {
     
     try {
         if ( !problemIDList || !answerList )
-            throw new Error('Please enter all fields.');
+            throw new Error('모든 항목을 입력해주세요.');
 
         exam = await Exam.findOne({ where: { index: examID, userid: userid } });
         if ( exam == null ) 
-            throw new Error('That exam doesn\'t exist.');
+            throw new Error('해당 시험지가 존재하지 않습니다.');
         
         for ( let i = 0; i < problemIDList.length; i++ ) {
             problem = await Problem.findOneByindex(problemIDList[i]);
             if ( problem == null ) 
-                throw new Error('Some problem doesn\'t exist.');
+                throw new Error('문제 채점중 오류가 발생했습니다.');
     
             // if the problem's type isn't MultipleQuestion
             if ( problem.dataValues.isMultipleQuestion == false ) {
@@ -267,7 +267,7 @@ exports.confirm = async (req, res) => {
         
         res.json({
             success: true,
-            message: 'Successfully completed confirming the exam\'s answer.',
+            message: '시험지 채점이 완료됐습니다.',
             ecode: 200
         });
     }
