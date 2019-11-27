@@ -6,11 +6,11 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         problemURL: {
-            type: DataTypes.STRING
-        },
-        solutionURL: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        solutionURL: {
+            type: DataTypes.STRING
         },
         isMultipleQuestion: {
             type: DataTypes.BOOLEAN,
