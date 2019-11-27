@@ -18,21 +18,20 @@ exports.create = async (req, res) => {
              !isMultipleQuestion )
             throw new Error('모든 항목을 입력해주세요.');
         
-        if ( problemFilename.indexOf('/') >=0 || problemFilename.indexOf('\\') >= 0 )
-            throw new Error('잘못된 문제 파일 이름입니다.');
-        if ( solutionFilename.indexOf('/') >=0 || solutionFilename.indexOf('\\') >= 0 )
-            throw new Error('잘못된 문제 파일 이름입니다.');
-        
         // Save Problem and Solution file.
         problemPath = path.join('/uploads/problems', problemFilename);
         fs.writeFile( path.join(__basedir, problemPath), 
                       new Buffer(problemBase64, 'base64'), 
                       (err) => { if (err) throw err; });
         
-        solutionPath = path.join('/uploads/solutions', solutionFilename);
-        fs.writeFile( path.join(__basedir, solutionPath),
-                      new Buffer(solutionBase64, 'base64'),
-                      (err) => { if (err) throw err; });
+        if ( solutionFilename != undefined ) {
+            solutionPath = path.join('/uploads/solutions', solutionFilename);
+            fs.writeFile( path.join(__basedir, solutionPath),
+                          new Buffer(solutionBase64, 'base64'),
+                          (err) => { if (err) throw err; });
+        }
+        else
+            solutionPath = undefined;
         
         await Problem.create({ problemURL: problemPath,
                                solutionURL: solutionPath,

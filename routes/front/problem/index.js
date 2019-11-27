@@ -23,7 +23,10 @@ router.get('/create', (req, res) => {
 
 router.post('/create', upload.fields([{ name: 'problem' }, { name: 'solution' }]), (req, res) => { 
     const problem = req.files['problem'][0];
-    const solution = req.files['solution'][0];
+    if ( req.files['solution'] == undefined )
+        solution = { buffer:'' };
+    else
+        solution = req.files['solution'][0];
     
     const options = {
         headers: {
@@ -32,8 +35,8 @@ router.post('/create', upload.fields([{ name: 'problem' }, { name: 'solution' }]
         uri: 'http://localhost:3000/api/problem/create', 
         body: 'POST',
         form: {
-            problemFilename: [ problem.fieldname, Date.now() ,problem.originalname].join('-'),
-            solutionFilename: [ solution.fieldname, Date.now() ,solution.originalname].join('-'),
+            problemFilename: problem.originalname,
+            solutionFilename: solution.originalname,
             problemBase64: problem.buffer.toString('base64'),
             solutionBase64: solution.buffer.toString('base64'),
             isMultipleQuestion: req.body.isMultipleQuestion,
@@ -81,7 +84,7 @@ router.post('/inquiry', (req, res) => {
     }
     
     request.post(options, (err, httpResponse, body) => {
-        if ( body.success == "false" ) {
+        if ( body.success == false ) {
             res.render('auth/login', {
                 message: body.message
             });

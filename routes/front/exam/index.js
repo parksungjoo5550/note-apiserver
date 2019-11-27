@@ -48,7 +48,7 @@ router.post('/list', (req, res) => {
     }
     
     request.post(options, (err, httpResponse, body) => {
-        if ( body.success == 'false' ) {
+        if ( body.success == false ) {
             res.render('exam/list', {
                 message: body.message,
             });

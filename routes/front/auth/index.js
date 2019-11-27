@@ -25,7 +25,7 @@ router.post('/register', (req, res) => {
     }
     
     request.post(options, (err, httpResponse, body) => {
-        if ( body.success == "false" ) {
+        if ( body.success == false ) {
             res.render('auth/register', {
                 message: body.message
             });
@@ -57,7 +57,7 @@ router.post('/login', (req, res) => {
     }
     
     request.post(options, (err, httpResponse, body) => {
-        if ( body.success == "false" ) {
+        if ( body.success == false ) {
             res.render('auth/login', {
                 message: body.message
             });
