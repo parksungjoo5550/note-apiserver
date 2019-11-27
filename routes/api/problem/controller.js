@@ -13,8 +13,8 @@ exports.create = async (req, res) => {
             isMultipleQuestion, answer, age, bigChapter, middleChapter, smallChapter, level, source, date } = req.body;
     
     try {
-        if ( !problemFilename || !solutionFilename ||
-             !problemBase64 || !solutionBase64 || 
+        if ( !problemFilename ||
+             !problemBase64 ||
              !isMultipleQuestion )
             throw new Error('모든 항목을 입력해주세요.');
         
