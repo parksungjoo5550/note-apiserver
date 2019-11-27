@@ -6,8 +6,7 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         problemURL: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.STRING
         },
         solutionURL: {
             type: DataTypes.STRING,
