@@ -13,7 +13,7 @@ const upload = multer({ storage: multer.memoryStorage({}),
                         callback(null, true);
                         },
                         limits: {
-                            fieldSize: 8 * 1024 * 1024,
+                            fileSize: 10 * 1024 * 1024,
                         } });
 
 router.use('/create', frontAuth.admin);
