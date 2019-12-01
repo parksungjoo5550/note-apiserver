@@ -2,10 +2,79 @@
     <head>
         <meta charset="utf-8"/>
         
-        <link rel="stylesheet" href="static/style.css">
+        <link rel="stylesheet" href="/static/style.css">
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
         
+        <script>
+            function loadPreviousInput(){
+                if ($.cookie('preInputs') == undefined)
+                    return;
+                
+                preInputs = JSON.parse($.cookie('preInputs'));
+                
+                $("input[name=age]").val(preInputs.age);
+                $("input[name=bigChapter]").val(preInputs.bigChapter);
+                $("input[name=middleChapter]").val(preInputs.middleChapter);
+                $("input[name=smallChapter]").val(preInputs.smallChapter);
+                $("input[name=level]").val(preInputs.level);
+                $("input[name=source]").val(preInputs.source);
+                $("input[name=date]").val(preInputs.date);
+            }
+            function savePreviousInput(){              
+                preInputs = {}
+                preInputs.age = $("input[name=age]").val()
+                preInputs.bigChapter = $("input[name=bigChapter]").val()
+                preInputs.middleChapter = $("input[name=middleChapter]").val()
+                preInputs.smallChapter = $("input[name=smallChapter]").val()
+                preInputs.level = $("input[name=level]").val()
+                preInputs.source = $("input[name=source]").val()
+                preInputs.date = $("input[name=date]").val()
+                
+                $.cookie('preInputs', JSON.stringify(preInputs), {expires: 7});
+            }
+            
+            function submitCheck() {
+                if ( $("input[name=problem]").val() == '' ) {
+                    alert('문제 파일이 업로드되지 않았습니다.');
+                    return false;
+                }
+                
+                savePreviousInput();
+                return true;
+            }
+        </script>
+        
+        <style>
+            legend
+            {
+                font-weight: bold;
+                color: #333;
+            }
+
+            .filedrag
+            {
+                display: none;
+                font-weight: bold;
+                text-align: center;
+                padding: 1em 0;
+                margin: 1em 0;
+                color: #555;
+                border: 2px dashed #555;
+                border-radius: 7px;
+                cursor: default;
+            }
+
+            .filedrag.hover
+            {
+                color: #f00;
+                border-color: #f00;
+                border-style: solid;
+                box-shadow: inset 0 3px 4px #888;
+            }
+        </style>
     </head>
-    <body>
+    <body onload="loadPreviousInput();">
         <h2>
             문제 만들기
         </h2>
@@ -16,10 +85,35 @@
             <% } %>
         </h3>
         
-        <form method="POST" action="/front/problem/create" enctype="multipart/form-data">
-            문제 파일 : <input type="file" name="problem"/><br>
-            해설 파일 : <input type="file" name="solution"/><br>
-            <input type="radio" name="isMultipleQuestion" value="true">객관식 
+        <form method="POST" action="/front/problem/create" enctype="multipart/form-data" onsubmit="return submitCheck();">
+            <fieldset>
+                <legend>문제 파일 업로드</legend>
+
+                <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
+
+                <div>
+                    <label for="fileselect">파일 직접 고르기 :</label>
+                    <input type="file" class="fileselect" id="fileProblem" name="problem" />
+                    <div class="filedrag" id="dragProblem">또는 여기에 파일을 드래그하세요.</div>
+                </div>
+                
+                <div class="messages">
+                    
+                </div>
+            </fieldset> <br>
+            
+            <fieldset>
+                <legend>해설 업로드</legend>
+
+                <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
+
+                <div>
+                    <label for="fileselect">파일 직접 고르기 :</label>
+                    <input type="file" class="fileselect" id="fileSolution" name="solution" />
+                    <div class="filedrag" id="dragSolution">또는 여기에 파일을 드래그하세요.</div>
+                </div>
+            </fieldset><br>
+            문제 종류 : <input type="radio" name="isMultipleQuestion" value="true">객관식 
             <input type="radio" name="isMultipleQuestion" value="false">주관식 <br>
             정답 : <input type="text" name="answer"/><br>
             학년 : <input type="text" name="age"/><br>
@@ -33,5 +127,7 @@
         </form>
         
         <a href="/front"> 메인 페이지 </a>
+        
+        <script src="/static/fileDrop.js"></script>
     </body>
 </html>

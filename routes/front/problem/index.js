@@ -6,15 +6,15 @@ const frontAuth = require('../../../middlewares/frontAuth');
 
 const upload = multer({ storage: multer.memoryStorage({}), 
                         fileFilter: function (req, file, callback) {
-                        let ext = path.extname(file.originalname).toLowerCase();
-                        if( ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' ) {
-                            return callback(new Error('Only .png, .jpg, .jpeg images are allowed'));
-                        }
-                        callback(null, true);
+                            let ext = path.extname(file.originalname).toLowerCase();
+                            if( ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' ) {
+                                return callback(new Error('Only .png, .jpg, .jpeg images are allowed'));
+                            }
+                            callback(null, true);
                         },
                         limits: {
                             fileSize: 10 * 1024 * 1024,
-                        } });
+                        }});
 
 router.use('/create', frontAuth.admin);
 router.get('/create', (req, res) => {
