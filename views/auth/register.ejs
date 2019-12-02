@@ -1,27 +1,81 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="static/style.css">
+        <% include ../head %>
     </head>
     <body>
-        <h2>
-            회원가입
-        </h2>
+    <div class="container">
+        <div class="row justify-content-center" align="center">
+            <h1>
+                회원가입
+            </h1>
+        </div>
         
-        <h3 style="color: red" id="message">
-            <% if ( locals.message ) { %>
-                <%= message %>
-            <% } %>
-        </h3>
+        <% if (locals.message) { %>
+        <div class="row alert-message block-message error">
+            <ul>
+                <li style="color: red"><%= message %></li>
+            </ul>
+        </div>
+        <% } %>
         
-        <form action="/front/auth/register" method="post">
-            아이디 : <input type="text" name="userid"> <br>
-            비밀번호 : <input type="password" name="password"><br>
-            비밀번호 재확인 : <input type="password" name="password2"><br>
-            이름 : <input type="text" name="name"> <br>
-            <input type="submit" value="register">
+
+        <form action="/front/auth/register" method="post" >
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">아이디</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="아이디" name="userid">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">비밀번호</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" placeholder="비밀번호" name="password">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">비밀번호 재입력</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" placeholder="비밀번호 재입력" name="password2">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">이름</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="이름" name="name">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">학교</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="학교" name="school">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">입학년도</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="입학년도" name="admissionYear">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">수학등급</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="수학등급" name="mathGrade">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">제출</button>
         </form>
-        
-        <a href="/front"> 메인 페이지 </a>
+
+        <div class="row">
+            <a href="/front"> 메인 페이지 </a>
+        </div>
+    </div>
     </body>
 </html>

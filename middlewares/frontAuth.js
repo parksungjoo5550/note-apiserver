@@ -5,7 +5,7 @@ exports.login = async (req, res, next) => {
     
     try {
         if (!token)
-            throw new Error('Not logged in');
+            throw new Error('로그인을 해주세요.');
         
         req.token = await jwt.verify(token, req.app.get('jwt-secret'));
         next();
@@ -27,7 +27,7 @@ exports.admin = async (req, res, next) => {
         req.token = await jwt.verify(token, req.app.get('jwt-secret'));
 
         if (req.token.admin == null)
-            throw new Error('You are not a admin.');
+            throw new Error('관리자 권한이 없습니다.');
         else
             next();
     }

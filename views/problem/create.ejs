@@ -2,8 +2,7 @@
     <head>
         <meta charset="utf-8"/>
         
-        <link rel="stylesheet" href="/static/style.css">
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+    	<% include ../head %>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
         
         <script>
@@ -92,7 +91,7 @@
                 <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
 
                 <div>
-                    <label for="fileselect">파일 직접 고르기 :</label>
+                    <label for="fileselect">파일 직접 고르기</label>
                     <input type="file" class="fileselect" id="fileProblem" name="problem" />
                     <div class="filedrag" id="dragProblem">또는 여기에 파일을 드래그하세요.</div>
                 </div>
@@ -108,7 +107,7 @@
                 <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
 
                 <div>
-                    <label for="fileselect">파일 직접 고르기 :</label>
+                    <label for="fileselect">파일 직접 고르기</label>
                     <input type="file" class="fileselect" id="fileSolution" name="solution" />
                     <div class="filedrag" id="dragSolution">또는 여기에 파일을 드래그하세요.</div>
                 </div>
@@ -128,6 +127,6 @@
         
         <a href="/front"> 메인 페이지 </a>
         
-        <script src="/static/fileDrop.js"></script>
+        <script src="/static/custom/js/fileDrop.js"></script>
     </body>
 </html>

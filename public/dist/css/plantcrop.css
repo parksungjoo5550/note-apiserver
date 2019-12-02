@@ -1,0 +1,20 @@
+
+.a-btn{
+	background: none!important;
+    color: inherit;
+    border: none;
+    padding: 0!important;
+    font: inherit;
+    font-weight: bold;
+}
+
+.alert-info img{
+	border-color: #ddd;
+    border-radius: 8px;
+}
+
+.alert-info input{
+	height:40px;
+	text-align:center;
+	border-radius:0;
+}

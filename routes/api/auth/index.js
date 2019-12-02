@@ -1,15 +1,18 @@
 const router = require('express').Router();
-const controller = require('./controller');
 const auth = require('../../../middlewares/auth');
 
-router.post('/register', controller.register);
+router.post('/register', require('./register'));
 
-router.post('/login', controller.login);
+router.post('/login', require('./login'));
 
 router.use('/resign', auth.login);
-router.post('/resign', controller.resign);
+router.post('/resign', require('./resign'));
 
 router.use('/validate', auth.login);
-router.get('/validate', controller.validate);
+router.get('/validate', require('./validate'));
+
+router.use('/resign', auth.login);
+router.get('/resign', require('./resign'));
+
 
 module.exports = router;

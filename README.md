@@ -31,9 +31,15 @@ This server is used to support educational institute.
 * **/api/note**
   * [/api/note/view](#post-apinoteview)
   * [/api/note/rate](#post-apinoterate)
+
+* **/api/category**
+  * [/api/category/create](#post-apicategorycreate)
+  * [/api/category/list](#post-apicategorylist)
+
 <br>
 
 ## API documentation
+<!-- /api/auth -->
 ### POST /api/auth/register
 계정을 생성합니다.
 
@@ -105,7 +111,9 @@ Not required
 | ecode | Integer | 응답 코드 | 
 | data.token | Json | Decrypt된 jwt 토큰 | 
 <br>
+<!-- /api/auth -->
 
+<!-- /api/student -->
 ### POST /api/student/set
 계정 정보를 변경합니다.
 
@@ -142,7 +150,9 @@ Not required
 | data.admissionYear | String | 입학년도| 
 | data.mathGrade | String | 수학 등급 |
 <br>
+<!-- /api/student -->
 
+<!-- /api/problem -->
 ### POST /api/problem/create
 문제를 생성합니다.
 
@@ -163,6 +173,24 @@ Not required
 | source | String | 출처 | 
 | date | String | 출제년도 | 
 
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+<br>
+
+### POST /api/problem/update
+문제 정보를 수정합니다.
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| problemID | Integer | 문제 번호 (required) | 
+| problemID | Integer | 문제 번호 | 
+| problemID | Integer | 문제 번호 | 
+| problemID | Integer | 문제 번호 | 
 #### Response
 | Name | Data type | Description | 
 ---|---|---
@@ -196,6 +224,7 @@ Not required
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
+| problemID | Integer | 문제 고유 번호 | 
 | age | String | 학년 | 
 | bigChapter | String | 대단원 | 
 | middleChapter | String | 중단원 | 
@@ -204,6 +233,7 @@ Not required
 | source | String | 문제 출처 | 
 | startDate | String | 출체범위 시작 | 
 | endDate | String | 출체범위 끝 | 
+| active | Boolean | 문제 사용여부 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -240,7 +270,9 @@ Not required.
 | data.smallChapterList | Array | 소단원 리스트 | 
 | data.sourceList | Array | 출처 리스트 | 
 <br>
-s
+<!-- /api/problem -->
+
+<!-- /api/exam -->
 ### POST /api/exam/create
 시험지를 생성합니다.
 
@@ -314,7 +346,9 @@ Not required
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
 <br>
+<!-- /api/exam -->
 
+<!-- /api/note -->
 ### POST /api/note/view
 제출된 시험지에 대한 정보를 조회합니다.
 
@@ -389,3 +423,44 @@ unconfirmed - 채점중인 문제
 | ecode | Integer | 응답 코드 | 
 | data.correctRate | Real | 정답률 | 
 <br>
+<!-- /api/note -->
+
+<!-- /api/category -->
+### POST /api/category/create
+문제 카테고리를 생성합니다.
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| bigChapter | String | 대단원 | 
+| middleChapter | String | 중단원 | 
+| smallChapter | String | 소단원 | 
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+<br>
+
+### POST /api/category/list
+하위 카테고리를 조회합니다.
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| bigChapter | String | 대단원 | 
+| middleChapter | String | 중단원 | 
+| smallChapter | String | 소단원 | 
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.categories | Array | 카테고리 리스트 | 
+| data.categories[i] | String | 카테고리 | 
+<br>
+<!-- /api/category -->

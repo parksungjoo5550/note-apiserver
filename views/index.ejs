@@ -2,7 +2,7 @@
     <head>
         <meta charset="utf-8"/>
         
-        <link rel="stylesheet" href="/static/style.css">
+        <% include ./head %>
         
     </head>
     
@@ -11,11 +11,13 @@
             안녕하세요. <%= token.userid %> 님
         </h1>
         
-        <h3 style="color: red" id="message">
-            <% if ( locals.message ) { %>
-                <%= message %>
-            <% } %>
-        </h3>
+        <% if (locals.message) { %>
+        <div class="row alert-message block-message error">
+            <ul>
+                <li style="color: red"><%= message %></li>
+            </ul>
+        </div>
+        <% } %>
         
         <% if ( token.admin ) { %>
                 <a href="/front/problem/create"> 문제 만들기 </a><br>

@@ -2,53 +2,124 @@
     <head>
         <meta charset="utf-8"/>
         
-        <link rel="stylesheet" href="/static/style.css">
-        <style>
-            table {
-                width: 100%;
-                border: 1px solid #444444;
-                border-collapse: collapse;
-            }
-            th, td {
-                border: 1px solid #444444;
-                padding: 8px;
-            }
-        </style>
+        <% include ../head %>
+
     </head>
     <body>
-        <h2>
-            문제 조회
-        </h2>
+    <div class="container-fluid">
+        <div class="row">
+            <h1>
+                문제 조회
+            </h1>
+        </div> <br>
         
-        <h3 style="color: red" id="message">
-            <% if ( locals.message ) { %>
-                <%= message %>
-            <% } %>
-        </h3>
+        <% if (locals.message) { %>
+        <div class="row alert-message block-message error">
+            <ul>
+                <li style="color: red"><%= message %></li>
+            </ul>
+        </div>
+        <% } %>
         
         <!-- Query  -->
-        <form method="POST" action="/front/problem/inquiry">
-            학년 : <input type="text" name="age"/><br>
-            <input type="radio" name="isMultipleQuestion" value="true">객관식 
-            <input type="radio" name="isMultipleQuestion" value="false">주관식 <br>
-            정답 : <input type="text" name="answer"/><br>
-            대단원 : <input type="text" name="bigChapter"/><br>
-            중단원 : <input type="text" name="middleChapter"/><br>
-            소단원 : <input type="text" name="smallChapter"/><br>
-            난이도 : <input type="text" name="level"/><br>
-            출처 : <input type="text" name="source"/><br>
-            출제년도 범위 : <input type="date" name="startDate"/> ~ <input type="date" name="endDate"/><br>
-            <input type="submit"/>
+        <form method="POST" action="/front/problem/inquiry/">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">문제 번호</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="문제 번호" name="problemID">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">학년</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="학년" name="age">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">문제 종류</label>
+
+                <div class="custom-control custom-radio col-sm-1 align-self-center">
+                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation2" name="isMultipleQuestion">
+                    <label class="custom-control-label" for="customControlValidation2">객관식</label>
+                </div>
+                <div class="custom-control custom-radio col-sm-1 align-self-center">
+                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation3" name="isMultipleQuestion">
+                    <label class="custom-control-label" for="customControlValidation3">주관식</label>
+                    <div class="invalid-feedback">문제 종류를 선택해주세요.</div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">정답</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="정답" name="answer">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">대단원</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="대단원" name="bigChapter">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">중단원</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="중단원" name="middleChapter">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">소단원</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="소단원" name="smallChapter">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">난이도</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="난이도" name="level">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">출처</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="출처" name="source">
+                </div>
+            </div>
+            
+            <div class="form-group row ">
+                <label class="col-sm-2 col-form-label">출제년도 범위</label>
+                <div class="col-sm-2 p-0">
+                    <input type="date" class="form-control" name="startDate">
+                </div>
+                <label class="col-form-label p-2"> ~ </label>
+                <div class="col-sm-2 p-0">
+                    <input type="date" class="form-control" name="endDate">
+                </div>
+            </div>
+            
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customCheck1" name="active" value="false">
+                <label class="custom-control-label" for="customCheck1">사용중지된 문제 조회</label>
+            </div> <br>
+            <div class="form-group row col-sm-2">
+                <button type="submit" class="btn btn-primary">조회</button>
+            </div>
         </form>
         
         <a href="/front"> 메인 페이지 </a>
         
         <!-- Result  -->
         <% if ( locals.problemList ) { %>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>문제 번호</th>
+                        <th>번호</th>
                         <th>문제 경로</th>
                         <th>해답 경로</th>
                         <th>객관식/주관식</th>
@@ -64,21 +135,22 @@
                 </thead>
             <% for (let i = 0; i < problemList.length; i++ ) { %>
                 <tr>
-                    <td><%= problemList[i].problemID %></td>
+                    <td><center><a href="/front/problem/update/<%= problemList[i].problemID %>"><%= problemList[i].problemID %></a></center></td>
                     <td><%= problemList[i].problemURL %></td>
                     <td><%= problemList[i].solutionURL %></td>
                     <td><%= problemList[i].isMultipleQuestion %></td>
                     <td><%= problemList[i].answer %></td>
-                    <td><%= problemList[i].problemCondition.age %></td>
-                    <td><%= problemList[i].problemCondition.bigChapter %></td>
-                    <td><%= problemList[i].problemCondition.middleChapter %></td>
-                    <td><%= problemList[i].problemCondition.smallChapter %></td>
-                    <td><%= problemList[i].problemCondition.level %></td>
-                    <td><%= problemList[i].problemCondition.source %></td>
+                    <td><%= problemList[i].age %></td>
+                    <td><%= problemList[i].bigChapter %></td>
+                    <td><%= problemList[i].middleChapter %></td>
+                    <td><%= problemList[i].smallChapter %></td>
+                    <td><%= problemList[i].level %></td>
+                    <td><%= problemList[i].source %></td>
                     <td><%= problemList[i].date %></td>
                 </tr>
             <% } %>
             </table>
         <% } %>
+    </div>
     </body>
 </html>

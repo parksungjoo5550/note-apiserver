@@ -1,13 +1,11 @@
 const router = require('express').Router();
-
-const controller = require('./controller');
 const auth = require('../../../middlewares/auth');
 
 router.use('/view', auth.login);
-router.post('/view', controller.view);
-router.post('/view/:mode', controller.view);
+router.post('/view', require('./view'));
+router.post('/view/:mode', require('./view'));
 
 router.use('/rate', auth.login)
-router.post('/rate', controller.rate);
+router.post('/rate', require('./rate'));
 
 module.exports = router;

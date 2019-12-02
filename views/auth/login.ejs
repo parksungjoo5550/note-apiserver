@@ -1,23 +1,50 @@
 <html>
     <head>
-        <meta charset="utf-8"/>
-        <link rel="stylesheet" href="static/style.css">
+        <% include ../head %>
+        <link href="/static/dist/css/sb-admin-2-login.css?v=9" rel="stylesheet">
+
+        <script type="text/javascript">
+            window.alert = function(){};
+            var defaultCSS = document.getElementById('bootstrap-css');
+            function changeCSS(css){
+                if(css) $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="'+ css +'" type="text/css" />'); 
+                else $('head > link').filter(':first').replaceWith(defaultCSS); 
+            }
+            $( document ).ready(function() {
+              var iframe_height = parseInt($('html').height()); 
+              window.parent.postMessage( iframe_height, 'https://bootsnipp.com');
+            });
+        </script>
     </head>
     
     <body>
-        <h2>
-            로그인
-        </h2>
-        <h3 style="color: red">
-            <%= message %>
-        </h3>
-        <form action="/front/auth/login" method="post">
-            Id : <input type="text" name="userid"> Password : <input type="password" name="password"> 
-            <input type="submit" value="로그인"> <br><br>
-            
-            <a href="/front/auth/register"> 회원가입 </a>
-        </form>
-        
-        <a href="/front"> 메인 페이지 </a>
+        <div class="container">
+            <div class="card card-container">
+                <% if (locals.message) { %>
+                    <div class="alert-message block-message error">
+                        <ul>
+                            <li style="color: red"><%= message %></li>
+                        </ul>
+                    </div>
+                <% } %>
+
+                <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                <p id="profile-name" class="profile-name-card"></p>
+                <form class="form-signin" method="POST" action="/front/auth/login">
+                    <span id="reauth-email" class="reauth-email"></span>
+                    <input type="id" id="inputEmail" name="userid" class="form-control" placeholder="ID or Email address" required autofocus>
+                    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+                    <div id="remember" class="checkbox">
+                        <label>
+                            <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+                </form><!-- /form -->
+                <a href="/front/auth/register" class="register-account">
+                    Sign-up
+                </a>
+            </div><!-- /card-container -->
+        </div><!-- /container -->
     </body>
 </html>

@@ -68,9 +68,10 @@ router.post('/inquiry', (req, res) => {
         headers: {
             'x-access-token': req.cookies.token
         },
-        uri: 'http://localhost:3000/api/problem/inquiry', 
+        uri: 'http://localhost:3000/api/problem/inquiry/all', 
         method: 'POST',
         body: {
+            problemID: req.body.problemID,
             age: req.body.age,
             bigChapter: req.body.bigChapter,
             middleChapter: req.body.middleChapter,
@@ -78,14 +79,15 @@ router.post('/inquiry', (req, res) => {
             level: req.body.level,
             source: req.body.source,
             startDate: req.body.startDate,
-            endDate: req.body.endDate
+            endDate: req.body.endDate,
+            active: req.body.active === "false"? false: true
         },
         json: true
     }
     
     request.post(options, (err, httpResponse, body) => {
         if ( body.success == false ) {
-            res.render('auth/login', {
+            res.render('problem/inquiry', {
                 message: body.message
             });
             return;
@@ -96,6 +98,76 @@ router.post('/inquiry', (req, res) => {
             problemList: body.data.problemList
         });
     });
-})
+});
+
+router.get('/update/:problemID', (req, res) => {
+    const problemID = req.params.problemID;
+    
+    const options = {
+        headers: {
+            'x-access-token': req.cookies.token
+        },
+        uri: 'http://localhost:3000/api/problem/inquiry/all', 
+        method: 'POST',
+        body: {
+            problemID: problemID
+        },
+        json: true
+    }
+    
+    request.post(options, (err, httpResponse, body) => {
+        if ( body.success == false ) {
+            res.render('problem/update', {
+                message: body.message
+            });
+            return;
+        }
+        
+        res.render('problem/update', {
+            message: body.message,
+            problem: body.data.problemList[0]
+        });
+    });
+});
+
+router.post('/update/:problemID', (req, res) => { 
+    const problemID = req.params.problemID;
+
+    // Update problem information
+    let options = {
+        headers: {
+            'x-access-token': req.cookies.token
+        },
+        uri: 'http://localhost:3000/api/problem/update', 
+        body: 'POST',
+        form: {
+            problemID: problemID,
+            answer: req.body.answer,
+            age: req.body.age,
+            bigChapter: req.body.bigChapter,
+            middleChapter: req.body.middleChapter,
+            smallChapter: req.body.smallChapter,
+            level: req.body.level,
+            source: req.body.source,
+            date: req.body.date,
+            active: req.body.active === "false"? false: true
+        },
+        json: true
+    }
+    
+    request.post(options, (err, httpResponse, body) => {
+        if ( body.success == false ) {
+            res.render('problem/update', {
+                message: body.message
+            });
+            return;
+        }
+        
+        res.render('problem/update', {
+            message: body.message,
+            problem: body.data.problem
+        })
+    });
+});
 
 module.exports = router;

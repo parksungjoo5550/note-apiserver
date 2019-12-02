@@ -1,0 +1,117 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        
+        <% include ../head %>
+
+    </head>
+    <body>
+    <div class="container-fluid">
+        <div class="row">
+            <h1>
+                문제 정보 수정
+            </h1>
+        </div> <br>
+        
+        <% if (locals.message) { %>
+        <div class="row alert-message block-message error">
+            <ul>
+                <li style="color: red"><%= message %></li>
+            </ul>
+        </div>
+        <% } %>
+        
+        <!-- Query  -->
+        <% if (locals.problem) { %>
+        <form method="POST" action="/front/problem/update/<%= problem.problemID %>">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">문제 번호</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="문제 번호" name="problemID" value="<%= problem.problemID %>" disabled>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">학년</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="학년" name="age" value="<%= problem.age %>">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">문제 종류</label>
+
+                <div class="custom-control custom-radio col-sm-1 align-self-center">
+                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation2" <% if (problem.isMultipleQuestion) {%> checked <%}%> disabled />
+                    <label class="custom-control-label" for="customControlValidation2">객관식</label>
+                </div>
+                <div class="custom-control custom-radio col-sm-1 align-self-center">
+                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation3" <% if (!problem.isMultipleQuestion) {%> checked <%}%> disabled />
+                    <label class="custom-control-label" for="customControlValidation3">주관식</label>
+                    <div class="invalid-feedback">문제 종류를 선택해주세요.</div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">정답</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="정답" name="answer" value="<%= problem.answer %>">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">대단원</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="대단원" name="bigChapter" value="<%= problem.bigChapter %>">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">중단원</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="중단원" name="middleChapter" value="<%= problem.middleChapter %>">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">소단원</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="소단원" name="smallChapter" value="<%= problem.smallChapter %>">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">난이도</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="난이도" name="level" value="<%= problem.level %>">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">출처</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="출처" name="source" value="<%= problem.source %>">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">출제년도</label>
+                <div class="col-sm-2 p-0">
+                    <input type="date" class="form-control" name="date" value="<%= problem.date %>">
+                </div>
+            </div>
+            
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customCheck1" name="active" value="false" <% if (!problem.active) {%> checked <%}%>>
+                
+                <label class="custom-control-label" for="customCheck1">사용 중지여부</label>
+            </div> <br>
+            <div class="form-group row col-sm-2">
+                <button type="submit" class="btn btn-primary">제출</button>
+            </div>
+        </form>
+        <% } %>
+        
+        <a href="/front/problem/inquiry"> 돌아가기 </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/front"> 메인 페이지 </a> 
+    </div>
+    </body>
+</html>

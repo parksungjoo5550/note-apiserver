@@ -23,7 +23,11 @@ module.exports = (sequelize, DataTypes) => {
         smallChapter: { type: DataTypes.STRING },
         level: { type: DataTypes.STRING },
         source: { type: DataTypes.STRING },
-        date: { type: DataTypes.STRING }
+        date: { type: DataTypes.STRING },
+        active: {
+            type: DataTypes.BOOLEAN,
+            default: true
+        }
     }, { timestamps: false });
     
     Problem.findOneByindex = function (index) {

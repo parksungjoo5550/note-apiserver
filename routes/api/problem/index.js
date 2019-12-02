@@ -1,18 +1,20 @@
 const router = require('express').Router();
-
-const controller = require('./controller');
 const auth = require('../../../middlewares/auth');
 
 router.use('/create', auth.admin);
-router.post('/create', controller.create);
+router.post('/create', require('./create'));
+
+router.use('/update', auth.admin);
+router.post('/update', require('./update'));
 
 router.use('/get', auth.login)
-router.post('/get', controller.get);
+router.post('/get', require('./get'));
 
 router.use('/inquiry', auth.login)
-router.post('/inquiry', controller.inquiry);
+router.post('/inquiry', require('./inquiry'));
+router.post('/inquiry/:mode', require('./inquiry'));
 
 router.use('/category', auth.login)
-router.post('/category', controller.category);
+router.post('/category', require('./category'));
 
 module.exports = router;

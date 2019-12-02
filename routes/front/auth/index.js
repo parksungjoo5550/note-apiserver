@@ -7,19 +7,17 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-    const userid = req.body.userid;
-    const password = req.body.password;
-    const password2 = req.body.password2;
-    const name = req.body.name;
-    
     const options = {
         uri: 'http://localhost:3000/api/auth/register', 
         method: 'POST',
         body: {
-            userid: userid,
-            password: password,
-            password2: password2,
-            name: name
+            userid: req.body.userid,
+            password: req.body.password,
+            password2: req.body.password2,
+            name: req.body.name,
+            school: req.body.school,
+            admissionYear: req.body.admissionYear,
+            mathGrade: req.body.mathGrade
         },
         json: true
     }
