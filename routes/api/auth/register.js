@@ -47,7 +47,7 @@ module.exports = async (req, res) => {
         
     }
     catch (error) {
-        res.status(403).json({
+        res.json({
             success: false,
             message: error.message,
             ecode: 403
