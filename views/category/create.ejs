@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        
+        <% include ../head %>
+    </head>
+    <body>
+    <div class="container-fluid">
+        <div class="row">
+            <h1>
+                카테고리 생성
+            </h1>
+        </div> <br>
+        
+        <% if (locals.message) { %>
+        <div class="row alert-message block-message error">
+            <ul>
+                <li style="color: red"><%= message %></li>
+            </ul>
+        </div>
+        <% } %>
+        
+
+        </div>
+        
+        <a href="/front"> 메인 페이지 </a>
+    </body>
+</html>

@@ -19,14 +19,28 @@ module.exports = async (req, res) => {
         // Save Problem and Solution file.
         problemPath = path.join('/uploads/problems', problemFilename);
         fs.writeFile( path.join(__basedir, problemPath), 
-                      new Buffer(problemBase64, 'base64'), 
-                      (err) => { if (err) throw err; });
+                      new Buffer(problemBase64, 'base64'), (err) => {
+                            if (err) {
+                                res.status(403).json({
+                                    success: false,
+                                    message: err.message,
+                                    ecode: 403
+                                });
+                                return;
+                            }});
         
         if ( solutionFilename != undefined ) {
             solutionPath = path.join('/uploads/solutions', solutionFilename);
             fs.writeFile( path.join(__basedir, solutionPath),
-                          new Buffer(solutionBase64, 'base64'),
-                          (err) => { if (err) throw err; });
+                          new Buffer(solutionBase64, 'base64'), (err) => {
+                            if (err) {
+                                res.status(403).json({
+                                    success: false,
+                                    message: err.message,
+                                    ecode: 403
+                                });
+                                return;
+                            }});
         }
         else
             solutionPath = undefined;

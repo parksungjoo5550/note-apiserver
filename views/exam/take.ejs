@@ -1,0 +1,145 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        
+        <% include ../head %>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+        
+        <script>
+            <% if (locals.examID) { %>
+                examID = <%= examID %>
+            <% } %>
+        </script>
+    </head>
+    <style>
+        .col-sm-2 {
+            
+        }
+    </style>
+    <body>
+    <div class="container-fluid">
+        <div class="row">
+            <h1>
+                시험지 상세 조회
+            </h1>
+        </div> <br>
+        
+        <% if (locals.message) { %>
+        <div class="row alert-message block-message error">
+            <ul>
+                <li style="color: red"><%= message %></li>
+            </ul>
+        </div>
+        <% } %>
+        
+        <!-- Query  -->
+        <% if (locals.examID) { %>
+        <form method="POST" action="/front/exam/take/<%= examID %>">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">시험지 번호</label>
+                <div class="form-control col-sm-3">
+                    <%= examID %>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">제목</label>
+                <div class="form-control col-sm-3">
+                    <%= title %>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">문제 리스트</label>
+                <div class="form-control col-sm-3">
+                    <% for ( let i = 0; i < problemIDList.length; i++ ) { %>
+                        <a href="/front/problem/update/<%= problemIDList[i] %>" target="_blank"><%= problemIDList[i] %></a>&nbsp;
+                    <% } %>
+                </div>
+            </div>
+            
+            <p>
+              <a id="toggle-shareList" class="btn btn-primary" data-toggle="collapse" href="#shareList" role="button" aria-expanded="false" aria-controls="shareList">
+                공유중인 학생 조회
+              </a>
+            </p>
+            <div class="collapse" id="shareList">
+                <table class="table w-25" id="shareList-table">
+                <thead>
+                    <tr>
+                        <th>시험 타입</th>
+                        <th>숙제 타입</th>
+                    </tr>
+                </thead>
+                </table>
+            </div>
+            
+        </form>
+        <% } %>
+        
+        <a href="/front/problem/inquiry"> 돌아가기 </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/front"> 메인 페이지 </a> 
+    </div>
+    <script>
+        function OutputMessage(msg){
+            $('#error-ul').html('<li style="color: red">' + msg + '</li>');
+        }
+        
+        function toggleShareButton(e) {
+            innerText = $(e).html() == '접기' ? '공유중인 학생 조회' : '접기'; 
+            $(e).html(innerText);
+        }
+        
+        $('#toggle-shareList').on('click', function () {
+            toggleShareButton(this);
+            
+            // Get the Room.Assigned room by examID
+            assignedList = {useridList: [], nameList: []};
+            homeworkList = {useridList: [], nameList: []};
+            $.ajax({
+                type: "POST",
+                url: '/api/room/list',
+                headers: {
+                    "x-access-token": $.cookie('token')
+                },
+                data: { 
+                    examID: examID,
+                    type: 0 // Room.ASSIGNED      
+                },
+                async: false,
+                success: function (data){
+                    assignedList = data.success == false ?  : data.data;
+                },
+                dataType: 'json'
+            });
+            
+            $.ajax({
+                type: "POST",
+                url: '/api/room/list',
+                headers: {
+                    "x-access-token": $.cookie('token')
+                },
+                data: { 
+                    examID: examID,
+                    type: 1 // Room.HOMEWORK
+                },
+                async: false,
+                success: function (data){
+                    if ( data.success == true )
+                        homeworkList = data.data;
+                },
+                dataType: 'json'
+            });
+            
+            console.log(assignedList);
+            console.log(homeworkList);
+            maxLen = assignedList.useridList.length > homeworkList.useridList.length ? assignedList.useridList.length : homeworkList.useridList.length;
+            console.log(maxLen);
+            for (let i = 0; i < maxLen; i++ ) {
+                $('#shareList-table').append($('<tr>')
+                                             .append($('<td>').html(homeworkList.nameList[i]))
+                                             .append($('<td>').html(assignedList.nameList[i])))
+            }
+        });
+    </script>
+    </body>
+</html>

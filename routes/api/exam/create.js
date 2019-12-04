@@ -12,14 +12,15 @@ const Problem = require('../../../models/').problem;
     
     POST /api/exam/create
     {
-        title        {string},
-        problemIDList  {Array}
+        title            {string},
+        problemIDList    {Array},
+        timeLimit        {Integer}
     }
 */
 
 module.exports = async (req, res) => {
     const userid = req.token.userid;
-    const { title, problemIDList } = req.body;
+    const { title, problemIDList, timeLimit } = req.body;
     
     try {
         if ( !title || !problemIDList )
@@ -64,7 +65,7 @@ module.exports = async (req, res) => {
             problemIDList2.shift();
             doc.image(path.join(__basedir, problem.dataValues.problemURL), 10, 50, 
                          { width: doc.page.width/2 - 20 });
-   
+
             // Image 2
             if ( problemIDList2.length > 0 ) {
                 problem = await Problem.findOneByindex(problemIDList2[0]);
@@ -86,11 +87,11 @@ module.exports = async (req, res) => {
             
         doc.end();
         
-        console.log(problemIDList.join(' '));
         await Exam.create({ userid: userid, 
                             title: title, 
                             problemIDList: problemIDList.join(' '),
                             examURL: examURL,
+                            timeLimit: timeLimit == undefined ? 0 : timeLimit,
                             createdAt: new Date().toISOString().substring(0, 19).replace('T',' ')
                          });
         res.json({

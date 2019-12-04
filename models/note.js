@@ -13,9 +13,11 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: { type: DataTypes.STRING }
     });
     
+    Note.UNCONFIRMED = -1;
     Note.INCORRECT = 0;
     Note.CORRECT = 1;
-    Note.UNCONFIRMED = -1;
+    Note.ASSIGNED = 2;
+    
     
     return Note;
 }

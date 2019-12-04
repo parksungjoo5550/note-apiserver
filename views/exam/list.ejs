@@ -5,26 +5,29 @@
         <% include ../head %>
     </head>
     <body>
-        <h2>
-            내가 만든 시험지 조회
-        </h2>
+    <div class="container-fluid">
+        <div class="row">
+            <h1>
+                시험지 조회
+            </h1>
+        </div> <br>
         
-        <h3 style="color: red" id="message">
-            <% if ( locals.message ) { %>
-                <%= message %>
-            <% } %>
-        </h3>
+        <div class="row alert-message block-message error">
+            <ul id="error-ul">
+                <% if (locals.message) { %><li style="color: red"><%= message %></li><% } %>
+            </ul>
+        </div>
         
         <!-- Query  -->
         <form method="POST" action="/front/exam/list">
-            <input type="submit" value="조회"/>
+            <button type="submit" class="btn btn-primary">조회</button>
         </form>
         
         <a href="/front"> 메인 페이지 </a>
         
         <!-- Result  -->
         <% if ( locals.examList ) { %>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>시험지 번호</th>
@@ -33,13 +36,19 @@
                     </tr>
                 </thead>
             <% for (let i = 0; i < examList.length; i++ ) { %>
-                <tr>
-                    <td><%= examList[i].examID %></td>
+                <tr data-href="/front/exam/take/<%= examList[i].examID %>">
+                    <td><a href="/front/exam/take/<%= examList[i].examID %>"><%= examList[i].examID %></a></td>
                     <td><%= examList[i].title %></td>
                     <td><%= examList[i].createdAt %></td>
                 </tr>
             <% } %>
             </table>
         <% } %>
+    </div>
+        <script>
+        $('tr[data-href]').on("click", function() {
+            document.location = $(this).data('href');
+        });    
+    </script>
     </body>
 </html>

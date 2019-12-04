@@ -13,4 +13,7 @@ router.post('/take', require('./take'));
 router.use('/confirm', auth.login);
 router.post('/confirm', require('./confirm'));
 
+router.use('/share', auth.admin);
+router.post('/share', require('./share'));
+
 module.exports = router;

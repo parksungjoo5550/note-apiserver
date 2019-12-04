@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
     const mode = req.params.mode;
     
     try {
-        let options = mode === 'all' ? {} : { active: true };
+        options = mode === 'all' ? {} : { active: true };
         
         if ( problemID !== undefined && problemID !== '' )
             options.index = parseInt(problemID);
@@ -35,36 +35,36 @@ module.exports = async (req, res) => {
         if ( active !== undefined )
             options.active = active;
         
-        let results = await Problem.findAll({ where: options });
-        let problemList = [];
-        
-        for (let i = 0; i < results.length; i++) {
-            let problem = {};
+        results = await Problem.findAll({ where: options });
+        problemList = results.map( (r) => {
+            problem = {};
             
             if ( mode == 'all' ) {
-                problem = results[i].dataValues;
+                problem = r.dataValues;
                 problem.problemID = problem.index;
             }
             else {
-                problem = { problemID: results[i].dataValues.index,
-                                problemURL: results[i].dataValues.problemURL, 
-                                isMultipleQuestion: results[i].dataValues.isMultipleQuestion,
-                                problemCondition: {
-                                    age: results[i].dataValues.age,
-                                    bigChapter: results[i].dataValues.bigChapter,
-                                    middleChapter: results[i].dataValues.middleChapter,
-                                    smallChapter: results[i].dataValues.smallChapter,
-                                    level: results[i].dataValues.level,
-                                    source: results[i].dataValues.source
-                                }
-                              };
+                problem = { 
+                            problemID: r.dataValues.index,
+                            problemURL: r.dataValues.problemURL, 
+                            isMultipleQuestion: r.dataValues.isMultipleQuestion,
+                            problemCondition: {
+                                age: r.dataValues.age,
+                                bigChapter: r.dataValues.bigChapter,
+                                middleChapter: r.dataValues.middleChapter,
+                                smallChapter: r.dataValues.smallChapter,
+                                level: r.dataValues.level,
+                                source: r.dataValues.source
+                            }
+                          };
             }
-            problemList.push(problem);
-        }
+            
+            return problem;
+        });
         
         res.json({
             success: true,
-            message: '조건에 맞는 문제 리스트를 조회 완료했습니다.',
+            message: '조건에 맞는 문제를 조회 완료했습니다.',
             ecode: 200,
             data: { problemList: problemList },
         });

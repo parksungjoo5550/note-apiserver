@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
         incorrectCnt = undefined;
         unconfirmedCnt = undefined;
         
-        options = { where: { userid: userid, state: { [Op.ne]: Note.UNCONFIRMED } } };
+        options = { where: { userid: userid, state: { [Op.and] : [{ [Op.ne]: Note.UNCONFIRMED }, { [Op.ne]: Note.ASSIGNED }] }}};
         
         // Filter by examID
         if ( examID !== undefined )
@@ -37,13 +37,14 @@ module.exports = async (req, res) => {
             options.where.state = Note.INCORRECT;
         else if ( mode == "unconfirmed" )
             options.where.state = Note.UNCONFIRMED;
+        else if ( mode == "assigned" )
+            options.where.state = Note.ASSIGNED;
         else if ( examID !== undefined ) { 
             correctCnt = (await Note.findAndCountAll({ where: { userid: userid, examID: examID, state: Note.CORRECT } })).count;
             incorrectCnt = (await Note.findAndCountAll({ where: { userid: userid, examID: examID, state: Note.INCORRECT } })).count;
             unconfirmedCnt = (await Note.findAndCountAll({ where: { userid: userid, examID: examID, state: Note.UNCONFIRMED } })).count;
         }
         notes = await Note.findAll(options);
-            
         
         // Make a array contains noteList.
         noteList = [];

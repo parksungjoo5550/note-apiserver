@@ -9,15 +9,22 @@ module.exports = (sequelize, DataTypes) => {
         title: { type: DataTypes.STRING },
         problemIDList: { type: DataTypes.STRING },
         examURL: { type: DataTypes.STRING }, 
+        timeLimit: { 
+            type: DataTypes.INTEGER,
+            default: 0
+        },
         isDone: { 
             type: DataTypes.BOOLEAN,
             default: false
         },
-        createdAt: { type: DataTypes.STRING }
+        createdAt: { type: DataTypes.STRING },
     }, { timestamps: false });
     
     Exam.findOneByUserid = function (userid) {
         return this.findOne({ where: { userid: userid } });
+    }
+    Exam.findOneByindex = function (index) {
+        return this.findOne({ where: { index: index } });
     }
     
     return Exam;

@@ -1,7 +1,9 @@
 // Models
-const Exam = require('../../../models/').exam;
 const Problem = require('../../../models/').problem;
+const Exam = require('../../../models/').exam;
+const Room = require('../../../models/').room;
 const Note = require('../../../models/').note;
+
 
 module.exports = async (req, res) => {
     const userid = req.token.userid;
@@ -22,41 +24,45 @@ module.exports = async (req, res) => {
     
             // if the problem's type isn't MultipleQuestion
             if ( problem.dataValues.isMultipleQuestion == false ) {
-                answerPath = path.join('/uploads/answers', ['answer', Date.now() + '.jpg'].join('-'));
-                fs.writeFile( path.join(__basedir, answerPath ), 
-                              new Buffer(answerList[i].trim(), 'base64'), 
-                              (err) => { if (err) throw err; });
+                submit = path.join('/uploads/answers', ['answer', Date.now() + '.jpg'].join('-'));
                 
-                await Note.create({ userid: userid,
-                                    examID: examID,
-                                    problemID: problemIDList[i],
-                                    submit: answerPath,
-                                    state: Note.UNCONFIRMED,
-                                    createdAt: new Date().toISOString().split('T')[0]
-                                 });
+                // Create a file contains student's anwser.
+                fs.writeFile( path.join(__basedir, submit ), 
+                              new Buffer(answerList[i].trim(), 'base64'), (err) => {
+                                        if (err) {
+                                            res.status(403).json({
+                                                success: false,
+                                                message: err.message,
+                                                ecode: 403
+                                            });
+                                            return;
+                                        }});
+                
+                state = Note.UNCONFIRMED;
             }
             else {
-                state = Note.CORRECT;
-                
-                // if the problem's answer is wrong, write to Note db.
-                if ( problem.dataValues.answer.trim() != answerList[i].trim() ) 
-                    state = Note.INCORRECT;
-
-                await Note.create({ userid: userid,
-                                    examID: examID,
-                                    problemID: problemIDList[i],
-                                    submit: answerList[i].trim(),
-                                    state: state,
-                                    createdAt: new Date().toISOString().split('T')[0]
-                                  });
+                submit = answerList[i].trim();
+                state =  problem.dataValues.answer.trim() != answerList[i].trim() ? Note.INCORRECT: Note.CORRECT;
             }
+            
+            // Check if the exam is assigned by a teacher.
+            if ( Room.isUserAssigned(examID, userid) )
+                state = Note.ASSIGNED;
+            
+            await Note.create({ userid: userid,
+                                examID: examID,
+                                problemID: problemIDList[i],
+                                submit: submit,
+                                state: state,
+                                createdAt: new Date().toISOString().split('T')[0]
+                             });
         }
         // Set isDone flag
         Exam.update({ isDone: true }, { where: { index: examID, userid: userid } });
         
         res.json({
             success: true,
-            message: '시험지 채점이 완료됐습니다.',
+            message: '시험지 제출이 완료됐습니다.',
             ecode: 200
         });
     }

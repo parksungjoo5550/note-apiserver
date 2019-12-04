@@ -12,7 +12,7 @@ exports.login = async (req, res, next) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });
@@ -35,7 +35,7 @@ exports.admin = async (req, res, next) => {
     }
     catch (error) {
         res.status(403).json({
-            success: 'false',
+            success: false,
             message: error.message,
             ecode: 403
         });

@@ -134,7 +134,7 @@
                     </tr>
                 </thead>
             <% for (let i = 0; i < problemList.length; i++ ) { %>
-                <tr>
+                <tr data-href="/front/problem/update/<%= problemList[i].problemID %>">
                     <td><center><a href="/front/problem/update/<%= problemList[i].problemID %>"><%= problemList[i].problemID %></a></center></td>
                     <td><%= problemList[i].problemURL %></td>
                     <td><%= problemList[i].solutionURL %></td>
@@ -152,5 +152,10 @@
             </table>
         <% } %>
     </div>
+    <script>
+        $('tr[data-href]').on("click", function() {
+            document.location = $(this).data('href');
+        });    
+    </script>
     </body>
 </html>

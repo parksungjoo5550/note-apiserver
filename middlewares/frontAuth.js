@@ -12,7 +12,9 @@ exports.login = async (req, res, next) => {
     }
     catch (error) {
         res.render('auth/login', {
-            message: error.message
+            success: false,
+            message: error.message,
+            ecode: 403,
         });
     }
 }
@@ -33,7 +35,9 @@ exports.admin = async (req, res, next) => {
     }
     catch (error) {
         res.render('auth/login', {
-            message: error.message
+            success: false,
+            message: error.message,
+            ecode: 403,
         });
     }
 }

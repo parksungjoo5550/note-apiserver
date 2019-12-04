@@ -2,6 +2,7 @@
 require('dotenv').config();
 
 global.__basedir = __dirname;
+global.__baseurl = 'http://localhost:3000'
 
 // Dependencies
 const express = require('express');
