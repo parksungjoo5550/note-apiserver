@@ -17,6 +17,10 @@
             .checked {
                 background-color : #aec2e4;
             }
+            
+            .hover-button {
+                float: right;
+            }
         </style>
     </head>
     <body>
@@ -44,7 +48,7 @@
                 <tbody>
                     <% if ( locals.bigChapterList ) { %>
                         <% for (let i = 0; i < bigChapterList.length; i++ ) { %>
-                            <tr><td><%= bigChapterList[i] %></td></tr>
+                            <tr><td value="<%= bigChapterList[i] %>"><%= bigChapterList[i] %></td></tr>
                         <% } %>
                     <% } %>
                     <tr>
@@ -69,11 +73,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if ( locals.middleChapterList ) { %>
-                        <% for (let i = 0; i < middleChapterList.length; i++ ) { %>
-                            <tr><td><%= middleChapterList[i] %></td></tr>
-                        <% } %>
-                    <% } %>
                     <tr>
                         <td>
                             <div class="input-group">
@@ -96,11 +95,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if ( locals.smallChapterList ) { %>
-                        <% for (let i = 0; i < smallChapterList.length; i++ ) { %>
-                            <tr><td><%= smallChapterList[i] %></td></tr>
-                        <% } %>
-                    <% } %>
                     <tr>
                         <td>
                             <div class="input-group">
@@ -125,7 +119,7 @@
         }
         
         function tableRow(text) {
-            return $('<tr><td>' + text + '</tr></td>');
+            return $(`<tr><td value="${text}">${text}</tr></td>`);
         }
         
         // When bigChapter row is clicked
@@ -136,14 +130,14 @@
                     return;
                 
                 e.preventDefault();
-
+                
                 $.ajax({
                     type: "POST",
                     url: '/api/category/list',
                     headers: {
                         "x-access-token": $.cookie('token')
                     },
-                    data: { bigChapter: $(this).html() },
+                    data: { bigChapter: $(this).attr('value') },
                     async: false,
                     success: function (data){
                         if (data.success == false) {
@@ -175,12 +169,27 @@
                 $(this).addClass('checked');
 
                 // Save parent category.
-                $('input[name="bigChapter2"]').val($(this).html());
+                $('input[name="bigChapter2"]').val($(this).attr('value'));
                 // Clean middleChapter information.
                 $('input[name="middleChapter2"]').val('');
                 
                 // Set middleChapter td onclick listener.
                 SetmiddleChapterListener();
+            });
+            
+            // Set a hover button.
+            $('#bigChapter-table tbody tr td').hover(function() {
+                // If the clicked td is input form.
+                if ( $(this).find('div').length > 0 )
+                    return;
+                
+                $(this).append('<button class="btn btn-danger hover-button" onclick="deleteCategory(\'bigChapter\')"><i class="fa fa-trash" aria-hidden="true"></i></button>');
+            }, function() {
+                // If the clicked td is input form.
+                if ( $(this).find('div').length > 0 )
+                    return;
+                
+                $(this).find('button').remove();
             });
         }
         
@@ -201,8 +210,9 @@
                     },
                     data: { 
                         bigChapter: $('input[name="bigChapter2"]').val(),
-                        middleChapter: $(this).html()
+                        middleChapter: $(this).attr('value')
                     },
+                    async: false,
                     success: function (data){
                         if (data.success == false) {
                             OutputMessage(data.message);
@@ -220,6 +230,8 @@
                         
                         // Append the input form.
                         $('#smallChapter-table tbody').append($plusButton);
+                        
+                        SetsmallChapterListener();
                     },
                     dataType: 'json'
                 });
@@ -228,7 +240,39 @@
                 $(this).addClass('checked');
                 
                 // Save parent category.
-                $('input[name="middleChapter2"]').val($(this).html());
+                $('input[name="middleChapter2"]').val($(this).attr('value'));
+            });
+            
+             // Set a hover button.
+            $('#middleChapter-table tbody tr td').hover(function() {
+                // If the hovered td is input form.
+                if ( $(this).find('div').length > 0 )
+                    return;
+                
+                $(this).append('<button class="btn btn-danger hover-button" onclick="deleteCategory(\'middleChapter\')"><i class="fa fa-trash" aria-hidden="true"></i></button>');
+            }, function() {
+                // If the hovered td is input form.
+                if ( $(this).find('div').length > 0 )
+                    return;
+                
+                $(this).find('button').remove();
+            });
+        }
+        
+        function SetsmallChapterListener() {
+            // Set a hover button.
+            $('#smallChapter-table tbody tr td').hover(function() {
+                // If the hovered td is input form.
+                if ( $(this).find('div').length > 0 )
+                    return;
+                
+                $(this).append('<button class="btn btn-danger hover-button" onclick="deleteCategory(\'smallChapter\')"><i class="fa fa-trash" aria-hidden="true"></i></button>');
+            }, function() {
+                // If the hovered td is input form.
+                if ( $(this).find('div').length > 0 )
+                    return;
+                
+                $(this).find('button').remove();
             });
         }
         
@@ -267,6 +311,47 @@
                     $(`input[name="${categoryType}"]`).val('');
                 }
             });
+        }
+        
+        // Delete a category when a button is clicked.
+        function deleteCategory(categoryType) {
+            category = $('.hover-button').parent().attr('value');
+            
+            if ( confirm("정말로 삭제 하시겠습니까?") ) { 
+                $.ajax({
+                    type: "POST",
+                    url: '/api/category/delete',
+                    headers: {
+                        "x-access-token": $.cookie('token')
+                    },
+                    data: { 
+                        bigChapter: categoryType == 'bigChapter' ? category : $('input[name="bigChapter2"]').val(),
+                        middleChapter: categoryType == 'middleChapter' ? category : $('input[name="middleChapter2"]').val(),
+                        smallChapter: categoryType == 'smallChapter' ? category : ''
+                    },
+                    async: false,
+                    success: function (data){
+                        if (data.success == false) {
+                            OutputMessage(data.message);
+                            return;
+                        }
+
+                        // Reload category list.
+                        if ( categoryType == 'bigChapter' ) {
+                            location.reload();
+                        }
+                        else if ( categoryType == 'middleChapter' ) {
+                            $('#bigChapter-table td[class="checked"]').click();
+                        }
+                        else if ( categoryType == 'smallChapter' ) {
+                            $('#middleChapter-table td[class="checked"]').click();
+                        }
+
+                        // Clean a input form data.
+                        $(`input[name="${categoryType}"]`).val('');
+                    }
+                });
+            }
         }
         
     SetbigChapterListener();
