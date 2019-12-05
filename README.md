@@ -27,7 +27,8 @@ This server is used to support educational institute.
   * [/api/exam/list](#post-apiexamlist)
   * [/api/exam/take](#post-apiexamtake)
   * [/api/exam/confirm](#post-apiexamconfirm)
-   
+  * [/api/exam/share](#post-apiexamshare)
+  
 * **/api/note**
   * [/api/note/view](#post-apinoteview)
   * [/api/note/rate](#post-apinoterate)
@@ -35,6 +36,9 @@ This server is used to support educational institute.
 * **/api/category**
   * [/api/category/create](#post-apicategorycreate)
   * [/api/category/list](#post-apicategorylist)
+
+* **/api/share**
+  * [/api/share/list](#post-apiroomlist)
 
 <br>
 
@@ -336,8 +340,8 @@ Not required
 | Name | Data type | Description | 
 ---|---|---
 | examID | Integer | 시험지 고유 번호 | 
-| data.problemIDList | Array | 문제 번호 리스트 | 
-| data.answerList | Array | 제출 답안 리스트 | 
+| problemIDList | Array | 문제 번호 리스트 | 
+| answerList | Array | 제출 답안 리스트 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -376,10 +380,11 @@ Not required
 <br>
 
 ### POST /api/note/view/:mode
-제출된 시험지에 대한 정보를 상태에 따라 조회합니다. 상태는 아래와 같습니다.<br>
-correct - 맞은 문제 <br>
-incorrect - 틀린 문제 <br>
-unconfirmed - 채점중인 문제
+제출된 시험지에 대한 정보를 상태에 따라 조회합니다. <br>
+{ mode: 'correct' } - 맞은 문제 <br>
+{ mode: 'imcorrect' } - 틀린 문제 <br>
+{ mode: 'unconfirmed' } - 주관식 채점 대기 문제
+{ mode: 'assigned' } - 관리지가 공유한 시험 문제
 
 #### Parameter
 | Name | Data type | Description | 
@@ -462,5 +467,47 @@ unconfirmed - 채점중인 문제
 | ecode | Integer | 응답 코드 | 
 | data.categories | Array | 카테고리 리스트 | 
 | data.categories[i] | String | 카테고리 | 
+<br>
+<!-- /api/category -->
+
+<!-- /api/room -->
+### POST /api/room/create
+시험지를 학생들과 공유합니다.
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| examID | Integer | 공유할 시험지 번호 | 
+| useridList | Array | 공유할 학생 아이디 리스트 | 
+| type | Integer | 공유 타입 | 
+
+{ type : 0 } // 시험 타입
+{ type : 1 } // 숙제 타입
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+<br>
+
+### POST /api/room/list
+특정 시험지에 대해 공유중인 학생을 조회합니다.
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| examID | Integer | 시험 번호 | 
+| type | Integer | 공유 타입 | 
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.useridList | Array | 학생 아이디 리스트 | 
+| data.nameList | String | 학생 이름 리스트 | 
 <br>
 <!-- /api/category -->

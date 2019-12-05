@@ -65,19 +65,22 @@
             </p>
             <div class="collapse" id="shareList">
                 <table class="table w-25" id="shareList-table">
-                <thead>
-                    <tr>
-                        <th>시험 타입</th>
-                        <th>숙제 타입</th>
-                    </tr>
-                </thead>
+                    <thead>
+                        <tr>
+                            <th>시험 타입</th>
+                            <th>숙제 타입</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    
+                    </tbody>
                 </table>
             </div>
             
         </form>
         <% } %>
         
-        <a href="/front/problem/inquiry"> 돌아가기 </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/front"> 메인 페이지 </a> 
+        <a href="/front/exam/list"> 돌아가기 </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/front"> 메인 페이지 </a> 
     </div>
     <script>
         function OutputMessage(msg){
@@ -85,7 +88,9 @@
         }
         
         function toggleShareButton(e) {
-            innerText = $(e).html() == '접기' ? '공유중인 학생 조회' : '접기'; 
+            _class = $('#shareList').attr('class');
+            
+            innerText = _class == 'collapse' ? '접기' : '공유중인 학생 조회'; 
             $(e).html(innerText);
         }
         
@@ -107,7 +112,8 @@
                 },
                 async: false,
                 success: function (data){
-                    assignedList = data.success == false ?  : data.data;
+                    if ( data.success == true )
+                        homeworkList = data.data;
                 },
                 dataType: 'json'
             });
@@ -129,13 +135,12 @@
                 },
                 dataType: 'json'
             });
-            
-            console.log(assignedList);
-            console.log(homeworkList);
+
             maxLen = assignedList.useridList.length > homeworkList.useridList.length ? assignedList.useridList.length : homeworkList.useridList.length;
-            console.log(maxLen);
+            
+            $('#shareList-table tbody').html('');
             for (let i = 0; i < maxLen; i++ ) {
-                $('#shareList-table').append($('<tr>')
+                $('#shareList-table tbody').append($('<tr>')
                                              .append($('<td>').html(homeworkList.nameList[i]))
                                              .append($('<td>').html(assignedList.nameList[i])))
             }

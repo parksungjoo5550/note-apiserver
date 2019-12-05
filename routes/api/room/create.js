@@ -4,9 +4,9 @@ const Exam = require('../../../models/').exam;
 const Room = require('../../../models/').room;
 
 /* 
-    * Share a exam
+    * Create a room
     
-    POST /api/exam/share
+    POST /api/room/create
     {
         examID       {Integer},
         useridList   {Array},

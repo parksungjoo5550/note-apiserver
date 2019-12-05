@@ -59,8 +59,8 @@ module.exports = async (req, res) => {
                 
             // Image 1
             problem = await Problem.findOneByindex(problemIDList2[0]);
-            if ( problem == null )
-                throw new Error(`${problemIDList2[0]}번 문제는 존재하지 않습니다.`);
+            if ( problem == null || problem.dataValues.active == false )
+                    throw new Error(`${problemIDList2[0]}번 문제는 이용할 수 없습니다.`);
             
             problemIDList2.shift();
             doc.image(path.join(__basedir, problem.dataValues.problemURL), 10, 50, 
@@ -69,8 +69,8 @@ module.exports = async (req, res) => {
             // Image 2
             if ( problemIDList2.length > 0 ) {
                 problem = await Problem.findOneByindex(problemIDList2[0]);
-                if ( problem == null )
-                    throw new Error(`${problemIDList2[0]}번 문제는 존재하지 않습니다.`);
+                if ( problem == null || problem.dataValues.active == false )
+                    throw new Error(`${problemIDList2[0]}번 문제는 이용할 수 없습니다.`);
                 
                 problemIDList2.shift();
                 doc.image(path.join(__basedir, problem.dataValues.problemURL),
