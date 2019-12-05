@@ -38,12 +38,31 @@ exports.get = (req, res) => {
 }
 
 exports.post = (req, res) => {
+    const bigChapter = req.body.bigChapter2 || req.body.bigChapter;
+    const middleChapter = req.body.middleChapter2 || req.body.middleChapter;
+    const smallChapter = req.body.smallChapter2 || req.body.smallChapter;
+    
     try {
-        
+        const options = {
+            headers: { 'x-access-token': req.cookies.token },
+            uri: 'create', 
+            body: {
+                bigChapter: bigChapter,
+                middleChapter: middleChapter,
+                smallChapter: smallChapter
+            }
+        }
+
+        api.post(options, (err, httpResponse, body) => {
+            try {
+                res.render('category/list', { message: body.message });
+            }
+            catch (error) {
+                res.render('category/list', { message: error.message });
+            }
+        });
     }
     catch (error) {
-        res.render('category/list', {
-            message: error.message
-        });
+        res.render('category/list', { message: error.message });
     }
 }

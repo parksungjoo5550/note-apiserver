@@ -10,7 +10,7 @@ This server is used to support educational institute.
   * [/api/auth/register](#post-apiauthregister)
   * [/api/auth/login](#post-apiauthlogin) 
   * [/api/auth/resign](#post-apiauthresign) 
-  * [/api/auth/validate](#get-apiauthvalidate) 
+  * [/api/auth/validate](#post-apiauthvalidate) 
 
 * **/api/student**
   * [/api/student/set](#post-apistudentset)
@@ -27,7 +27,6 @@ This server is used to support educational institute.
   * [/api/exam/list](#post-apiexamlist)
   * [/api/exam/take](#post-apiexamtake)
   * [/api/exam/confirm](#post-apiexamconfirm)
-  * [/api/exam/share](#post-apiexamshare)
   
 * **/api/note**
   * [/api/note/view](#post-apinoteview)
@@ -37,8 +36,9 @@ This server is used to support educational institute.
   * [/api/category/create](#post-apicategorycreate)
   * [/api/category/list](#post-apicategorylist)
 
-* **/api/share**
-  * [/api/share/list](#post-apiroomlist)
+* **/api/room**
+  * [/api/room/create](#post-apiroomcreate)
+  * [/api/room/list](#post-apiroomlist)
 
 <br>
 
@@ -101,7 +101,7 @@ This server is used to support educational institute.
 | ecode | Integer | 응답 코드 | 
 <br>
 
-### GET /api/auth/validate
+### POST /api/auth/validate
 로그인한 계정의 토큰 정보를 반환합니다.
 
 #### Parameter
@@ -383,7 +383,7 @@ Not required
 제출된 시험지에 대한 정보를 상태에 따라 조회합니다. <br>
 { mode: 'correct' } - 맞은 문제 <br>
 { mode: 'imcorrect' } - 틀린 문제 <br>
-{ mode: 'unconfirmed' } - 주관식 채점 대기 문제
+{ mode: 'unconfirmed' } - 주관식 채점 대기 문제 <br>
 { mode: 'assigned' } - 관리지가 공유한 시험 문제
 
 #### Parameter
@@ -481,8 +481,8 @@ Not required
 | useridList | Array | 공유할 학생 아이디 리스트 | 
 | type | Integer | 공유 타입 | 
 
-{ type : 0 } // 시험 타입
-{ type : 1 } // 숙제 타입
+{ type : 0 } - 시험 타입 <br>
+{ type : 1 } - 숙제 타입
 
 #### Response
 | Name | Data type | Description | 

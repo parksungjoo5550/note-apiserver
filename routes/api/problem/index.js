@@ -14,7 +14,4 @@ router.use('/inquiry', auth.login)
 router.post('/inquiry', require('./inquiry'));
 router.post('/inquiry/:mode', require('./inquiry'));
 
-router.use('/category', auth.login)
-router.post('/category', require('./category'));
-
 module.exports = router;

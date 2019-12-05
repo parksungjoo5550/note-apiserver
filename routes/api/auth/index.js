@@ -9,10 +9,10 @@ router.use('/resign', auth.login);
 router.post('/resign', require('./resign'));
 
 router.use('/validate', auth.login);
-router.get('/validate', require('./validate'));
+router.post('/validate', require('./validate'));
 
 router.use('/resign', auth.login);
-router.get('/resign', require('./resign'));
+router.post('/resign', require('./resign'));
 
 
 module.exports = router;

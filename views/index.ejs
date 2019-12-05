@@ -8,11 +8,11 @@
     
     <body>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row col-sm-5 border-bottom">
             <h1>
                 안녕하세요. <%= token.userid %> 님
             </h1>
-        </div> <br>
+        </div><br>
         
         <% if (locals.message) { %>
         <div class="row alert-message block-message error">

@@ -6,21 +6,26 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
         
         <style>
-            .list-group{
+            .row-span {
                 display:inline-block;
-                width:20%;
-                padding: 5px;
             }
-
+            
+            table {
+                margin: .5rem!important;
+            }
+            
+            .checked {
+                background-color : #aec2e4;
+            }
         </style>
     </head>
     <body>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row col-sm-5 border-bottom">
             <h1>
                 카테고리 조회
             </h1>
-        </div> <br>
+        </div><br>
         
         <div class="row alert-message block-message error">
             <ul id="error-ul">
@@ -28,76 +33,243 @@
             </ul>
         </div>
         
-        <div class="row">
-        <div class="list-group" >
-            <span id="bigChapter-list">
-            <% if ( locals.bigChapterList ) { %>
-                <% for (let i = 0; i < bigChapterList.length; i++ ) { %>
-                    <button type="button" class="list-group-item list-group-item-action"><%= bigChapterList[i] %></button>
-                <% } %>
-            <% } %>
-            </span>
-            <form method="POST" action="/front/problem/inquiry/">
-                <input type="text" class="form-control mt-1" placeholder="카테고리 추가" name="bigChapter">
-            </form>
-        </div>
-        
-        <div class="list-group">
-            <span id="middleChapter-list">
-            </span>
-            <form method="POST" action="/front/problem/inquiry/">
-                <input type="text" class="form-control mt-1" placeholder="카테고리 추가" name="bigChapter">
-            </form>
-        </div>
-        
-        <div class="list-group" id="smallChapter-list">
-            <form method="POST" action="/front/problem/inquiry/">
+        <div class="form-group row">
+            <!-- BigChapter category -->
+            <table class="table table-bordered table-hover col-sm-3" id="bigChapter-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>대단원</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if ( locals.bigChapterList ) { %>
+                        <% for (let i = 0; i < bigChapterList.length; i++ ) { %>
+                            <tr><td><%= bigChapterList[i] %></td></tr>
+                        <% } %>
+                    <% } %>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="bigChapter">&nbsp;
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn btn-primary h-100" onclick="createCategory('bigChapter');"><i class="fas fa-plus"></i></button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="hidden" name="bigChapter2"/>
                 
-            </form>
+            <!-- MiddleChapter category -->
+            <table class="table table-bordered table-hover col-sm-3" id="middleChapter-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>중단원</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if ( locals.middleChapterList ) { %>
+                        <% for (let i = 0; i < middleChapterList.length; i++ ) { %>
+                            <tr><td><%= middleChapterList[i] %></td></tr>
+                        <% } %>
+                    <% } %>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="middleChapter">&nbsp;
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn btn-primary h-100" onclick="createCategory('middleChapter');"><i class="fas fa-plus"></i></button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="hidden" name="middleChapter2"/>
+                
+            <!-- SmallChapter category -->
+            <table class="table table-bordered table-hover col-sm-3" id="smallChapter-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>소단원</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if ( locals.smallChapterList ) { %>
+                        <% for (let i = 0; i < smallChapterList.length; i++ ) { %>
+                            <tr><td><%= smallChapterList[i] %></td></tr>
+                        <% } %>
+                    <% } %>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="smallChapter">&nbsp;
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn btn-primary h-100" onclick="createCategory('smallChapter');"><i class="fas fa-plus"></i></button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        </div>
+        
         <br>
         <a href="/front"> 메인 페이지 </a>
     </div>
 
 	<script>
-        function msgError(msg){
+        function OutputMessage(msg){
             $('#error-ul').html('<li style="color: red">' + msg + '</li>');
         }
         
-        function generateButton(text) {
-            return $('<button type="button" class="list-group-item list-group-item-action">' + text + '</button>');
+        function tableRow(text) {
+            return $('<tr><td>' + text + '</tr></td>');
         }
         
-        $('#bigChapter-list button').on('click', function (e) {
-            e.preventDefault()
+        // When bigChapter row is clicked
+        function SetbigChapterListener() {
+            $('#bigChapter-table tbody tr td').on('click', function (e) {
+                // If the clicked td is input form.
+                if ( $(this).find('div').length > 0 )
+                    return;
+                
+                e.preventDefault();
 
+                $.ajax({
+                    type: "POST",
+                    url: '/api/category/list',
+                    headers: {
+                        "x-access-token": $.cookie('token')
+                    },
+                    data: { bigChapter: $(this).html() },
+                    async: false,
+                    success: function (data){
+                        if (data.success == false) {
+                            OutputMessage(data.message);
+                            return;
+                        }
+                        
+                        // Save the input form of middleChapter table.
+                        $plusButton = $('#middleChapter-table tbody tr')[$('#middleChapter-table tbody tr').length - 1];
+                        $plusButton2 = $('#smallChapter-table tbody tr')[$('#smallChapter-table tbody tr').length - 1];
+                        // Clean all rows.
+                        $('#middleChapter-table tbody tr').remove();
+                        $('#smallChapter-table tbody tr').remove();
+                        
+                        // Append category list.
+                        data.data.categories.forEach( (category) => {
+                            $('#middleChapter-table tbody').append(tableRow(category)); 
+                        });
+                        
+                        // Append the input form.
+                        $('#middleChapter-table tbody').append($plusButton);
+                        $('#smallChapter-table tbody').append($plusButton2);
+                    },
+                    dataType: 'json'
+                });
+                
+                // Check a clicked td.
+                $('#bigChapter-table td[class="checked"]').removeClass('checked');
+                $(this).addClass('checked');
+
+                // Save parent category.
+                $('input[name="bigChapter2"]').val($(this).html());
+                // Clean middleChapter information.
+                $('input[name="middleChapter2"]').val('');
+                
+                // Set middleChapter td onclick listener.
+                SetmiddleChapterListener();
+            });
+        }
+        
+        // When middleChapter row is clicked
+        function SetmiddleChapterListener() {
+            $('#middleChapter-table tbody tr td').on('click', function (e) {
+                // If the clicked td is input form.
+                if ( $(this).find('div').length > 0 )
+                    return;     
+                
+                e.preventDefault();
+                
+                $.ajax({
+                    type: "POST",
+                    url: '/api/category/list',
+                    headers: {
+                        "x-access-token": $.cookie('token')
+                    },
+                    data: { 
+                        bigChapter: $('input[name="bigChapter2"]').val(),
+                        middleChapter: $(this).html()
+                    },
+                    success: function (data){
+                        if (data.success == false) {
+                            OutputMessage(data.message);
+                            return;
+                        }
+
+                        // Save the input form of last table row.
+                        $plusButton = $('#smallChapter-table tbody tr')[$('#smallChapter-table tbody tr').length - 1];
+                        $('#smallChapter-table tbody tr').remove();
+                            
+                        // Append category list.
+                        data.data.categories.forEach( (category) => {
+                            $('#smallChapter-table tbody').append(tableRow(category)); 
+                        });
+                        
+                        // Append the input form.
+                        $('#smallChapter-table tbody').append($plusButton);
+                    },
+                    dataType: 'json'
+                });
+                // Check a clicked td.
+                $('#middleChapter-table td[class="checked"]').removeClass('checked');
+                $(this).addClass('checked');
+                
+                // Save parent category.
+                $('input[name="middleChapter2"]').val($(this).html());
+            });
+        }
+        
+        // Create a category when a button is clicked.
+        function createCategory(categoryType) {
             $.ajax({
                 type: "POST",
-                url: '/api/category/list',
+                url: '/api/category/create',
                 headers: {
                     "x-access-token": $.cookie('token')
                 },
-                data: { bigChapter: $(this).html() },
+                data: { 
+                    bigChapter: $('input[name="bigChapter"]').val() || $('input[name="bigChapter2"]').val(),
+                    middleChapter: $('input[name="middleChapter"]').val() || $('input[name="middleChapter2"]').val(),
+                    smallChapter: $('input[name="smallChapter"]').val()
+                },
+                async: false,
                 success: function (data){
                     if (data.success == false) {
-                        msgError(data.message);
+                        OutputMessage(data.message);
                         return;
                     }
                     
-                    $('#middleChapter-list').html('');
-                    data.data.categories.forEach( (category) => {
-                        middleChapter = generateButton(category);
-                        $('#middleChapter-list').append(middleChapter);    
-                    });
+                    // Reload category list.
+                    if ( categoryType == 'bigChapter' ) {
+                        location.reload();
+                    }
+                    else if ( categoryType == 'middleChapter' ) {
+                        $('#bigChapter-table td[class="checked"]').click();
+                    }
+                    else if ( categoryType == 'smallChapter' ) {
+                        $('#middleChapter-table td[class="checked"]').click();
+                    }
                     
-                    $('#middleChapter-form').html('<input type="text" class="form-control mt-1" placeholder="카테고리 추가" name="middleChapter">');
-                },
-                dataType: 'json'
+                    // Clean a input form data.
+                    $(`input[name="${categoryType}"]`).val('');
+                }
             });
-
-            //$(this).tab('show')
-        })
+        }
+        
+    SetbigChapterListener();
 	</script>
     </body>
 </html>

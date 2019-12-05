@@ -18,11 +18,11 @@
     </style>
     <body>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row col-sm-5 border-bottom">
             <h1>
                 시험지 상세 조회
             </h1>
-        </div> <br>
+        </div><br>
         
         <% if (locals.message) { %>
         <div class="row alert-message block-message error">
@@ -63,18 +63,31 @@
                 공유중인 학생 조회
               </a>
             </p>
-            <div class="collapse" id="shareList">
-                <table class="table w-25" id="shareList-table">
-                    <thead>
-                        <tr>
-                            <th>시험 타입</th>
-                            <th>숙제 타입</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    
-                    </tbody>
-                </table>
+            <div class="collapse col-sm-2" id="shareList">
+                <div class="row">
+                    <table class="table table-bordered" id="assigned-table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>시험 타입</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <div class="row">
+                    <table class="table table-bordered" id="homework-table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>숙제 타입</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
             </div>
             
         </form>
@@ -113,7 +126,7 @@
                 async: false,
                 success: function (data){
                     if ( data.success == true )
-                        homeworkList = data.data;
+                        assignedList = data.data;
                 },
                 dataType: 'json'
             });
@@ -136,14 +149,19 @@
                 dataType: 'json'
             });
 
-            maxLen = assignedList.useridList.length > homeworkList.useridList.length ? assignedList.useridList.length : homeworkList.useridList.length;
+            // Create table row of assigned-table.
+            $('#assigned-table tbody').html('');
+            assignedList.nameList.forEach((name) => {
+                $('#assigned-table tbody').append($('<tr>')
+                                             .append($('<td>').html(name)));
+            });
             
-            $('#shareList-table tbody').html('');
-            for (let i = 0; i < maxLen; i++ ) {
-                $('#shareList-table tbody').append($('<tr>')
-                                             .append($('<td>').html(homeworkList.nameList[i]))
-                                             .append($('<td>').html(assignedList.nameList[i])))
-            }
+            // Create table row of homework-table.
+            $('#homework-table tbody').html('');
+            homeworkList.nameList.forEach((name) => {
+                $('#homework-table tbody').append($('<tr>')
+                                             .append($('<td>').html(name)));
+            });
         });
     </script>
     </body>

@@ -24,7 +24,7 @@ exports.admin = async (req, res, next) => {
     
     try {
         if (!token)
-            throw new Error('Not logged in.');
+            throw new Error('로그인을 해주세요.');
         
         req.token = await jwt.verify(token, req.app.get('jwt-secret'));
 
