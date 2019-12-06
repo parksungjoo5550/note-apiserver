@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     Note.CORRECT = 1;
     Note.ASSIGNED = 2;
     
+    Note.changeState = function (options, state) {
+        return this.update({ state: state }, options);
+    }
     
     return Note;
 }

@@ -19,10 +19,10 @@ module.exports = async (req, res) => {
     const { examID, type } = req.body;
     
     try {
-        if ( examID == undefined || !useridList || type == undefined)
+        if ( examID == undefined || !useridList || type == undefined )
             throw new Error('모든 항목을 입력해주세요.');
         
-        if ( type != Room.ASSIGNED && type != Room.HOMEWORK) 
+        if ( type != Room.ASSIGNED && type != Room.HOMEWORK ) 
             throw new Error('올바르지 않은 공유 타입입니다.');
         
         exam = await Exam.findOneByindex(examID);

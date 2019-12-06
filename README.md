@@ -384,7 +384,7 @@ Not required
 { mode: 'correct' } - 맞은 문제 <br>
 { mode: 'imcorrect' } - 틀린 문제 <br>
 { mode: 'unconfirmed' } - 주관식 채점 대기 문제 <br>
-{ mode: 'assigned' } - 관리지가 공유한 시험 문제
+{ mode: 'assigned' } - 관리자가 공유한 시험 문제
 
 #### Parameter
 | Name | Data type | Description | 
@@ -437,6 +437,7 @@ Not required
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
+| course | String | 과목명 | 
 | bigChapter | String | 대단원 | 
 | middleChapter | String | 중단원 | 
 | smallChapter | String | 소단원 | 
@@ -455,6 +456,7 @@ Not required
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
+| course | String | 과목명 | 
 | bigChapter | String | 대단원 | 
 | middleChapter | String | 중단원 | 
 | smallChapter | String | 소단원 | 

@@ -5,8 +5,25 @@ const Op = sequelize.Op;
 // Models
 const Problem = require('../../../models/').problem;
 
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
+
 module.exports = async (req, res) => {
-    const { problemID, age, isMultipleQuestion, bigChapter, middleChapter, smallChapter, level, source, startDate, endDate, active } = req.body;
+    const { problemID, age, isMultipleQuestion,
+            bigChapter, middleChapter, smallChapter,
+            level, source,
+            startDate, endDate,
+            active,
+            count } = req.body;
+    
     const mode = req.params.mode;
     
     try {
@@ -36,6 +53,9 @@ module.exports = async (req, res) => {
             options.active = active;
         
         results = await Problem.findAll({ where: options });
+        if ( results.length > count )
+            results = shuffle(results).slice(0, count);
+        
         problemList = results.map( (r) => {
             problem = {};
             
