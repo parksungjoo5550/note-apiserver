@@ -13,9 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         return this.findOne({ where: { index: idx } });
     }
     
-    Category.BIG_CHAPTER = 1;
-    Category.MIDDLE_CHAPTER = 2;
-    Category.SMALL_CHAPTER = 3;
+    Category.COURSE = 1;
+    Category.BIG_CHAPTER = 2;
+    Category.MIDDLE_CHAPTER = 3;
+    Category.SMALL_CHAPTER = 4;
     
     return Category;
 }

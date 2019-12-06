@@ -6,12 +6,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
         
         <style>
-            .row-span {
-                display:inline-block;
-            }
-            
             table {
                 margin: .5rem!important;
+                font-size: 1.15rem;
             }
             
             .checked {
@@ -21,6 +18,16 @@
             .hover-button {
                 float: right;
             }
+            
+            .hover-button {
+                height: 10%;
+            }
+            
+            .input-group-btn i {
+                font-size: 1.5rem;
+            }
+            
+
         </style>
     </head>
     <body>
@@ -38,75 +45,105 @@
         </div>
         
         <div class="form-group row">
-            <!-- BigChapter category -->
-            <table class="table table-bordered table-hover col-sm-3" id="bigChapter-table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>대단원</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if ( locals.bigChapterList ) { %>
-                        <% for (let i = 0; i < bigChapterList.length; i++ ) { %>
-                            <tr><td value="<%= bigChapterList[i] %>"><%= bigChapterList[i] %></td></tr>
+            <!-- course category -->
+            <div class="col-sm-2">
+                <table class="table table-bordered table-hover" id="course-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>과목명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if ( locals.courseList ) { %>
+                            <% for (let i = 0; i < courseList.length; i++ ) { %>
+                                <tr><td value="<%= courseList[i] %>"><%= courseList[i] %></td></tr>
+                            <% } %>
                         <% } %>
-                    <% } %>
-                    <tr>
-                        <td>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="bigChapter">&nbsp;
-                                <span class="input-group-btn">
-                                    <button type="submit" class="btn btn btn-primary h-100" onclick="createCategory('bigChapter');"><i class="fas fa-plus"></i></button>
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <input type="hidden" name="bigChapter2"/>
+                        <tr>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="course">&nbsp;
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn btn-primary" onclick="createCategory('course');"><i class="fa fa-plus"></i></button>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <input type="hidden" name="course2"/>
+            </div>
+            
+            <!-- BigChapter category -->
+            <div class="col-sm-2">
+                <table class="table table-bordered table-hover col-sm-3" id="bigChapter-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>대단원</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="bigChapter">&nbsp;
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn btn-primary" onclick="createCategory('bigChapter');"><i class="fa fa-plus"></i></button>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <input type="hidden" name="bigChapter2"/>
+            </div>
                 
             <!-- MiddleChapter category -->
-            <table class="table table-bordered table-hover col-sm-3" id="middleChapter-table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>중단원</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="middleChapter">&nbsp;
-                                <span class="input-group-btn">
-                                    <button type="submit" class="btn btn btn-primary h-100" onclick="createCategory('middleChapter');"><i class="fas fa-plus"></i></button>
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <input type="hidden" name="middleChapter2"/>
+            <div class="col-sm-2">
+                <table class="table table-bordered table-hover col-sm-3" id="middleChapter-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>중단원</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="middleChapter">&nbsp;
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn btn-primary" onclick="createCategory('middleChapter');"><i class="fa fa-plus"></i></button>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <input type="hidden" name="middleChapter2"/>
+            </div>
                 
             <!-- SmallChapter category -->
-            <table class="table table-bordered table-hover col-sm-3" id="smallChapter-table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>소단원</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="smallChapter">&nbsp;
-                                <span class="input-group-btn">
-                                    <button type="submit" class="btn btn btn-primary h-100" onclick="createCategory('smallChapter');"><i class="fas fa-plus"></i></button>
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="col-sm-2">
+                <table class="table table-bordered table-hover col-sm-3" id="smallChapter-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>소단원</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="smallChapter">&nbsp;
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn btn-primary" onclick="createCategory('smallChapter');"><i class="fa fa-plus"></i></button>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         
         <br>
@@ -114,6 +151,8 @@
     </div>
 
 	<script>
+        $('.input-group input').css('border-radius','.25rem');
+        
         function OutputMessage(msg){
             $('#error-ul').html('<li style="color: red">' + msg + '</li>');
         }
@@ -121,8 +160,85 @@
         function tableRow(text) {
             return $(`<tr><td value="${text}">${text}</tr></td>`);
         }
+        // When course-table row is clicked
+        function SetcourseListener() {
+            $('#course-table tbody tr td').on('click', function (e) {
+                // If the clicked td is input form.
+                if ( $(this).find('div').length > 0 )
+                    return;
+                
+                e.preventDefault();
+                
+                $.ajax({
+                    type: "POST",
+                    url: '/api/category/list',
+                    headers: {
+                        "x-access-token": $.cookie('token')
+                    },
+                    data: { course: $(this).attr('value') },
+                    async: false,
+                    success: function (data){
+                        if (data.success == false) {
+                            OutputMessage(data.message);
+                            return;
+                        }
+                        
+                        // Save the input form of table.
+                        $plusButton1 = $('#bigChapter-table tbody tr')[$('#bigChapter-table tbody tr').length - 1];
+                        $plusButton2 = $('#middleChapter-table tbody tr')[$('#middleChapter-table tbody tr').length - 1];
+                        $plusButton3 = $('#smallChapter-table tbody tr')[$('#smallChapter-table tbody tr').length - 1];
+
+                        // Clean all rows.
+                        $('#bigChapter-table tbody tr').remove();
+                        $('#middleChapter-table tbody tr').remove();
+                        $('#smallChapter-table tbody tr').remove();
+                        
+                        // Append category list.
+                        data.data.categories.forEach( (category) => {
+                            $('#bigChapter-table tbody').append(tableRow(category)); 
+                        });
+                        
+                        // Append the input form.
+                        $('#bigChapter-table tbody').append($plusButton1);
+                        $('#middleChapter-table tbody').append($plusButton2);
+                        $('#smallChapter-table tbody').append($plusButton3);
+                    },
+                    dataType: 'json'
+                });
+                
+                // Mark a clicked td.
+                $('#course-table td[class="checked"]').removeClass('checked');
+                $(this).addClass('checked');
+
+                // Save a current category.
+                $('input[name="course2"]').val($(this).attr('value'));
+                // Clean a subcategory input form.
+                $('input[name="bigChapter2"]').val('');
+                $('input[name="middleChapter2"]').val('');
+                $('input[name="smallChapter2"]').val('');
+                
+                // Set middleChapter td onclick listener.
+                SetbigChapterListener();
+            });
+            
+            // Set a hover button.
+            $('#course-table tbody tr td').hover(function() {
+                // If the clicked td is input form.
+                if ( $(this).find('div').length > 0 )
+                    return;
+                
+                $(this).append('<button class="btn btn-danger btn-sm hover-button" onclick="deleteCategory(\'course\')"><i class="fa fa-trash" aria-hidden="true"></i></button>');
+            }, function() {
+                // If the clicked td is input form.
+                if ( $(this).find('div').length > 0 )
+                    return;
+                
+                $(this).find('button').remove();
+            });
+        }
         
-        // When bigChapter row is clicked
+        
+        // When bigChapter table row is clicked
         function SetbigChapterListener() {
             $('#bigChapter-table tbody tr td').on('click', function (e) {
                 // If the clicked td is input form.
@@ -137,7 +253,8 @@
                     headers: {
                         "x-access-token": $.cookie('token')
                     },
-                    data: { bigChapter: $(this).attr('value') },
+                    data: { course: $('input[name="course2"]').val(),
+                            bigChapter: $(this).attr('value') },
                     async: false,
                     success: function (data){
                         if (data.success == false) {
@@ -145,9 +262,10 @@
                             return;
                         }
                         
-                        // Save the input form of middleChapter table.
+                        // Save the input form table.
                         $plusButton = $('#middleChapter-table tbody tr')[$('#middleChapter-table tbody tr').length - 1];
                         $plusButton2 = $('#smallChapter-table tbody tr')[$('#smallChapter-table tbody tr').length - 1];
+                        
                         // Clean all rows.
                         $('#middleChapter-table tbody tr').remove();
                         $('#smallChapter-table tbody tr').remove();
@@ -164,14 +282,15 @@
                     dataType: 'json'
                 });
                 
-                // Check a clicked td.
+                // Mark a clicked td.
                 $('#bigChapter-table td[class="checked"]').removeClass('checked');
                 $(this).addClass('checked');
 
-                // Save parent category.
+                // Save a current category.
                 $('input[name="bigChapter2"]').val($(this).attr('value'));
-                // Clean middleChapter information.
+                // Clean a subcategory input form.
                 $('input[name="middleChapter2"]').val('');
+                $('input[name="smallChapter2"]').val('');
                 
                 // Set middleChapter td onclick listener.
                 SetmiddleChapterListener();
@@ -183,7 +302,7 @@
                 if ( $(this).find('div').length > 0 )
                     return;
                 
-                $(this).append('<button class="btn btn-danger hover-button" onclick="deleteCategory(\'bigChapter\')"><i class="fa fa-trash" aria-hidden="true"></i></button>');
+                $(this).append('<button class="btn btn-danger btn-sm hover-button" onclick="deleteCategory(\'bigChapter\')"><i class="fa fa-trash" aria-hidden="true"></i></button>');
             }, function() {
                 // If the clicked td is input form.
                 if ( $(this).find('div').length > 0 )
@@ -193,7 +312,7 @@
             });
         }
         
-        // When middleChapter row is clicked
+        // When middleChapter table row is clicked
         function SetmiddleChapterListener() {
             $('#middleChapter-table tbody tr td').on('click', function (e) {
                 // If the clicked td is input form.
@@ -208,7 +327,8 @@
                     headers: {
                         "x-access-token": $.cookie('token')
                     },
-                    data: { 
+                    data: {
+                        course: $('input[name="course2"]').val(),
                         bigChapter: $('input[name="bigChapter2"]').val(),
                         middleChapter: $(this).attr('value')
                     },
@@ -239,8 +359,11 @@
                 $('#middleChapter-table td[class="checked"]').removeClass('checked');
                 $(this).addClass('checked');
                 
-                // Save parent category.
+                // Save a current category.
                 $('input[name="middleChapter2"]').val($(this).attr('value'));
+                
+                // Clean a subcategory input form.
+                $('input[name="smallChapter2"]').val('');
             });
             
              // Set a hover button.
@@ -249,7 +372,7 @@
                 if ( $(this).find('div').length > 0 )
                     return;
                 
-                $(this).append('<button class="btn btn-danger hover-button" onclick="deleteCategory(\'middleChapter\')"><i class="fa fa-trash" aria-hidden="true"></i></button>');
+                $(this).append('<button class="btn btn-danger btn-sm hover-button" onclick="deleteCategory(\'middleChapter\')"><i class="fa fa-trash" aria-hidden="true"></i></button>');
             }, function() {
                 // If the hovered td is input form.
                 if ( $(this).find('div').length > 0 )
@@ -266,7 +389,7 @@
                 if ( $(this).find('div').length > 0 )
                     return;
                 
-                $(this).append('<button class="btn btn-danger hover-button" onclick="deleteCategory(\'smallChapter\')"><i class="fa fa-trash" aria-hidden="true"></i></button>');
+                $(this).append('<button class="btn btn-danger btn-sm hover-button" onclick="deleteCategory(\'smallChapter\')"><i class="fa fa-trash" aria-hidden="true"></i></button>');
             }, function() {
                 // If the hovered td is input form.
                 if ( $(this).find('div').length > 0 )
@@ -285,6 +408,7 @@
                     "x-access-token": $.cookie('token')
                 },
                 data: { 
+                    course: $('input[name="course"]').val() || $('input[name="course2"]').val(),
                     bigChapter: $('input[name="bigChapter"]').val() || $('input[name="bigChapter2"]').val(),
                     middleChapter: $('input[name="middleChapter"]').val() || $('input[name="middleChapter2"]').val(),
                     smallChapter: $('input[name="smallChapter"]').val()
@@ -297,8 +421,11 @@
                     }
                     
                     // Reload category list.
-                    if ( categoryType == 'bigChapter' ) {
+                    if ( categoryType == 'course' ) {
                         location.reload();
+                    }
+                    else if ( categoryType == 'bigChapter' ) {
+                        $('#course-table td[class="checked"]').click();
                     }
                     else if ( categoryType == 'middleChapter' ) {
                         $('#bigChapter-table td[class="checked"]').click();
@@ -316,7 +443,7 @@
         // Delete a category when a button is clicked.
         function deleteCategory(categoryType) {
             category = $('.hover-button').parent().attr('value');
-            
+            console.log(category);
             if ( confirm("정말로 삭제 하시겠습니까?") ) { 
                 $.ajax({
                     type: "POST",
@@ -324,7 +451,8 @@
                     headers: {
                         "x-access-token": $.cookie('token')
                     },
-                    data: { 
+                    data: {
+                        course: categoryType == 'course' ? category : $('input[name="course2"]').val(),
                         bigChapter: categoryType == 'bigChapter' ? category : $('input[name="bigChapter2"]').val(),
                         middleChapter: categoryType == 'middleChapter' ? category : $('input[name="middleChapter2"]').val(),
                         smallChapter: categoryType == 'smallChapter' ? category : ''
@@ -337,8 +465,11 @@
                         }
 
                         // Reload category list.
-                        if ( categoryType == 'bigChapter' ) {
+                        if ( categoryType == 'course' ) {
                             location.reload();
+                        }
+                        else if ( categoryType == 'bigChapter' ) {
+                            $('#course-table td[class="checked"]').click();
                         }
                         else if ( categoryType == 'middleChapter' ) {
                             $('#bigChapter-table td[class="checked"]').click();
@@ -354,7 +485,7 @@
             }
         }
         
-    SetbigChapterListener();
+    SetcourseListener();
 	</script>
     </body>
 </html>

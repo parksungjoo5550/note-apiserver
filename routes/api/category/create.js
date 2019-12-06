@@ -2,16 +2,25 @@
 const Category = require('../../../models/').category;
 
 module.exports = async (req, res) => {
-    const { bigChapter, middleChapter, smallChapter } = req.body;
+    const { course, bigChapter, middleChapter, smallChapter } = req.body;
     
     try {
-        category = ( bigChapter ? bigChapter + ( middleChapter ? '$$' + middleChapter : '') + ( smallChapter ? '$$' + smallChapter : ''): '');
+        category = ( course ? course +
+                                ( bigChapter ? '$$' + bigChapter : '') +
+                                ( middleChapter ? '$$' + middleChapter : '') +
+                                ( smallChapter ? '$$' + smallChapter : ''): '');
+        
         if ( category == '' )
             throw new Error('카테고리를 입력해주세요.');
         
         categories = category.split('$$');
-        if (categories.length > 3 )
+        if (categories.length > 4 )
             throw new Error('잘못된 카테고리 정보입니다.');
+        
+        parentCategory = categories.slice(0,3);
+        result = await Category.findOne({ where: {category: parentCategory.join('$$'), type: parentCategory.length }});
+        if ( result == null )
+            throw new Error('상위 카테고리 먼저 입력해주세요.');
         
         result = await Category.findOne({ where: {category: category, type: categories.length }});
         if ( result )

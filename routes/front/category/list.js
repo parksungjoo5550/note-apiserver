@@ -24,7 +24,7 @@ exports.get = (req, res) => {
                     throw new Error(body.message);
                 
                 res.render('category/list', {
-                    bigChapterList: body.data.categories
+                    courseList: body.data.categories
                 });
             }
             catch (error) {

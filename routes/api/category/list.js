@@ -6,21 +6,26 @@ const Op = sequelize.Op;
 const Category = require('../../../models/').category;
 
 module.exports = async (req, res) => {
-    const { bigChapter, middleChapter, smallChapter } = req.body;
+    const { course, bigChapter, middleChapter, smallChapter } = req.body;
     
     try {
+        // List course.
+        if ( !course && !bigChapter && !middleChapter && !smallChapter ) {
+            categories = await Category.findAll({ where: { type: Category.COURSE }});
+        }
         // List bigChapter.
-        if ( !bigChapter && !middleChapter && !smallChapter ) {
-            categories = await Category.findAll({ where: { type: Category.BIG_CHAPTER }});
+        else if ( course && !bigChapter && !middleChapter && !smallChapter ) {
+            categories = await Category.findAll({ where: { category: { [Op.like] : course + '$$%' },
+                                                           type: Category.BIG_CHAPTER }});
         }
         // List middleChapter.
-        else if ( bigChapter && !middleChapter && !smallChapter ) {
-            categories = await Category.findAll({ where: { category: { [Op.like]: bigChapter + '$$%' },
+        else if ( course && bigChapter && !middleChapter && !smallChapter ) {
+            categories = await Category.findAll({ where: { category: { [Op.like]: [course, bigChapter].join('$$') + '$$%' },
                                                   type: Category.MIDDLE_CHAPTER }});
         }
         // List smallChapter.
-        else if ( bigChapter && middleChapter && !smallChapter ) {
-            categories = await Category.findAll({ where: { category: { [Op.like]: bigChapter + '$$' + middleChapter + '%' },
+        else if ( course && bigChapter && middleChapter && !smallChapter ) {
+            categories = await Category.findAll({ where: { category: { [Op.like]: [course, bigChapter, middleChapter].join('$$') + '$$%' },
                                                   type: Category.SMALL_CHAPTER }});
         }
         else {
