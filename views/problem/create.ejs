@@ -4,7 +4,8 @@
         
     	<% include ../head %>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.6/css/mdb.min.css" />
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.6/js/mdb.min.js"></script>
         <script>
             function loadPreviousInput(){
                 if ($.cookie('preInputs') == undefined)
@@ -74,61 +75,130 @@
         </style>
     </head>
     <body onload="loadPreviousInput();">
+    <div class="container-fluid">
         <div class="row col-sm-5 border-bottom">
             <h1>
                 문제 생성
             </h1>
         </div><br>
         
-        <h3 style="color: red" id="message">
-            <% if ( locals.message ) { %>
-                <%= message %>
-            <% } %>
-        </h3>
+        <% if (locals.message) { %>
+        <div class="row alert-message block-message error">
+            <ul>
+                <li style="color: red"><%= message %></li>
+            </ul>
+        </div>
+        <% } %>
         
         <form method="POST" action="/front/problem/create" enctype="multipart/form-data" onsubmit="return submitCheck();">
-            <fieldset>
-                <legend>문제 파일 업로드</legend>
+            <div class="form-group row">
+                <fieldset class="col-sm-5 border-bottom">
+                    <legend>문제 파일 업로드</legend>
 
-                <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="10485760" />
+                    <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="10485760" />
 
-                <div>
-                    <label for="fileselect">파일 직접 고르기</label>
-                    <input type="file" class="fileselect" id="fileProblem" name="problem" />
-                    <div class="filedrag" id="dragProblem">또는 여기에 파일을 드래그하세요.</div>
-                </div>
-                
-                <div class="messages">
-                    
-                </div>
-            </fieldset> <br>
+                    <div class="col-sm-12">
+                        <input type="file" class="fileselect" id="fileProblem" name="problem" />
+                        <div class="filedrag" id="dragProblem">또는 여기에 파일을 드래그하세요.</div>
+                    </div>
+
+                    <div class="messages">
+
+                    </div>
+                </fieldset> <br>
+            </div>
             
-            <fieldset>
-                <legend>해설 업로드</legend>
+            <div class="form-group row">
+                <fieldset class="col-sm-5 border-bottom">
+                    <legend>해설 업로드</legend>
 
-                <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
+                    <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="10485760" />
 
-                <div>
-                    <label for="fileselect">파일 직접 고르기</label>
-                    <input type="file" class="fileselect" id="fileSolution" name="solution" />
-                    <div class="filedrag" id="dragSolution">또는 여기에 파일을 드래그하세요.</div>
+                    <div class="col-sm-12">
+                        <input type="file" class="fileselect" id="fileSolution" name="solution" />
+                        <div class="filedrag" id="dragSolution">또는 여기에 파일을 드래그하세요.</div>
+                    </div>
+                </fieldset><br>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">문제 종류</label>
+
+                <div class="custom-control custom-radio col-sm-1 align-self-center">
+                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation2" name="isMultipleQuestion">
+                    <label class="custom-control-label" for="customControlValidation2">객관식</label>
                 </div>
-            </fieldset><br>
-            문제 종류 : <input type="radio" name="isMultipleQuestion" value="true">객관식 
-            <input type="radio" name="isMultipleQuestion" value="false">주관식 <br>
-            정답 : <input type="text" name="answer"/><br>
-            학년 : <input type="text" name="age"/><br>
-            대단원 : <input type="text" name="bigChapter"/><br>
-            중단원 : <input type="text" name="middleChapter"/><br>
-            소단원 : <input type="text" name="smallChapter"/><br>
-            난이도 : <input type="text" name="level"/><br>
-            출처 : <input type="text" name="source"/><br>
-            출제년도 : <input type="date" name="date"/><br>
-            <input type="submit"/>
+                <div class="custom-control custom-radio col-sm-1 align-self-center">
+                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation3" name="isMultipleQuestion">
+                    <label class="custom-control-label" for="customControlValidation3">주관식</label>
+                    <div class="invalid-feedback">문제 종류를 선택해주세요.</div>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">정답</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="정답" name="answer">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">학년</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="학년" name="age">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">대단원</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="대단원" name="bigChapter">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">중단원</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="중단원" name="middleChapter">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">소단원</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="소단원" name="smallChapter">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">난이도</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="난이도" name="level">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">출처</label>
+                <div class="col-sm-2 p-0">
+                    <input type="text" class="form-control" placeholder="출처" name="source">
+                </div>
+            </div>
+            
+            <div class="form-group row ">
+                <label class="col-sm-2 col-form-label">출제년도</label>
+                <div class="col-sm-2 p-0">
+                    <input type="date" class="form-control" name="date">
+                </div>
+            </div>
+            
+            <div class="form-group row col-sm-2">
+                <button type="submit" class="btn btn-primary">생성</button>
+            </div>
         </form>
         
         <a href="/front"> 메인 페이지 </a>
         
         <script src="/static/custom/js/fileDrop.js"></script>
+    </div>
     </body>
 </html>

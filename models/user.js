@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('user', {
             userid: { type: DataTypes.STRING },
             password: { type: DataTypes.STRING },
-            admin: { type: DataTypes.BOOLEAN, default: false },
+            admin: { type: DataTypes.BOOLEAN, defaultValue: false },
         }, { timestamps: false });
     
     User.findOneByUserid = function (userid) {

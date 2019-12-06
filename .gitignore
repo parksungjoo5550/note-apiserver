@@ -3,3 +3,9 @@ goorm.manifest
 test.js
 .env
 details.txt
+
+# Uploads
+uploads/problems/*
+uploads/solutions/*
+uploads/pdfs/*
+uploads/answers/*

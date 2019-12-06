@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
         examURL: { type: DataTypes.STRING }, 
         timeLimit: { 
             type: DataTypes.INTEGER,
-            default: 0
+            defaultValue: 0
         },
         isDone: { 
             type: DataTypes.BOOLEAN,
-            default: false
+            defaultValue: false
         },
         createdAt: { type: DataTypes.STRING },
     }, { timestamps: false });

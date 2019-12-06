@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         isMultipleQuestion: {
             type: DataTypes.BOOLEAN,
-            default: false
+            defaultValue: false
         },
         answer: { type: DataTypes.STRING },
         age: { type: DataTypes.STRING },
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         date: { type: DataTypes.STRING },
         active: {
             type: DataTypes.BOOLEAN,
-            default: true
+            defaultValue: true
         }
     }, { timestamps: false });
     

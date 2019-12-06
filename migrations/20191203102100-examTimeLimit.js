@@ -11,7 +11,7 @@ module.exports = {
     */
       return queryInterface.addColumn('exams', 'timeLimit', {
                 type: Sequelize.INTEGER,
-                default: 0
+                defaultValue: 0
             }).then(() =>
                 queryInterface.bulkUpdate('exams', {timeLimit: 0})
             );
