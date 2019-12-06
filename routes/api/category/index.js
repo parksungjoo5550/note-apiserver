@@ -9,5 +9,6 @@ router.post('/delete', require('./delete'));
 
 router.use('/list', auth.login);
 router.post('/list', require('./list'));
+router.post('/list/:mode',  require('./list'));
 
 module.exports = router;
