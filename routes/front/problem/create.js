@@ -31,7 +31,7 @@ exports.post = (req, res) => {
                 solutionBase64: solution.buffer.toString('base64'),
                 isMultipleQuestion: req.body.isMultipleQuestion,
                 answer: req.body.answer,
-                age: req.body.age,
+                course: req.body.course,
                 bigChapter: req.body.bigChapter,
                 middleChapter: req.body.middleChapter,
                 smallChapter: req.body.smallChapter,

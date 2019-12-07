@@ -23,6 +23,7 @@ module.exports = async (req, res) => {
             results[i].dataValues.problemIDList = results[i].dataValues.problemIDList.split(' ');
             examList.push({ examID: results[i].dataValues.index,
                             title: results[i].dataValues.title,
+                            type: results[i].dataValues.type,
                             isDone: results[i].dataValues.isDone,
                             createdAt: results[i].dataValues.createdAt
                           });

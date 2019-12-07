@@ -13,7 +13,7 @@
                 
                 preInputs = JSON.parse($.cookie('preInputs'));
                 
-                $("input[name=age]").val(preInputs.age);
+                $("input[name=course]").val(preInputs.course);
                 $("input[name=bigChapter]").val(preInputs.bigChapter);
                 $("input[name=middleChapter]").val(preInputs.middleChapter);
                 $("input[name=smallChapter]").val(preInputs.smallChapter);
@@ -23,7 +23,7 @@
             }
             function savePreviousInput(){              
                 preInputs = {}
-                preInputs.age = $("input[name=age]").val()
+                preInputs.course = $("input[name=course]").val()
                 preInputs.bigChapter = $("input[name=bigChapter]").val()
                 preInputs.middleChapter = $("input[name=middleChapter]").val()
                 preInputs.smallChapter = $("input[name=smallChapter]").val()
@@ -143,9 +143,9 @@
             </div>
             
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label">학년</label>
+                <label class="col-sm-2 col-form-label">과목명</label>
                 <div class="col-sm-2 p-0">
-                    <input type="text" class="form-control" placeholder="학년" name="age">
+                    <input type="text" class="form-control" placeholder="과목명" name="course">
                 </div>
             </div>
             

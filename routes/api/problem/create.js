@@ -8,7 +8,7 @@ const Problem = require('../../../models/').problem;
 module.exports = async (req, res) => {
     const { problemFilename, solutionFilename,
             problemBase64, solutionBase64,
-            isMultipleQuestion, answer, age, bigChapter, middleChapter, smallChapter, level, source, date } = req.body;
+            isMultipleQuestion, answer, course, bigChapter, middleChapter, smallChapter, level, source, date } = req.body;
     
     try {
         if ( !problemFilename ||
@@ -49,7 +49,7 @@ module.exports = async (req, res) => {
                                solutionURL: solutionPath,
                                isMultipleQuestion: isMultipleQuestion == "true" ? true: false,
                                answer: answer,
-                               age: age,
+                               course: course,
                                bigChapter: bigChapter,
                                middleChapter: middleChapter,
                                smallChapter: smallChapter,

@@ -51,9 +51,14 @@
 
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">문제 리스트</label>
-                <div class="form-control col-sm-3">
-                    <% for ( let i = 0; i < problemIDList.length; i++ ) { %>
-                        <a href="/front/problem/update/<%= problemIDList[i] %>" target="_blank"><%= problemIDList[i] %></a>&nbsp;
+                <div class="form-control col-sm-2"> 객관식
+                    <% for ( let i = 0; i < multipleQuestions.length; i++ ) { %>
+                        <a href="/front/problem/update/<%= multipleQuestions[i] %>" target="_blank"><%= multipleQuestions[i] %></a>&nbsp;
+                    <% } %>
+                </div>
+                <div class="form-control col-sm-2"> 주관식
+                    <% for ( let i = 0; i < essayQuestions.length; i++ ) { %>
+                        <a href="/front/problem/update/<%= essayQuestions[i] %>" target="_blank"><%= essayQuestions[i] %></a>&nbsp;
                     <% } %>
                 </div>
             </div>

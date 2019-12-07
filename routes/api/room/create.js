@@ -42,6 +42,7 @@ module.exports = async (req, res) => {
                                 problemIDList: exam.dataValues.problemIDList,
                                 examURL: exam.dataValues.examURL,
                                 timeLimit: exam.dataValues.timeLimit,
+                                type: type,
                                 createdAt: new Date().toISOString().substring(0, 19).replace('T',' ')
                              });
         });

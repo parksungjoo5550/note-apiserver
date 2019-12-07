@@ -17,7 +17,7 @@ function shuffle(a) {
 }
 
 module.exports = async (req, res) => {
-    const { problemID, age, isMultipleQuestion,
+    const { problemID, course, isMultipleQuestion,
             bigChapter, middleChapter, smallChapter,
             level, source,
             startDate, endDate,
@@ -31,8 +31,8 @@ module.exports = async (req, res) => {
         
         if ( problemID !== undefined && problemID !== '' )
             options.index = parseInt(problemID);
-        if ( age !== undefined && age !== '' )
-            options.age = age;
+        if ( course !== undefined && course !== '' )
+            options.course = course;
         if ( isMultipleQuestion !== undefined && isMultipleQuestion !== '' )
             options.isMultipleQuestion = isMultipleQuestion == "true"? true: false;
         if ( bigChapter !== undefined && bigChapter !== '' )
@@ -69,7 +69,7 @@ module.exports = async (req, res) => {
                             problemURL: r.dataValues.problemURL, 
                             isMultipleQuestion: r.dataValues.isMultipleQuestion,
                             problemCondition: {
-                                age: r.dataValues.age,
+                                course: r.dataValues.course,
                                 bigChapter: r.dataValues.bigChapter,
                                 middleChapter: r.dataValues.middleChapter,
                                 smallChapter: r.dataValues.smallChapter,

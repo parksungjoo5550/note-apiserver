@@ -14,7 +14,8 @@ module.exports = async (req, res) => {
             throw new Error('해당 시험지가 존재하지 않습니다.');
         
         // Make a array contains problemURL
-        problemList = [];
+        multipleQuestions = [];
+        essayQuestions = [];
         problemIDList = exam.dataValues.problemIDList.trim().split(' ');
         
         for (let i = 0; i < problemIDList.length; i++) {
@@ -22,18 +23,29 @@ module.exports = async (req, res) => {
             if ( problem == null ) // if the problem is removed
                 continue; 
             
-            problemList.push({ problemID: parseInt(problemIDList[i]),
-                               problemURL: problem.dataValues.problemURL,
-                               isMultipleQuestion: problem.dataValues.isMultipleQuestion
-                             });
+            if ( problem.dataValues.isMultipleQuestion ) {
+                multipleQuestions.push({ problemID: parseInt(problemIDList[i]),
+                                   problemURL: problem.dataValues.problemURL,
+                                   isMultipleQuestion: problem.dataValues.isMultipleQuestion
+                                 });
+            }
+            else {
+                essayQuestions.push({ problemID: parseInt(problemIDList[i]),
+                                   problemURL: problem.dataValues.problemURL,
+                                   isMultipleQuestion: problem.dataValues.isMultipleQuestion
+                                 });
+            }
         }
         
         res.json({
             success: true,
             message: '해당 시험지의 정보를 조회 완료했습니다.',
             ecode: 200,
-            data: { title: exam.dataValues.title,
-                    problemList: problemList }
+            data: { 
+                title: exam.dataValues.title,
+                multipleQuestions: multipleQuestions,
+                essayQuestions: essayQuestions
+            }
         });
     }
     catch (error) {

@@ -10,6 +10,9 @@ module.exports = (req, res) => {
         success: true,
         message: '',
         ecode: 200,
-        data: { token: req.token }
+        data: { 
+            userid: req.token.userid,
+            admin: req.token.admin
+        }
     });
 }

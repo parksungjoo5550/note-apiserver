@@ -3,7 +3,7 @@ const Problem = require('../../../models/').problem;
 
 
 module.exports = async (req, res) => {
-    const { problemID, answer, age, bigChapter, middleChapter, smallChapter, level, source, date, active } = req.body;
+    const { problemID, answer, course, bigChapter, middleChapter, smallChapter, level, source, date, active } = req.body;
     
     try {
         if ( problemID == undefined )
@@ -17,8 +17,8 @@ module.exports = async (req, res) => {
         
         if ( answer !== undefined )
             options.answer = answer;
-        if ( age !== undefined )
-            options.age = age;
+        if ( course !== undefined )
+            options.course = course;
         if ( bigChapter !== undefined )
             options.bigChapter = bigChapter;
         if ( middleChapter !== undefined )

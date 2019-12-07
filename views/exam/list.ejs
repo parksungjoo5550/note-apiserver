@@ -32,6 +32,7 @@
                     <tr>
                         <th>시험지 번호</th>
                         <th>시험지 제목</th>
+                        <th>시험지 타입</th>
                         <th>만든 날짜</th>
                     </tr>
                 </thead>
@@ -39,6 +40,12 @@
                 <tr data-href="/front/exam/take/<%= examList[i].examID %>">
                     <td><a href="/front/exam/take/<%= examList[i].examID %>"><%= examList[i].examID %></a></td>
                     <td><%= examList[i].title %></td>
+                    <td><% if ( examList[i].type == 0 ) {%>
+                            시험
+                        <% } else { %>
+                            숙제
+                        <% } %>
+                    </td>
                     <td><%= examList[i].createdAt %></td>
                 </tr>
             <% } %>

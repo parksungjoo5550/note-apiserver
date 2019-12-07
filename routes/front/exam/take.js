@@ -25,12 +25,14 @@ exports.get = (req, res) => {
                 if ( body.success == false )
                     throw new Error(body.message);
                 
-                problemIDList = body.data.problemList.map( (problem) => problem.problemID );
+                multipleQuestions = body.data.multipleQuestions.map( (problem) => problem.problemID );
+                essayQuestions = body.data.essayQuestions.map( (problem) => problem.problemID );
                 res.render('exam/take', {
                     message: body.message,
                     examID: examID,
                     title: body.data.title,
-                    problemIDList: problemIDList
+                    multipleQuestions: multipleQuestions,
+                    essayQuestions: essayQuestions
                 });
             }
             catch (error) {

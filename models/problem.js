@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: false
         },
         answer: { type: DataTypes.STRING },
-        age: { type: DataTypes.STRING },
+        course: {type: DataTypes.STRING },
         bigChapter: { type: DataTypes.STRING },
         middleChapter: { type: DataTypes.STRING },
         smallChapter: { type: DataTypes.STRING },

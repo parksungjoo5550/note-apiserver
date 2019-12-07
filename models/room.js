@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     }
     
     Room.isUserAssigned = function (examID, userid) {
-        return this.isStudentIncluded(examID, this.ASSIGNED, userid);
+        return this.isUserIncluded(examID, this.ASSIGNED, userid);
     }
     
     
