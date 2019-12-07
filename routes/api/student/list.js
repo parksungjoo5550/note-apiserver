@@ -1,7 +1,7 @@
 const Student = require('../../../models/').student;
 
 /* 
-    * View student's information
+    * List student's information
     
     POST /api/student/list
     {

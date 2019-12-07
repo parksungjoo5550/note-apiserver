@@ -15,12 +15,12 @@ This server is used to support educational institute.
 * **/api/student**
   * [/api/student/set](#post-apistudentset)
   * [/api/student/view](#post-apistudentview)
-
+  * [/api/student/list](#post-apistudentlist)
+  
 * **/api/problem**
   * [/api/problem/create](#post-apiproblemcreate)
   * [/api/problem/get](#post-apiproblemget)
   * [/api/problem/inquiry](#post-apiprobleminquiry)
-  * [/api/problem/category](#post-apiproblemcategory)
 
 * **/api/exam**
   * [/api/exam/create](#post-apiexamcreate)
@@ -113,7 +113,8 @@ Not required
 | success | Boolean | api 성공 여부 | 
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
-| data.token | Json | Decrypt된 jwt 토큰 | 
+| data.userid | String | 아이디 |
+| data.admin | String | 관리자 여부 | 
 <br>
 <!-- /api/auth -->
 
@@ -154,6 +155,22 @@ Not required
 | data.admissionYear | String | 입학년도| 
 | data.mathGrade | String | 수학 등급 |
 <br>
+
+### POST /api/student/list
+등록된 학생 정보를 모두 가져옵니다.
+
+#### Parameter
+Not required
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.studentList | Array | 학생정보 리스트 |
+| data.studentList[i] | String | 'userid ( name )' | 
+<br>
 <!-- /api/student -->
 
 <!-- /api/problem -->
@@ -169,7 +186,7 @@ Not required
 | solutionBase64 | String | Base64로 인코딩된 해답 파일 | 
 | isMultipleQuestion | Boolean | 객관식 여부 | 
 | answer | String | 답 |
-| age | String | 학년 | 
+| course | String | 과목명 | 
 | bigChapter | String | 대단원 | 
 | middleChapter | String | 중단원 | 
 | smallChapter | String | 소단원 | 
@@ -192,15 +209,23 @@ Not required
 | Name | Data type | Description | 
 ---|---|---
 | problemID | Integer | 문제 번호 (required) | 
-| problemID | Integer | 문제 번호 | 
-| problemID | Integer | 문제 번호 | 
-| problemID | Integer | 문제 번호 | 
+| answer | String | 답 |
+| course | String | 과목명 | 
+| bigChapter | String | 대단원 | 
+| middleChapter | String | 중단원 | 
+| smallChapter | String | 소단원 | 
+| level | String | 난이도 | 
+| source | String | 출처 | 
+| date | String | 출제년도 | 
+| active | String | 문제 활성화 여부 | 
+
 #### Response
 | Name | Data type | Description | 
 ---|---|---
 | success | Boolean | api 성공 여부 | 
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
+| problem | Json | 변경된 문제 정보 | 
 <br>
 
 ### POST /api/problem/get
@@ -229,7 +254,7 @@ Not required
 | Name | Data type | Description | 
 ---|---|---
 | problemID | Integer | 문제 고유 번호 | 
-| age | String | 학년 | 
+| course | String | 과목명 | 
 | bigChapter | String | 대단원 | 
 | middleChapter | String | 중단원 | 
 | smallChapter | String | 소단원 | 
@@ -237,7 +262,7 @@ Not required
 | source | String | 문제 출처 | 
 | startDate | String | 출체범위 시작 | 
 | endDate | String | 출체범위 끝 | 
-| active | Boolean | 문제 사용여부 | 
+| active | Boolean | 문제 활성화 여부 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -249,30 +274,12 @@ Not required
 | data.problemList[i].problemID | Integer | 문제 고유 번호 | 
 | data.problemList[i].problemURL | String | 문제 파일 경로 | 
 | data.problemList[i].isMultipleQuestion | Boolean | 객관식 여부 | 
-| data.problemList[i].problemCondition.age | String | 학년 | 
+| data.problemList[i].problemCondition.course | String | 과목명 | 
 | data.problemList[i].problemCondition.bigChapter | String | 대단원 | 
 | data.problemList[i].problemCondition.middleChapter | String | 중단원 | 
 | data.problemList[i].problemCondition.smallChapter | String | 소단원 | 
 | data.problemList[i].problemCondition.level | String | 난이도 | 
 | data.problemList[i].problemCondition.source | String | 출처 | 
-<br>
-
-### POST /api/problem/category
-등록된 문제의 카테고리를 반환합니다.
-
-#### Parameter
-Not required.
-
-#### Response
-| Name | Data type | Description | 
----|---|---
-| success | Boolean | api 성공 여부 | 
-| message | String | 응답 메시지 | 
-| ecode | Integer | 응답 코드 | 
-| data.bigChapterList | 대단원 리스트 |
-| data.middleChapterList | Array | 중단원 리스트 | 
-| data.smallChapterList | Array | 소단원 리스트 | 
-| data.sourceList | Array | 출처 리스트 | 
 <br>
 <!-- /api/problem -->
 
@@ -286,6 +293,7 @@ Not required.
 | title | String | 시험지 제목 | 
 | problemIDList | Array | 시험지에 포함될 문제 번호 리스트 | 
 | problemIDList[i].problemID | Integer | 문제 고유 번호 | 
+| timeLimit | Integer | 제한 시간 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -310,15 +318,21 @@ Not required
 | data.examList | Array | 조건에 맞는 모든 시험지 | 
 | data.examList[i].examID | Integer | 시험지 고유 번호 | 
 | data.examList[i].title | String | 시험지 제목 | 
+| data.examList[i].type | String | 시험지 타입 | 
 | data.examList[i].isDone | Boolean | 제출 완료 여뷰 | 
 | data.examList[i].createdAt | String | 만든 날짜 | 
+<br>
+{ type : 0 } - 시험 <br>
+{ type : 1 } - 숙제
 <br>
 
 ### POST /api/exam/take
 시험지 번호에 해당하는 시험지의 정보를 반환합니다.
 
 #### Parameter
-Not required
+| Name | Data type | Description | 
+---|---|---
+| examID | Integer | 시험지 번호 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -327,10 +341,11 @@ Not required
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
 | data.title | String | 시험지 제목 | 
-| data.problemList | Array | 시험지에 포함된 모든 문제 | 
-| data.problemList[i].problemID | Integer | 문제 고유 번호 | 
-| data.problemList[i].problemURL | String | 문제 파일 경로 | 
-| data.problemList[i].isMultipleQuestion | Boolean | 객관식 여부 | 
+| data.multipleQuestions | Array | 객관식 문제 리스트 | 
+| data.essayQuestions | Array | 주관식 문제 리스트 | 
+| data.multipleQuestions.Questions[i].problemID | Integer | 문제 고유 번호 | 
+| data.multipleQuestions.Questions[i].problemURL | String | 문제 파일 경로 | 
+| data.multipleQuestions.Questions[i].isMultipleQuestion | Boolean | 객관식 여부 | 
 <br>
 
 ### POST /api/exam/confirm
@@ -354,7 +369,7 @@ Not required
 
 <!-- /api/note -->
 ### POST /api/note/view
-제출된 시험지에 대한 정보를 조회합니다.
+제출된 시험지에서 객관식 문제의 채점 정보를 조회합니다.
 
 #### Parameter
 | Name | Data type | Description | 
@@ -367,20 +382,20 @@ Not required
 | success | Boolean | api 성공 여부 | 
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
-| data.problemList | Array | 오답인 문제의 번호 리스트 | 
-| data.problemList[i].problemID | Integer | 문제 고유 번호 | 
-| data.problemList[i].answer | String | 문제 정답 | 
-| data.problemList[i].submit | String | 사용자가 제출한 답 | 
-| data.problemList[i].problemURL | String | 문제 파일 경로 | 
-| data.problemList[i].solutionURL | String | 해설 파일 경로 | 
-| data.problemList[i].state | Integer | 문제 처리 상태 | 
+| data.noteList | Array | 채점 정보 리스트 | 
+| data.noteList[i].problemID | Integer | 문제 고유 번호 | 
+| data.noteList[i].answer | String | 문제 정답 | 
+| data.noteList[i].submit | String | 사용자가 제출한 답 | 
+| data.noteList[i].problemURL | String | 문제 파일 경로 | 
+| data.noteList[i].solutionURL | String | 해설 파일 경로 | 
+| data.noteList[i].state | Integer | 문제 처리 상태 | 
 | data.correctCnt | Integer | 맞은 문제 개수 | 
-| data.incorrectCnt | Integer | 맞은 문제 개수 | 
-| data.unconfirmedCnt | Integer | 채점 대기중인 문제 개수 | 
+| data.incorrectCnt | Integer | 틀린 문제 개수 | 
+| data.unconfirmedCnt | Integer | 주관식 채점 대기중인 문제 개수 | 
 <br>
 
 ### POST /api/note/view/:mode
-제출된 시험지에 대한 정보를 상태에 따라 조회합니다. <br>
+제출된 시험지에 대한 채점 정보를 상태에 따라 조회합니다. <br>
 { mode: 'correct' } - 맞은 문제 <br>
 { mode: 'imcorrect' } - 틀린 문제 <br>
 { mode: 'unconfirmed' } - 주관식 채점 대기 문제 <br>
@@ -400,16 +415,13 @@ Not required
 | success | Boolean | api 성공 여부 | 
 | message | String | 응답 메시지 | 
 | ecode | Integer | 응답 코드 | 
-| data.problemList | Array | 오답인 문제의 번호 리스트 | 
-| data.problemList[i].problemID | Integer | 문제 고유 번호 | 
-| data.problemList[i].answer | String | 문제 정답 | 
-| data.problemList[i].submit | String | 사용자가 제출한 답 | 
-| data.problemList[i].problemURL | String | 문제 파일 경로 | 
-| data.problemList[i].solutionURL | String | 해설 파일 경로 | 
-| data.problemList[i].state | Integer | 문제 처리 상태 | 
-| data.correctCnt | Integer | 맞은 문제 개수 | 
-| data.incorrectCnt | Integer | 맞은 문제 개수 | 
-| data.unconfirmedCnt | Integer | 채점 대기중인 문제 개수 | 
+| data.noteList | Array | 오답인 문제의 번호 리스트 | 
+| data.noteList[i].problemID | Integer | 문제 고유 번호 | 
+| data.noteList[i].answer | String | 문제 정답 | 
+| data.noteList[i].submit | String | 사용자가 제출한 답 | 
+| data.noteList[i].problemURL | String | 문제 파일 경로 | 
+| data.noteList[i].solutionURL | String | 해설 파일 경로 | 
+| data.noteList[i].state | Integer | 문제 처리 상태 | 
 <br>
 
 ### POST /api/note/rate
