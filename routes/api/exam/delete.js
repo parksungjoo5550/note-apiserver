@@ -1,4 +1,6 @@
 // Modules
+const fs = require('fs');
+const path = require('path');
 const sequelize = require('sequelize');
 
 // Models
@@ -19,7 +21,7 @@ module.exports = async (req, res) => {
     const { examID } = req.body;
     
     try {
-        exam = await Exam.findAll({ where: { userid: userid, index: examID }});
+        exam = await Exam.findOne({ where: { userid: userid, index: examID }});
         
         if ( exam == null)
             throw new Error('시험지가 존재하지 않습니다.');
@@ -28,13 +30,20 @@ module.exports = async (req, res) => {
             throw new Error('삭제할 권한이 없습니다.');
         
         // If the exam is shared
-        if ( await Room.isUserIncluded(examID, Room.HOMEWORK, userid) ) {
-            await Room.update({ useridList: sequelize.fn('REPLACE', sequelize.col('useridList'), userid + '$$', userid) }, { where: { examID: examID,
-                                              type: Room.HOMEWORK,
-                                              useridList: { [Sequelize.Op.like]: `%${userid}%` }}});
-        }
-        
+        await Room.destroy({ where: { examID: examID }});
         await Exam.destroy({ where: { userid: userid, index: examID }});
+        
+        // Delete a exam's pdf file
+        fs.unlink(path.join(__basedir, exam.dataValues.examURL), function (err) {
+            if( err ) {
+                res.status(403).json({
+                    success: false,
+                    message: err.message,
+                    ecode: 403
+                });
+                return;
+            }
+        });
         
         res.json({
             success: true,

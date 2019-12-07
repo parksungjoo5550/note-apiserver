@@ -37,26 +37,30 @@
         <form method="POST" action="/front/exam/take/<%= examID %>">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">시험지 번호</label>
-                <div class="form-control col-sm-3">
+                <div class="form-control col-sm-2">
                     <%= examID %>
                 </div>
             </div>
             
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">제목</label>
-                <div class="form-control col-sm-3">
+                <div class="form-control col-sm-2">
                     <%= title %>
                 </div>
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label">문제 리스트</label>
-                <div class="form-control col-sm-2"> 객관식
+                <label class="col-sm-2 col-form-label">객관식 문제</label>
+                <div class="form-control col-sm-2">
                     <% for ( let i = 0; i < multipleQuestions.length; i++ ) { %>
                         <a href="/front/problem/update/<%= multipleQuestions[i] %>" target="_blank"><%= multipleQuestions[i] %></a>&nbsp;
                     <% } %>
                 </div>
-                <div class="form-control col-sm-2"> 주관식
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">주관식 문제</label>
+                <div class="form-control col-sm-2">
                     <% for ( let i = 0; i < essayQuestions.length; i++ ) { %>
                         <a href="/front/problem/update/<%= essayQuestions[i] %>" target="_blank"><%= essayQuestions[i] %></a>&nbsp;
                     <% } %>

@@ -27,6 +27,7 @@ This server is used to support educational institute.
   * [/api/exam/list](#post-apiexamlist)
   * [/api/exam/take](#post-apiexamtake)
   * [/api/exam/confirm](#post-apiexamconfirm)
+  * [/api/exam/delete](#post-apiexamdelete)
   
 * **/api/note**
   * [/api/note/view](#post-apinoteview)
@@ -360,6 +361,22 @@ Not required
 | examID | Integer | 시험지 고유 번호 | 
 | problemIDList | Array | 문제 번호 리스트 | 
 | answerList | Array | 제출 답안 리스트 | 
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+<br>
+
+### POST /api/exam/delete
+시험지를 삭제합니다.
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| examID | Integer | 시험지 고유 번호 | 
 
 #### Response
 | Name | Data type | Description | 

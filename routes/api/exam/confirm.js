@@ -69,6 +69,9 @@ module.exports = async (req, res) => {
         res.json({
             success: true,
             message: '시험지 제출이 완료됐습니다.',
+            data: {
+              message: 'ok'  
+            },
             ecode: 200
         });
     }
