@@ -23,7 +23,6 @@ module.exports = async (req, res) => {
             startDate, endDate,
             active,
             count } = req.body;
-    
     const mode = req.params.mode;
     
     try {
@@ -53,7 +52,8 @@ module.exports = async (req, res) => {
             options.active = active;
         
         results = await Problem.findAll({ where: options });
-        if ( results.length > count )
+
+        if ( count != undefined && count != '' && results.length > count )
             results = shuffle(results).slice(0, count);
         
         problemList = results.map( (r) => {
@@ -82,6 +82,7 @@ module.exports = async (req, res) => {
             return problem;
         });
         
+        console.log(problemList);
         res.json({
             success: true,
             message: '조건에 맞는 문제를 조회 완료했습니다.',

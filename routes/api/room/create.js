@@ -54,13 +54,13 @@ module.exports = async (req, res) => {
         room = await Room.isExist(examID, type);
         if ( room ) {
             if ( newUseridList.length > 0 )
-                await Room.update({ useridList: room.dataValues.useridList + '$$' + newUseridList.join('$$') },
+                await Room.update({ useridList: room.dataValues.useridList + '$$' + newUseridList.join('$$') + '$$'},
                             { where: { examID: examID, type: type }});
         }
         else {
             await Room.create({
                 examID: examID,
-                useridList: newUseridList.join('$$'),
+                useridList: newUseridList.join('$$') + '$$',
                 type: type
             });
         }

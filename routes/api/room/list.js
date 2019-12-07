@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
         if ( room == null )
             throw new Error('공유중인 학생이 없습니다.');
         
-        useridList = room.dataValues.useridList.split('$$');
+        useridList = room.dataValues.useridList.slice(0, -2).split('$$');
         nameList = await Promise.all(
             useridList.map( async (userid) => {
                 student = await Student.findOne({ attributes: ['name'], where: { userid: userid }});

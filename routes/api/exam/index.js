@@ -13,4 +13,7 @@ router.post('/take', require('./take'));
 router.use('/confirm', auth.login);
 router.post('/confirm', require('./confirm'));
 
+router.use('/delete', auth.login);
+router.post('/delete', require('./delete'));
+
 module.exports = router;

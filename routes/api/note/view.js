@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
         incorrectCnt = undefined;
         unconfirmedCnt = undefined;
         
-        options = { where: { userid: userid, state: { [Op.and] : [{ [Op.ne]: Note.UNCONFIRMED }, { [Op.ne]: Note.ASSIGNED }] }}};
+        options = { where: { userid: userid, state: { [Op.ne]: Note.ASSIGNED }}};
         
         // Filter by examID
         if ( examID !== undefined )
