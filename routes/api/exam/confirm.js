@@ -1,3 +1,7 @@
+// Modules
+const fs = require('fs');
+const path = require('path');
+
 // Models
 const Problem = require('../../../models/').problem;
 const Exam = require('../../../models/').exam;
@@ -16,6 +20,8 @@ module.exports = async (req, res) => {
         exam = await Exam.findOne({ where: { index: examID, userid: userid } });
         if ( exam == null ) 
             throw new Error('해당 시험지가 존재하지 않습니다.');
+        if ( exam.dataValues.isDone )
+            throw new Error('이미 제출된 시험지입니다.')
         
         for ( let i = 0; i < problemIDList.length; i++ ) {
             problem = await Problem.findOneByindex(problemIDList[i]);
@@ -46,7 +52,7 @@ module.exports = async (req, res) => {
             }
             
             // Check if the exam is assigned by a teacher.
-            if ( Room.isUserAssigned(examID, userid) )
+            if ( exam.dataValues.type == Room.ASSIGNED )
                 state = Note.ASSIGNED;
             
             await Note.create({ userid: userid,
@@ -58,7 +64,7 @@ module.exports = async (req, res) => {
                              });
         }
         // Set isDone flag
-        Exam.update({ isDone: true }, { where: { index: examID, userid: userid } });
+        await Exam.update({ isDone: true }, { where: { index: examID, userid: userid } });
         
         res.json({
             success: true,

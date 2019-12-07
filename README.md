@@ -30,6 +30,8 @@ This server is used to support educational institute.
   
 * **/api/note**
   * [/api/note/view](#post-apinoteview)
+  * [/api/note/view/:mode](#post-apinoteviewmode)
+  * [/api/note/confirm/:mode](#post-apinoteconfirmmode)
   * [/api/note/rate](#post-apinoterate)
 
 * **/api/category**
@@ -37,8 +39,8 @@ This server is used to support educational institute.
   * [/api/category/list](#post-apicategorylist)
 
 * **/api/room**
-  * [/api/room/create](#post-apiroomcreate)
-  * [/api/room/list](#post-apiroomlist)
+  * [/api/room/create/:type](#post-apiroomcreatetype)
+  * [/api/room/list/:type](#post-apiroomlisttype)
 
 <br>
 
@@ -318,12 +320,13 @@ Not required
 | data.examList | Array | 조건에 맞는 모든 시험지 | 
 | data.examList[i].examID | Integer | 시험지 고유 번호 | 
 | data.examList[i].title | String | 시험지 제목 | 
+| data.examList[i].problemCount | Integer | 문제 총 개수 | 
 | data.examList[i].type | String | 시험지 타입 | 
 | data.examList[i].isDone | Boolean | 제출 완료 여뷰 | 
 | data.examList[i].createdAt | String | 만든 날짜 | 
 <br>
-{ type : 0 } - 시험 <br>
-{ type : 1 } - 숙제
+{ type : "assigned" } - 시험 <br>
+{ type : "homework" } - 숙제
 <br>
 
 ### POST /api/exam/take
@@ -424,6 +427,26 @@ Not required
 | data.noteList[i].state | Integer | 문제 처리 상태 | 
 <br>
 
+### POST /api/note/confirm/:mode
+채점 대기중인 문제를 처리합니다.
+{ mode: 'unconfirmed' } - 주관식 채점 대기 문제 <br>
+{ mode: 'assigned' } - 관리자가 공유한 시험 문제
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| examID | Integer | 시험지 번호 | 
+| problemID | Integer | 문제 고유 번호 | 
+| correct | Integer | 정답 여부 | 
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+<br>
+
 ### POST /api/note/rate
 특정 문제에 대한 정답률을 확인합니다.
 
@@ -485,18 +508,17 @@ Not required
 <!-- /api/category -->
 
 <!-- /api/room -->
-### POST /api/room/create
+### POST /api/room/create/:type
 시험지를 학생들과 공유합니다.
+
+{ type : 'assigned' } - 시험 타입 <br>
+{ type : 'homework' } - 숙제 타입
 
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
 | examID | Integer | 공유할 시험지 번호 | 
 | useridList | Array | 공유할 학생 아이디 리스트 | 
-| type | Integer | 공유 타입 | 
-
-{ type : 0 } - 시험 타입 <br>
-{ type : 1 } - 숙제 타입
 
 #### Response
 | Name | Data type | Description | 
@@ -506,14 +528,16 @@ Not required
 | ecode | Integer | 응답 코드 | 
 <br>
 
-### POST /api/room/list
+### POST /api/room/list/:type
 특정 시험지에 대해 공유중인 학생을 조회합니다.
+
+{ type : 'assigned' } - 시험 타입 <br>
+{ type : 'homework' } - 숙제 타입
 
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
 | examID | Integer | 시험 번호 | 
-| type | Integer | 공유 타입 | 
 
 #### Response
 | Name | Data type | Description | 

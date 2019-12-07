@@ -6,6 +6,8 @@ const Op = sequelize.Op;
 const Note = require('../../../models/').note;
 const Problem = require('../../../models/').problem;
 
+const stateTable = [ "incorrect", "correct", "unconfirmed", "assigned" ];
+
 module.exports = async (req, res) => {
     const userid = req.token.userid;
     const mode = req.params.mode;
@@ -63,7 +65,7 @@ module.exports = async (req, res) => {
                             submit: notes[i].dataValues.submit,
                             problemURL: problem.dataValues.problemURL,
                             solutionURL: problem.dataValues.solutionURL,
-                            state: notes[i].dataValues.state,            
+                            state: stateTable[notes[i].dataValues.state],            
                          });
         }
         

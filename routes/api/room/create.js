@@ -6,24 +6,26 @@ const Room = require('../../../models/').room;
 /* 
     * Create a room
     
-    POST /api/room/create
+    POST /api/room/create/:type
     {
         examID       {Integer},
-        useridList   {Array},
-        type         {Integer},
+        useridList   {Array}
     }
 */
 
 module.exports = async (req, res) => {
+    var type = req.params.mode;
     var { useridList } = req.body;
-    const { examID, type } = req.body;
+    const { examID } = req.body;
     
     try {
         if ( examID == undefined || !useridList || type == undefined )
             throw new Error('모든 항목을 입력해주세요.');
         
-        if ( type != Room.ASSIGNED && type != Room.HOMEWORK ) 
+        if ( type != 'homework' &&  type != 'assigned' )
             throw new Error('올바르지 않은 공유 타입입니다.');
+        
+        type = ( type == 'homework' ) ? Room.HOMEWORK : Room.ASSIGNED;
         
         exam = await Exam.findOneByindex(examID);
         if ( exam == null )
@@ -34,8 +36,10 @@ module.exports = async (req, res) => {
         newUseridList = [];
         
         useridList.forEach( async (userid) => {
-            if ( (await Room.isUserIncluded(examID, type, userid)) == null)
-                newUseridList.push(userid);
+            if ( await Room.isUserIncluded(examID, type, userid) )
+                return;
+            
+            newUseridList.push(userid);
             
             await Exam.create({ userid: userid, 
                                 title: exam.dataValues.title, 

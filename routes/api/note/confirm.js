@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
         if ( mode != 'unconfirmed' &&  mode != 'assigned' )
             throw new Error('올바르지 않은 모드입니다.');
         
-        state = mode == 'unconfirmed' ? Note.UNCONFIRMED : Note.ASSIGNED;
+        state = ( mode == 'unconfirmed' ) ? Note.UNCONFIRMED : Note.ASSIGNED;
         options = { where: { userid: userid,
                              examID: examID,
                              problemID: problemID,

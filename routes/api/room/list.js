@@ -5,15 +5,15 @@ const Room = require('../../../models/').room;
 /* 
     * List a room
     
-    POST /api/room/list
+    POST /api/room/list/:type
     {
-        examID    {Integer},
-        type      {Integer},
+        examID    {Integer}
     }
 */
 
 module.exports = async (req, res) => {
-    const { examID, type } = req.body;
+    var type = req.params.type;
+    const { examID } = req.body;
     
     try {
         options = {};
@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
         if ( examID !== undefined )
             options.examID = examID;
         if ( type !== undefined )
-            options.type = type;
+            options.type = ( type == 'homework' ) ? Room.HOMEWORK : Room.ASSIGNED;;
         
         room = await Room.findOne({ where: options });
         if ( room == null )

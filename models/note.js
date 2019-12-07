@@ -13,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: { type: DataTypes.STRING }
     });
     
-    Note.UNCONFIRMED = -1;
     Note.INCORRECT = 0;
     Note.CORRECT = 1;
-    Note.ASSIGNED = 2;
+    Note.UNCONFIRMED = 2;
+    Note.ASSIGNED = 3;
     
     Note.changeState = function (options, state) {
         return this.update({ state: state }, options);

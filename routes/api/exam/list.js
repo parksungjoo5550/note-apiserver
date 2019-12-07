@@ -1,6 +1,7 @@
 // Models
 const Exam = require('../../../models/').exam;
 
+const typeTable = ["assigned", "homework"];
 /* 
     * List exam list made by logged in user
     
@@ -20,10 +21,12 @@ module.exports = async (req, res) => {
         
         // Make a array contains problemList.
         for (let i = 0; i < results.length; i++){
-            results[i].dataValues.problemIDList = results[i].dataValues.problemIDList.split(' ');
+            problemIDList = results[i].dataValues.problemIDList.split(' ');
+            
             examList.push({ examID: results[i].dataValues.index,
                             title: results[i].dataValues.title,
-                            type: results[i].dataValues.type,
+                            problemCount: problemIDList.length,
+                            type: typeTable[results[i].dataValues.type],
                             isDone: results[i].dataValues.isDone,
                             createdAt: results[i].dataValues.createdAt
                           });

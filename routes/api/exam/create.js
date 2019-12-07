@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
         if ( !title || !problemIDList )
             throw new Error('모든 항목을 입력해주세요.');
 
-        problemIDList2 = problemIDList.slice();
+        problemIDList2 = Array.from(new Set(problemIDList));
             
         // Create a PDF file.
         doc = new pdfDocument();
