@@ -138,7 +138,7 @@
             <% for (let i = 0; i < problemList.length; i++ ) { %>
                 <tr data-href="/front/problem/update/<%= problemList[i].index %>">
                     <td><center><a href="/front/problem/update/<%= problemList[i].index %>"><%= problemList[i].index %></a></center></td>
-                    <td><%= problemList[i].index %></td>
+                    <td><%= problemList[i].problemURL %></td>
                     <td><%= problemList[i].solutionURL %></td>
                     <td><%= problemList[i].isMultipleQuestion %></td>
                     <td><%= problemList[i].answer %></td>
