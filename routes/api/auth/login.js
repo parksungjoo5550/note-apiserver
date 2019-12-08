@@ -3,7 +3,7 @@ const jwt  = require('jsonwebtoken');
 
 // Models
 const User = require('../../../models/').user;
-
+const Student = require('../../../models/').student;
 /*
     POST /api/auth/login
     {
