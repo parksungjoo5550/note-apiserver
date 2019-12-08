@@ -60,13 +60,7 @@ module.exports = async (req, res) => {
                     continue;
             }
             
-            noteList.push({ problemID: notes[i].dataValues.problemID,
-                            answer: problem.dataValues.answer,
-                            submit: notes[i].dataValues.submit,
-                            problemURL: problem.dataValues.problemURL,
-                            solutionURL: problem.dataValues.solutionURL,
-                            state: stateTable[notes[i].dataValues.state],            
-                         });
+            noteList.push(notes[i].dataValues);
         }
         
         res.json({

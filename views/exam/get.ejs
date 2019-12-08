@@ -6,8 +6,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
         
         <script>
-            <% if (locals.examID) { %>
-                examID = <%= examID %>
+            <% if (locals.exam) { %>
+                examID = <%= exam.index %>
             <% } %>
         </script>
     </head>
@@ -33,19 +33,19 @@
         <% } %>
         
         <!-- Query  -->
-        <% if (locals.examID) { %>
-        <form method="POST" action="/front/exam/take/<%= examID %>">
+        <% if (locals.exam) { %>
+        <form method="POST" action="/front/exam/get/<%= exam.index %>">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">시험지 번호</label>
                 <div class="form-control col-sm-2">
-                    <%= examID %>
+                    <%= exam.index %>
                 </div>
             </div>
             
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">제목</label>
                 <div class="form-control col-sm-2">
-                    <%= title %>
+                    <%= exam.title %>
                 </div>
             </div>
 

@@ -2,18 +2,19 @@ const router = require('express').Router();
 const auth = require('../../../middlewares/auth');
 
 // View api
-router.use('/view', auth.login);
-router.use('/view/assigned', auth.admin);
+router.use('/list', auth.login);
+router.use('/list/assigned', auth.admin);
 
-router.post('/view', require('./view'));
-router.post('/view/:mode', require('./view'));
+router.post('/list', require('./list'));
+router.post('/list/:mode', require('./list'));
+
+// Get api
+router.use('/get', auth.login);
+router.post('/get', require('./get'));
 
 // Confirm api
 router.use('/confirm', auth.login);
-router.post('/confirm/:mode', require('./confirm'));
-
-router.use('/confirm/assigned', auth.admin);
-router.post('/confirm/assigned', require('./confirm'));
+router.post('/confirm', require('./confirm'));
 
 // Rate api
 router.use('/rate', auth.login)

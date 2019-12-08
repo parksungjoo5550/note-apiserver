@@ -14,13 +14,15 @@ module.exports = async (req, res) => {
             throw new Error('카테고리를 입력해주세요.');
         
         categories = category.split('$$');
-        if (categories.length > 4 )
+        if ( categories.length > 4 )
             throw new Error('잘못된 카테고리 정보입니다.');
         
-        parentCategory = categories.slice(0,3);
-        result = await Category.findOne({ where: {category: parentCategory.join('$$'), type: parentCategory.length }});
-        if ( result == null )
-            throw new Error('상위 카테고리 먼저 입력해주세요.');
+        if ( categories.length > 1 ) {
+            parentCategory = categories.slice(0, categories.length - 1);
+            result = await Category.findOne({ where: {category: parentCategory.join('$$'), type: parentCategory.length }});
+            if ( result == null )
+                throw new Error('상위 카테고리 먼저 입력해주세요.');
+        }
         
         result = await Category.findOne({ where: {category: category, type: categories.length }});
         if ( result )

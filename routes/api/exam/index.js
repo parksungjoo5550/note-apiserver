@@ -7,8 +7,8 @@ router.post('/create', require('./create'));
 router.use('/list', auth.login);
 router.post('/list', require('./list'));
 
-router.use('/take', auth.login);
-router.post('/take', require('./take'));
+router.use('/get', auth.login);
+router.post('/get', require('./get'));
 
 router.use('/confirm', auth.login);
 router.post('/confirm', require('./confirm'));

@@ -9,8 +9,8 @@ router.use('/list', frontAuth.login);
 router.get('/list', require('./list').get);
 router.post('/list', require('./list').post);
 
-router.use('/take', frontAuth.login);
-router.get('/take/:examID', require('./take').get);
+router.use('/get', frontAuth.login);
+router.get('/get/:examID', require('./get').get);
 
 
 module.exports = router;

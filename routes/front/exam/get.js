@@ -14,7 +14,7 @@ exports.get = (req, res) => {
 
         const options = {
             headers: { 'x-access-token': req.cookies.token },
-            uri: 'take', 
+            uri: 'get', 
             body: {
                 examID: parseInt(examID)
             }
@@ -27,20 +27,19 @@ exports.get = (req, res) => {
                 
                 multipleQuestions = body.data.multipleQuestions.map( (problem) => problem.problemID );
                 essayQuestions = body.data.essayQuestions.map( (problem) => problem.problemID );
-                res.render('exam/take', {
+                res.render('exam/get', {
                     message: body.message,
-                    examID: examID,
-                    title: body.data.title,
+                    exam: body.data.exam,
                     multipleQuestions: multipleQuestions,
                     essayQuestions: essayQuestions
                 });
             }
             catch (error) {
-                res.render('exam/take', { message: error.message });
+                res.render('exam/get', { message: error.message });
             }
         });
     }
     catch (error) {
-        res.render('exam/take', { message: error.message });
+        res.render('exam/get', { message: error.message });
     }
 }

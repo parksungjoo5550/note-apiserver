@@ -16,7 +16,9 @@ module.exports = async (req, res) => {
     const { userid, password } = req.body;
     
     try {
-        const user = await User.findOneByUserid(userid);
+        user = await User.findOneByUserid(userid);
+        student = await Student.findOneByUserid(userid);
+        student.dataValues.admin = user.dataValues.admin;
         
         if (!user)
             throw new Error('존재하지 않는 사용자 아이디입니다.');
@@ -42,7 +44,10 @@ module.exports = async (req, res) => {
             success: true,
             message: '로그인 됐습니다.',
             ecode: 200,
-            data: { token: token }
+            data: {
+                user: student.dataValues,
+                token: token 
+            }
         });
     }
     catch (error) {

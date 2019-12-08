@@ -12,7 +12,7 @@ exports.get = (req, res) => {
     try {
         const options = {
             headers: { 'x-access-token': req.cookies.token },
-            uri: 'inquiry/all', 
+            uri: 'get', 
             body: {
                 problemID: req.params.problemID
             }
@@ -25,7 +25,7 @@ exports.get = (req, res) => {
 
                 res.render('problem/update', {
                     message: body.message,
-                    problem: body.data.problemList[0]
+                    problem: body.data.problem
                 });
             }
             catch (error) {

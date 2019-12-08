@@ -23,7 +23,7 @@
         
         <!-- Query  -->
         <% if (locals.problem) { %>
-        <form method="POST" action="/front/problem/update/<%= problem.problemID %>">
+        <form method="POST" action="/front/problem/update/<%= problem.index %>">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">문제 번호</label>
                 <div class="col-sm-2 p-0">
@@ -111,7 +111,7 @@
         </form>
         <% } %>
         
-        <a href="/front/problem/inquiry"> 돌아가기 </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/front"> 메인 페이지 </a> 
+        <a href="/front/problem/list"> 돌아가기 </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/front"> 메인 페이지 </a> 
     </div>
     </body>
 </html>

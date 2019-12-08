@@ -9,14 +9,14 @@ const api = request.defaults({
 });
 
 exports.get = (req, res) => {
-    res.render('problem/inquiry');
+    res.render('problem/list');
 }
 
 exports.post = (req, res) => {
     try {
         const options = {
             headers: { 'x-access-token': req.cookies.token },
-            uri: 'inquiry/all', 
+            uri: 'list', 
             body: {
                 problemID: req.body.problemID,
                 course: req.body.course,
@@ -36,17 +36,17 @@ exports.post = (req, res) => {
                 if ( body.success == false )
                     throw new Error(body.message);
 
-                res.render('problem/inquiry', {
+                res.render('problem/list', {
                     message: body.message,
                     problemList: body.data.problemList
                 });
             }
             catch (error) {
-                res.render('problem/inquiry', { message: error.message });
+                res.render('problem/list', { message: error.message });
             }
         });
     }
     catch (error) {
-        res.render('problem/inquiry', { message: error.message });
+        res.render('problem/list', { message: error.message });
     }
 }

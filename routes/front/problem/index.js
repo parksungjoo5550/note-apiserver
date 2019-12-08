@@ -21,9 +21,9 @@ router.use('/create', frontAuth.admin);
 router.get('/create', require('./create').get);
 router.post('/create', upload.fields([{ name: 'problem' }, { name: 'solution' }]), require('./create').post);
 
-router.use('/inquiry', frontAuth.login);
-router.get('/inquiry', require('./inquiry').get);
-router.post('/inquiry', require('./inquiry').post);
+router.use('/list', frontAuth.login);
+router.get('/list', require('./list').get);
+router.post('/list', require('./list').post);
 
 router.use('/update', frontAuth.admin);
 router.get('/update/:problemID', require('./update').get);

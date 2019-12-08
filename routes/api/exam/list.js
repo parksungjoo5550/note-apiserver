@@ -13,23 +13,26 @@ const typeTable = ["assigned", "homework"];
 
 module.exports = async (req, res) => {
     const userid = req.token.userid;
-    
+    const { type, isDone } = req.body;
+          
     try {
-        // Query by userid.
-        results = await Exam.findAll({ where: { userid: userid } });
+        options = { where: { userid: userid }}
+        
+        if ( type != undefined )
+            options.where.type = type;
+        if ( isDone != undefined )
+            options.where.isDone = isDone;
+        
+        results = await Exam.findAll(options);
         examList = [];
         
         // Make a array contains problemList.
         for (let i = 0; i < results.length; i++){
             problemIDList = results[i].dataValues.problemIDList.split(' ');
             
-            examList.push({ examID: results[i].dataValues.index,
-                            title: results[i].dataValues.title,
-                            problemCount: problemIDList.length,
-                            type: typeTable[results[i].dataValues.type],
-                            isDone: results[i].dataValues.isDone,
-                            createdAt: results[i].dataValues.createdAt
-                          });
+            results[i].dataValues.problemCount = problemIDList.length;
+            
+            examList.push(results[i].dataValues);
         }
         
         res.json({

@@ -20,19 +20,20 @@ This server is used to support educational institute.
 * **/api/problem**
   * [/api/problem/create](#post-apiproblemcreate)
   * [/api/problem/get](#post-apiproblemget)
-  * [/api/problem/inquiry](#post-apiprobleminquiry)
+  * [/api/problem/list](#post-apiproblemlist)
 
 * **/api/exam**
   * [/api/exam/create](#post-apiexamcreate)
   * [/api/exam/list](#post-apiexamlist)
-  * [/api/exam/take](#post-apiexamtake)
+  * [/api/exam/get](#post-apiexamget)
   * [/api/exam/confirm](#post-apiexamconfirm)
   * [/api/exam/delete](#post-apiexamdelete)
   
 * **/api/note**
-  * [/api/note/view](#post-apinoteview)
-  * [/api/note/view/:mode](#post-apinoteviewmode)
-  * [/api/note/confirm/:mode](#post-apinoteconfirmmode)
+  * [/api/note/get](#post-apinotegett)
+  * [/api/note/list](#post-apinotelist)
+  * [/api/note/list/:mode](#post-apinotelistmode)
+  * [/api/note/confirm](#post-apinoteconfirm)
   * [/api/note/rate](#post-apinoterate)
 
 * **/api/category**
@@ -163,7 +164,10 @@ Not required
 등록된 학생 정보를 모두 가져옵니다.
 
 #### Parameter
-Not required
+| Name | Data type | Description | 
+---|---|---
+| type | Integer | 시험지 타입 | 
+| isDone | Boolean | 시험지 제출 여부 | 
 
 #### Response
 | Name | Data type | Description | 
@@ -250,7 +254,7 @@ Not required
 | data.isMultipleQuestion | Boolean | 객관식 여부 | 
 <br>
 
-### POST /api/problem/inquiry
+### POST /api/problem/list
 조건에 맞는 문제를 반환합니다.
 
 #### Parameter
@@ -330,7 +334,7 @@ Not required
 { type : "homework" } - 숙제
 <br>
 
-### POST /api/exam/take
+### POST /api/exam/get
 시험지 번호에 해당하는 시험지의 정보를 반환합니다.
 
 #### Parameter
@@ -388,7 +392,29 @@ Not required
 <!-- /api/exam -->
 
 <!-- /api/note -->
-### POST /api/note/view
+### POST /api/note/get
+특정 노트의 정보를 조회합니다.
+
+#### Parameter
+| Name | Data type | Description | 
+---|---|---
+| noteID | Integer | 노트 고유 번호 | 
+
+#### Response
+| Name | Data type | Description | 
+---|---|---
+| success | Boolean | api 성공 여부 | 
+| message | String | 응답 메시지 | 
+| ecode | Integer | 응답 코드 | 
+| data.noteID | Integer | 노트 고유 번호 | 
+| data.exam | Object | Exam 오브젝트 | 
+| data.problem | Object | Problem 오브젝트 | 
+| data.submit | Integer | 사용자가 제출한 답 | 
+| data.state | Integer | 처리 상태 | 
+| data.createdAt | Integer | 생성 날짜 | 
+<br>
+
+### POST /api/note/list
 제출된 시험지에서 객관식 문제의 채점 정보를 조회합니다.
 
 #### Parameter
@@ -414,12 +440,12 @@ Not required
 | data.unconfirmedCnt | Integer | 주관식 채점 대기중인 문제 개수 | 
 <br>
 
-### POST /api/note/view/:mode
+### POST /api/note/list/:state
 제출된 시험지에 대한 채점 정보를 상태에 따라 조회합니다. <br>
-{ mode: 'correct' } - 맞은 문제 <br>
-{ mode: 'imcorrect' } - 틀린 문제 <br>
-{ mode: 'unconfirmed' } - 주관식 채점 대기 문제 <br>
-{ mode: 'assigned' } - 관리자가 공유한 시험 문제
+{ state: 'correct' } - 맞은 문제 <br>
+{ state: 'imcorrect' } - 틀린 문제 <br>
+{ state: 'unconfirmed' } - 주관식 채점 대기 문제 <br>
+{ state: 'assigned' } - 관리자가 공유한 시험 문제
 
 #### Parameter
 | Name | Data type | Description | 
@@ -444,16 +470,13 @@ Not required
 | data.noteList[i].state | Integer | 문제 처리 상태 | 
 <br>
 
-### POST /api/note/confirm/:mode
+### POST /api/note/confirm
 채점 대기중인 문제를 처리합니다.
-{ mode: 'unconfirmed' } - 주관식 채점 대기 문제 <br>
-{ mode: 'assigned' } - 관리자가 공유한 시험 문제
 
 #### Parameter
 | Name | Data type | Description | 
 ---|---|---
-| examID | Integer | 시험지 번호 | 
-| problemID | Integer | 문제 고유 번호 | 
+| noteID | Integer | 노트 고유 번호 | 
 | correct | Integer | 정답 여부 | 
 
 #### Response

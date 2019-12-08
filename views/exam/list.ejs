@@ -37,8 +37,8 @@
                     </tr>
                 </thead>
             <% for (let i = 0; i < examList.length; i++ ) { %>
-                <tr data-href="/front/exam/take/<%= examList[i].examID %>">
-                    <td><a href="/front/exam/take/<%= examList[i].examID %>"><%= examList[i].examID %></a></td>
+                <tr data-href="/front/exam/get/<%= examList[i].index %>">
+                    <td><a href="/front/exam/get/<%= examList[i].index %>"><%= examList[i].index %></a></td>
                     <td><%= examList[i].title %></td>
                     <td><% if ( examList[i].type == 0 ) {%>
                             시험

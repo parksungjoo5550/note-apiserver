@@ -57,32 +57,9 @@ module.exports = async (req, res) => {
             results = shuffle(results).slice(0, count);
         
         problemList = results.map( (r) => {
-            problem = {};
-            
-            if ( mode == 'all' ) {
-                problem = r.dataValues;
-                problem.problemID = problem.index;
-            }
-            else {
-                problem = { 
-                            problemID: r.dataValues.index,
-                            problemURL: r.dataValues.problemURL, 
-                            isMultipleQuestion: r.dataValues.isMultipleQuestion,
-                            problemCondition: {
-                                course: r.dataValues.course,
-                                bigChapter: r.dataValues.bigChapter,
-                                middleChapter: r.dataValues.middleChapter,
-                                smallChapter: r.dataValues.smallChapter,
-                                level: r.dataValues.level,
-                                source: r.dataValues.source
-                            }
-                          };
-            }
-            
-            return problem;
+            return r.dataValues;
         });
         
-        console.log(problemList);
         res.json({
             success: true,
             message: '조건에 맞는 문제를 조회 완료했습니다.',

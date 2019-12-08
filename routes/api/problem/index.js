@@ -10,8 +10,8 @@ router.post('/update', require('./update'));
 router.use('/get', auth.login)
 router.post('/get', require('./get'));
 
-router.use('/inquiry', auth.login)
-router.post('/inquiry', require('./inquiry'));
-router.post('/inquiry/:mode', require('./inquiry'));
+router.use('/list', auth.login)
+router.post('/list', require('./list'));
+router.post('/list/:mode', require('./list'));
 
 module.exports = router;

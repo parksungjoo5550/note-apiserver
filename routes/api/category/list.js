@@ -9,8 +9,7 @@ const Category = require('../../../models/').category;
 const sourceJson = JSON.parse(fs.readFileSync(path.join(__basedir, 'config/source.list.json'), 'utf8'));
 
 module.exports = async (req, res) => {
-    const mode = req.params.mode;
-    const { course, bigChapter, middleChapter, smallChapter } = req.body;
+    const { course, bigChapter, middleChapter, smallChapter, mode } = req.body;
     
     try {
         // List source.

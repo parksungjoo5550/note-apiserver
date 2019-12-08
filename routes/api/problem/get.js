@@ -13,9 +13,9 @@ module.exports = async (req, res) => {
             success: true,
             message: '문제 정보 조회를 완료했습니다.',
             ecode: 200,
-            data: { problemID: problem.dataValues.index,
-                    problemURL: problem.dataValues.problemURL,
-                    isMultipleQuestion: problem.dataValues.isMultipleQuestion },
+            data: { 
+                problem: problem.dataValues
+            }
         });
     }
     catch (error) {

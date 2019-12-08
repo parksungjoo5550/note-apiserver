@@ -42,7 +42,7 @@ module.exports = async (req, res) => {
             message: '해당 시험지의 정보를 조회 완료했습니다.',
             ecode: 200,
             data: { 
-                title: exam.dataValues.title,
+                exam: exam.dataValues,
                 multipleQuestions: multipleQuestions,
                 essayQuestions: essayQuestions
             }

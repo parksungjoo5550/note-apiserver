@@ -8,18 +8,11 @@ const Problem = require('../../../models/').problem;
 
 module.exports = async (req, res) => {
     const userid = req.token.userid;
-    const mode = req.params.mode;
-    const { examID, problemID, correct } = req.body;
+    const { noteID, correct } = req.body;
     
     try {  
-        if ( mode != 'unconfirmed' &&  mode != 'assigned' )
-            throw new Error('올바르지 않은 모드입니다.');
-        
-        state = ( mode == 'unconfirmed' ) ? Note.UNCONFIRMED : Note.ASSIGNED;
         options = { where: { userid: userid,
-                             examID: examID,
-                             problemID: problemID,
-                             state: state }};
+                             index: noteID  }};
         
         note = await Note.findOne(options);
         if ( note == null)
