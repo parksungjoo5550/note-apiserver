@@ -23,18 +23,10 @@ module.exports = async (req, res) => {
             if ( problem == null ) // if the problem is removed
                 continue; 
             
-            if ( problem.dataValues.isMultipleQuestion ) {
-                multipleQuestions.push({ problemID: parseInt(problemIDList[i]),
-                                   problemURL: problem.dataValues.problemURL,
-                                   isMultipleQuestion: problem.dataValues.isMultipleQuestion
-                                 });
-            }
-            else {
-                essayQuestions.push({ problemID: parseInt(problemIDList[i]),
-                                   problemURL: problem.dataValues.problemURL,
-                                   isMultipleQuestion: problem.dataValues.isMultipleQuestion
-                                 });
-            }
+            if ( problem.dataValues.isMultipleQuestion )
+                multipleQuestions.push( problem.dataValues );
+            else
+				essayQuestions.push( problem.dataValues );
         }
         
         res.json({
