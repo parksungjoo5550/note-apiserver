@@ -14,14 +14,16 @@ module.exports = async (req, res) => {
     
     try {
         results = await Student.findAll();
-        studentList = results.map((student) => `${student.dataValues.name} ( ${student.dataValues.userid} )` )
+		studentList = results.map((student) => student.dataValues );
+        studentNameList = results.map((student) => `${student.dataValues.name} ( ${student.dataValues.userid} )` );
 
         res.json({
             success: true,
             message: '학생 정보 리스트 조회를 완료했습니다.',
             ecode: 200,
             data: {
-                studentList: studentList
+                studentList: studentList,
+				studentNameList: studentNameList
             }
         });
     }
