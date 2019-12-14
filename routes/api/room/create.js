@@ -14,32 +14,27 @@ const Room = require('../../../models/').room;
 */
 
 module.exports = async (req, res) => {
-    var type = req.params.mode;
+    var type = req.params.type;
     var { useridList } = req.body;
     const { examID } = req.body;
     
     try {
-        if ( examID == undefined || !useridList || type == undefined )
+        if ( examID == undefined || useridList == undefined || type == undefined )
             throw new Error('모든 항목을 입력해주세요.');
         
         if ( type != 'homework' &&  type != 'assigned' )
             throw new Error('올바르지 않은 공유 타입입니다.');
         
         type = ( type == 'homework' ) ? Room.HOMEWORK : Room.ASSIGNED;
+        useridList = Array.from(new Set(useridList));
         
         exam = await Exam.findOneByindex(examID);
         if ( exam == null )
             throw new Error('해당 시험지는 존재하지 않습니다.');
-        
-        
-        useridList = Array.from(new Set(useridList));
-        newUseridList = [];
-        
+
         useridList.forEach( async (userid) => {
             if ( await Room.isUserIncluded(examID, type, userid) )
                 return;
-            
-            newUseridList.push(userid);
             
             await Exam.create({ userid: userid, 
                                 title: exam.dataValues.title, 
@@ -53,14 +48,15 @@ module.exports = async (req, res) => {
         
         room = await Room.isExist(examID, type);
         if ( room ) {
-            if ( newUseridList.length > 0 )
-                await Room.update({ useridList: room.dataValues.useridList + '$$' + newUseridList.join('$$') + '$$'},
-                            { where: { examID: examID, type: type }});
+            useridList2 = room.dataValues.useridList.slice(0, -2).split('$$');
+            useridList = Array.from(new Set(useridList.concat(useridList2)));
+            await Room.update({ useridList: useridList.join('$$') + '$$'},
+                              { where: { examID: examID, type: type }});
         }
-        else {
+        else if ( useridList.length ){
             await Room.create({
                 examID: examID,
-                useridList: newUseridList.join('$$') + '$$',
+                useridList: useridList.join('$$') + '$$',
                 type: type
             });
         }

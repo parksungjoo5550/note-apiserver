@@ -2,10 +2,12 @@ const router = require('express').Router();
 const auth = require('../../../middlewares/auth');
 
 router.use('/create', auth.admin);
-router.post('/create/:mode', require('./create'));
+router.post('/create/:type', require('./create'));
 
-router.use('/list', auth.admin);
-router.post('/list', require('./list'));
-router.post('/list/:type', require('./list'));
+router.use('/get', auth.admin);
+router.post('/get/:type', require('./get'));
+
+router.use('/delete', auth.admin);
+router.post('/delete/:type', require('./delete'));
 
 module.exports = router;

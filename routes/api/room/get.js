@@ -16,14 +16,13 @@ module.exports = async (req, res) => {
     const { examID } = req.body;
     
     try {
-        options = {};
+        if ( examID == undefined || type == undefined )
+            throw new Error('모든 입력값을 입력해주세요.')
+        type = ( type == 'homework' ? Room.HOMEWORK : Room.ASSIGNED );
+		
+        options = { where: { examID: examID, type: type }};
         
-        if ( examID !== undefined )
-            options.examID = examID;
-        if ( type !== undefined )
-            options.type = ( type == 'homework' ) ? Room.HOMEWORK : Room.ASSIGNED;;
-        
-        room = await Room.findOne({ where: options });
+        room = await Room.findOne(options);
         if ( room == null )
             throw new Error('공유중인 학생이 없습니다.');
         
