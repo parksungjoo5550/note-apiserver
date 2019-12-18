@@ -51,6 +51,8 @@ module.exports = async (req, res) => {
         if ( active !== undefined )
             options.active = active;
         
+        options.isMultipleQuestion = true;
+        
         results = await Problem.findAll({ where: options });
 
         if ( count != undefined && count != '' && results.length > count )
