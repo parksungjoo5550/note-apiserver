@@ -9,3 +9,6 @@ uploads/problems/*
 uploads/solutions/*
 uploads/pdfs/*
 uploads/answers/*
+
+# Modules
+node_modules
