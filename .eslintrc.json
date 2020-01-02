@@ -1,0 +1,33 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:prettier/recommended",
+        "prettier"
+      ],
+      "plugins": ["prettier"],
+        "parserOptions": {
+            "ecmaVersion": 6,
+            "sourceType": "module",
+            "ecmaFeatures": {
+                "jsx": true
+            }
+      },
+    "env": {
+        "commonjs": true,
+        "es6": true,
+        "node": true
+    },
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "rules": {
+        "prettier/prettier": [
+            "error",
+            {},
+            {
+                "usePrettierrc": false
+            }
+        ]
+    }
+}
