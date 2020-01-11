@@ -45,6 +45,7 @@ exports.post = (req, res) => {
             uri: 'update', 
             body: {
                 problemID: req.params.problemID,
+                shortQuestionBase64: req.body.fileShortQuestion,
                 answer: req.body.answer,
                 course: req.body.course,
                 bigChapter: req.body.bigChapter,

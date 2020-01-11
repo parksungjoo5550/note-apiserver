@@ -6,8 +6,8 @@ const path = require('path');
 const Problem = require('../../../models/').problem;
 
 module.exports = async (req, res) => {
-    const { problemFilename, solutionFilename,
-            problemBase64, solutionBase64,
+    const { problemFilename, solutionFilename, shortQuestionFilename,
+            problemBase64, solutionBase64, shortQuestionBase64,
             isMultipleQuestion, answer, course, bigChapter, middleChapter, smallChapter, level, source, date } = req.body;
     
     try {
@@ -44,9 +44,26 @@ module.exports = async (req, res) => {
         }
         else
             solutionPath = undefined;
-        
+
+        if ( shortQuestionBase64 !== undefined ) {
+            shortQuestionPath = path.join('/uploads/problems', shortQuestionFilename);
+            fs.writeFile( path.join(__basedir, shortQuestionPath),
+                          new Buffer(shortQuestionBase64, 'base64'), (err) => {
+                            if (err) {
+                                res.status(403).json({
+                                    success: false,
+                                    message: err.message,
+                                    ecode: 403
+                                });
+                                return;
+                            }});
+        }
+        else
+            shortQuestionPath = undefined;
+      
         await Problem.create({ problemURL: problemPath,
                                solutionURL: solutionPath,
+                               shortQuestion: shortQuestionPath,
                                isMultipleQuestion: isMultipleQuestion == "true" ? true: false,
                                answer: answer,
                                course: course,

@@ -6,6 +6,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.6/css/mdb.min.css" />
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.6/js/mdb.min.js"></script>
+        <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+        <script type="text/javascript" src="/static/vendor/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="/static/vendor/ckeditor/adapters/jquery.js"></script>
         <script>
             function loadPreviousInput(){
                 if ($.cookie('preInputs') == undefined)
@@ -35,7 +38,7 @@
             }
             
             function submitCheck() {
-                if ( $("input[name=problem]").val() == '' ) {
+                if ( $("input[name=problem]").val() == '' || $("input[name=solution]").val() == '' ) {
                     alert('문제 파일이 업로드되지 않았습니다.');
                     return false;
                 }
@@ -43,6 +46,26 @@
                 savePreviousInput();
                 return true;
             }
+            
+            $(document).ready(function() {
+                $("textarea[name=shortQuestion]").ckeditor();
+                $("div[name=shortQuestion]").toggle();
+                $("div[id=previewShortQuestion]").toggle();
+                $("input[name=isMultipleQuestion]").click(function() {
+                    if ($("input[id=customControlValidation3]").is(":checked")) {
+                        $("div[name=shortQuestion]").show(1000);
+                    } else {
+                        $("div[name=shortQuestion]").hide(1000);
+                    }
+                })
+                $("button[name=capture]").click(function(){
+                    html2canvas($("iframe")[0].contentDocument.documentElement.childNodes[1], {useCORS: true, allowTaint: false}).then(canvas => {
+                        $("img[id=imageShortQuestion]").attr("src", canvas.toDataURL("image/png"));
+                        $("input[name=fileShortQuestion]").attr("value", canvas.toDataURL("image/png").replace(/^data:image\/png;base64,/, ""));
+                        $("div[id=previewShortQuestion]").show(1000);
+                    });
+                });
+            });
         </script>
         
         <style>
@@ -71,6 +94,21 @@
                 border-color: #f00;
                 border-style: solid;
                 box-shadow: inset 0 3px 4px #888;
+            }
+            
+            .preview
+            {
+                border: 1px solid #808080;
+                margin-left: 1em;
+            }
+            
+            .preview-legend
+            {
+                background: white none repeat scroll 0 0;
+                font-size: medium;
+                font-weight: normal;
+                display: inline-block;
+                padding: 0 2px;
             }
         </style>
     </head>
@@ -125,7 +163,7 @@
                 <label class="col-sm-2 col-form-label">문제 종류</label>
 
                 <div class="custom-control custom-radio col-sm-1 align-self-center">
-                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation2" name="isMultipleQuestion" value="true">
+                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation2" name="isMultipleQuestion" value="true" checked="checked">
                     <label class="custom-control-label" for="customControlValidation2">객관식</label>
                 </div>
                 <div class="custom-control custom-radio col-sm-1 align-self-center">
@@ -134,7 +172,23 @@
                     <div class="invalid-feedback">문제 종류를 선택해주세요.</div>
                 </div>
             </div>
-            
+          
+            <div name="shortQuestion" class="form-group row">
+                <label class="col-sm-2 col-form-label">주관식 부가 질문</label>
+                <input type="hidden" name="fileShortQuestion" class="form-control"/>
+                <div id=shortQuestionDialog title="주관식 부가 질문">
+                    <textarea placeholder="주관식 부가 질문" name="shortQuestion">
+                    </textarea>
+                    <button type="button" class="btn btn-primary" name="capture">캡처 생성</button>
+                </div>
+                <div id="previewShortQuestion" class="preview">
+                    <legend class="preview-legend">
+                        미리보기
+                    </legend>
+                    <img id="imageShortQuestion" src=""/>
+                </div>
+            </div>
+          
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">정답</label>
                 <div class="col-sm-2 p-0">
