@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
         if ( course !== undefined && course !== '' )
             options.course = course;
         if ( isMultipleQuestion !== undefined && isMultipleQuestion !== '' )
-            options.isMultipleQuestion = isMultipleQuestion == "true"? true: false;
+            options.isMultipleQuestion = (isMultipleQuestion === "true"? true: false);
         if ( bigChapter !== undefined && bigChapter !== '' )
             options.bigChapter = bigChapter;
         if ( middleChapter !== undefined && middleChapter !== '' )
@@ -50,8 +50,6 @@ module.exports = async (req, res) => {
             options.date = { [Op.lte]: endDate };
         if ( active !== undefined )
             options.active = active;
-        
-        options.isMultipleQuestion = true;
         
         results = await Problem.findAll({ where: options });
 

@@ -40,11 +40,11 @@
                 <label class="col-sm-2 col-form-label">문제 종류</label>
 
                 <div class="custom-control custom-radio col-sm-1 align-self-center">
-                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation2" name="isMultipleQuestion">
+                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation2" name="isMultipleQuestion" value="true">
                     <label class="custom-control-label" for="customControlValidation2">객관식</label>
                 </div>
                 <div class="custom-control custom-radio col-sm-1 align-self-center">
-                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation3" name="isMultipleQuestion">
+                    <input type="radio" class="custom-control-input radio-inline" id="customControlValidation3" name="isMultipleQuestion" value="false">
                     <label class="custom-control-label" for="customControlValidation3">주관식</label>
                     <div class="invalid-feedback">문제 종류를 선택해주세요.</div>
                 </div>
@@ -125,6 +125,7 @@
                         <th>문제 경로</th>
                         <th>해답 경로</th>
                         <th>객관식/주관식</th>
+                        <th>주관식 부가 질문</th>
                         <th>답</th>
                         <th>과목</th>
                         <th>대단원</th>
@@ -141,6 +142,7 @@
                     <td><%= problemList[i].problemURL %></td>
                     <td><%= problemList[i].solutionURL %></td>
                     <td><%= problemList[i].isMultipleQuestion %></td>
+                    <td><%= problemList[i].shortQuestion %></td>
                     <td><%= problemList[i].answer %></td>
                     <td><%= problemList[i].course %></td>
                     <td><%= problemList[i].bigChapter %></td>

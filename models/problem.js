@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
+        shortQuestion: {
+            type: DataTypes.STRING
+        },
         answer: { type: DataTypes.STRING },
         course: {type: DataTypes.STRING },
         bigChapter: { type: DataTypes.STRING },

@@ -1,9 +1,13 @@
+// Modules
+const fs =  require('fs');
+const path = require('path');
+
 // Models
 const Problem = require('../../../models/').problem;
 
 
 module.exports = async (req, res) => {
-    const { problemID, answer, course, bigChapter, middleChapter, smallChapter, level, source, date, active } = req.body;
+    const { problemID, shortQuestionBase64, answer, course, bigChapter, middleChapter, smallChapter, level, source, date, active } = req.body;
     
     try {
         if ( problemID == undefined )
@@ -14,7 +18,19 @@ module.exports = async (req, res) => {
             throw new Error('해당 문제는 존재하지 않습니다.');
         
         let options = {};
-        
+        if ( shortQuestionBase64 !== undefined ) {
+            shortQuestionPath = problem.dataValues.shortQuestion;
+            fs.writeFile( path.join(__basedir, shortQuestionPath),
+                          new Buffer(shortQuestionBase64, 'base64'), (err) => {
+                            if (err) {
+                                res.status(403).json({
+                                    success: false,
+                                    message: err.message,
+                                    ecode: 403
+                                });
+                                return;
+                            }});
+        }
         if ( answer !== undefined )
             options.answer = answer;
         if ( course !== undefined )

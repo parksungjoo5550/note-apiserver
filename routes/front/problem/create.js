@@ -27,8 +27,10 @@ exports.post = (req, res) => {
             body: {
                 problemFilename: problem.originalname,
                 solutionFilename: solution.originalname,
+                shortQuestionFilename: problem.originalname + '.shortQuestion.png',
                 problemBase64: problem.buffer.toString('base64'),
                 solutionBase64: solution.buffer.toString('base64'),
+                shortQuestionBase64: req.body.fileShortQuestion,
                 isMultipleQuestion: req.body.isMultipleQuestion,
                 answer: req.body.answer,
                 course: req.body.course,
@@ -42,7 +44,7 @@ exports.post = (req, res) => {
         }
 
         api.post(options, (err, httpResponse, body) => {
-            res.render('problem/create', {  message: body.message });
+            res.render('problem/create', { message: body.message });
         }); 
     }
     catch (error) {

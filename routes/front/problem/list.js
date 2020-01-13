@@ -20,6 +20,7 @@ exports.post = (req, res) => {
             body: {
                 problemID: req.body.problemID,
                 course: req.body.course,
+                isMultipleQuestion: req.body.isMultipleQuestion,
                 bigChapter: req.body.bigChapter,
                 middleChapter: req.body.middleChapter,
                 smallChapter: req.body.smallChapter,
