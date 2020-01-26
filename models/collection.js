@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Exam = sequelize.define('exam', {
+    const Collection = sequelize.define('collection', {
         index: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -7,8 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         userid: { type: DataTypes.STRING },
         title: { type: DataTypes.STRING },
-        problemIDList: { type: DataTypes.STRING },
-        examURL: { type: DataTypes.STRING }, 
+        pdfURL: { type: DataTypes.STRING }, 
         timeLimit: { 
             type: DataTypes.INTEGER,
             defaultValue: 0
@@ -24,12 +23,19 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: { type: DataTypes.STRING },
     }, { timestamps: false });
     
-    Exam.findOneByUserid = function (userid) {
+    Collection.WORKBOOK = 0;
+    Collection.WORKPAPER = {
+        exam: 1,
+        homework: 2,
+        practice: 3
+    };
+    
+    Collection.findOneByUserid = function (userid) {
         return this.findOne({ where: { userid: userid } });
     }
-    Exam.findOneByindex = function (index) {
+    Collection.findOneByIndex = function (index) {
         return this.findOne({ where: { index: index } });
     }
     
-    return Exam;
+    return Collection;
 }

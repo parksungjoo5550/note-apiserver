@@ -2,6 +2,32 @@
     <head>
         <meta charset="utf-8"/>
         <% include ../head %>
+        <script>
+            $(document).ready(function() {
+                $("div[name=name]").toggle();
+                $("div[name=school]").toggle();
+                $("div[name=admissionYear]").toggle();
+                $("div[name=mathGrade]").toggle();
+                $("input[name=type]").click(function() {
+                    if ($("input[id=typeTeacher]").is(":checked")) {
+                        $("div[name=name]").show(1000);
+                        $("div[name=school]").hide(1000);
+                        $("div[name=admissionYear]").hide(1000);
+                        $("div[name=mathGrade]").hide(1000);
+                    } else if ($("input[id=typeStudent]").is(":checked")) {
+                        $("div[name=name]").show(1000);
+                        $("div[name=school]").show(1000);
+                        $("div[name=admissionYear]").show(1000);
+                        $("div[name=mathGrade]").show(1000);
+                    } else {
+                        $("div[name=name]").hide(1000);
+                        $("div[name=school]").hide(1000);
+                        $("div[name=admissionYear]").hide(1000);
+                        $("div[name=mathGrade]").hide(1000);
+                    }
+                })
+            })
+        </script>
     </head>
     <body>
     <div class="container">
@@ -18,7 +44,6 @@
             </ul>
         </div>
         <% } %>
-        
 
         <form action="/front/auth/register" method="post" >
             <div class="form-group row">
@@ -41,29 +66,40 @@
                     <input type="password" class="form-control" placeholder="비밀번호 재입력" name="password2">
                 </div>
             </div>
-            
+
             <div class="form-group row">
+                <label class="col-sm-2 col-form-label">유형</label>
+                <div class="col-sm-10">
+                    <% if (token.admin) { %>
+                        <label><input type="radio" class="form-control" id="typeAdmin" name="type" value="admin">관리자</label>
+                        <label><input type="radio" class="form-control" id="typeTeacher" name="type" value="teacher">선생</label>
+                    <% } %>
+                    <label><input type="radio" class="form-control" id="typeStudent" name="type" value="student">학생</label>
+                </div>
+            </div>
+
+            <div class="form-group row" name="name">
                 <label class="col-sm-2 col-form-label">이름</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" placeholder="이름" name="name">
                 </div>
             </div>
             
-            <div class="form-group row">
+            <div class="form-group row" name="school">
                 <label class="col-sm-2 col-form-label">학교</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" placeholder="학교" name="school">
                 </div>
             </div>
             
-            <div class="form-group row">
+            <div class="form-group row" name="admissionYear">
                 <label class="col-sm-2 col-form-label">입학년도</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" placeholder="입학년도" name="admissionYear">
                 </div>
             </div>
             
-            <div class="form-group row">
+            <div class="form-group row" name="mathGrade">
                 <label class="col-sm-2 col-form-label">수학등급</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" placeholder="수학등급" name="mathGrade">

@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
             ecode: 200,
             data: {
                 studentList: studentList,
-				studentNameList: studentNameList
+                studentNameList: studentNameList
             }
         });
     }

@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, { timestamps: false });
     
-    Problem.findOneByindex = function (index) {
+    Problem.findOneByIndex = function (index) {
         return this.findOne({ where: { index: index} });
     }
     

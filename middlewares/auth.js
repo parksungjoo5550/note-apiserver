@@ -41,3 +41,27 @@ exports.admin = async (req, res, next) => {
         });
     }
 }
+
+exports.both = async (req, res, next) => {
+    const token = req.headers['x-access-token'] || req.query.token;
+    
+    try {
+        if (!token)
+            throw new Error('로그인이 필요합니다.');
+        
+        req.token = await jwt.verify(token, req.app.get('jwt-secret'));
+        
+        if ((req.token.type !== 'admin' && req.token.admin !== true ) || 
+            req.token.type !== 'teacher')
+            throw new Error('권한이 없습니다.');
+        else
+            next();
+    }
+    catch (error) {
+        res.status(403).json({
+            success: false,
+            message: error.message,
+            ecode: 403
+        });
+    }
+}

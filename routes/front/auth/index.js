@@ -1,5 +1,7 @@
 const router = require('express').Router();
+const frontAuth = require('../../../middlewares/frontAuth');
 
+router.use('/register', frontAuth.login);
 router.get('/register', require('./register').get);
 router.post('/register', require('./register').post);
 

@@ -4,33 +4,46 @@ const path = require('path');
 const pdfDocument = require('pdfkit');
 
 // Models
-const Exam = require('../../../models/').exam;
+const Student = require('../../../models/').student;
 const Problem = require('../../../models/').problem;
+const Collection = require('../../../models/').collection;
+const CollectionProblem = require('../../../models').collection_problem;
 
 /* 
-    * Create a exam
+    * Create a collection
     
-    POST /api/exam/create
+    POST /api/collection/create
     {
-        title            {string},
+        title            {String},
         problemIDList    {Array},
-        timeLimit        {Integer}
+        timeLimit        {Integer},
+        type             {String}
     }
 */
 
 module.exports = async (req, res) => {
-    const userid = req.token.userid;
-    const { title, problemIDList, timeLimit } = req.body;
+    const token = req.token;
+    const { title, problemIDList, timeLimit, type } = req.body;
     
     try {
-        if ( !title || !problemIDList )
+        // Non-regular student can't create collection.
+        if ( token.type === 'student' ) {
+            student = await Student.findOneByUserid(token.userid);
+            if ( student == null )
+                throw new Error('잘못된 계정입니다.');
+            else {
+                if ( student.dataValues.isRegular == false )
+                    throw new Error('권한이 없습니다.');
+            }
+        }
+        if ( !title || !problemIDList || !type )
             throw new Error('모든 항목을 입력해주세요.');
 
         problemIDList2 = Array.from(new Set(problemIDList));
-            
+
         // Create a PDF file.
         doc = new pdfDocument();
-        examURL = path.join("/uploads/pdfs", ["pdf", Date.now() + '.pdf'].join('-'));
+        collectionURL = path.join("/uploads/pdfs", ["pdf", Date.now() + '.pdf'].join('-'));
             
         doc.pipe(fs.createWriteStream(path.join(__basedir, examURL)));
             
@@ -87,18 +100,26 @@ module.exports = async (req, res) => {
             
         doc.end();
         
-        await Exam.create({ userid: userid, 
-                            title: title, 
-                            problemIDList: problemIDList.join(' '),
-                            examURL: examURL,
-                            timeLimit: timeLimit == undefined ? 0 : timeLimit,
-                            createdAt: new Date().toISOString().substring(0, 19).replace('T',' ')
-                         });
+        // DB
+        Collection.create({
+            userid: token.userid, 
+            title: title, 
+            collectionURL: collectionURL,
+            timeLimit: timeLimit == undefined ? 0 : timeLimit,
+            type: type == 'workbook' ? Collection.WORKBOOK : Collection.WORKPAPER[type],
+            createdAt: new Date().toISOString().substring(0, 19).replace('T',' ')
+        }).then(result => CollectionProblem.bulkCreate(problemIDList2.map(problemID => {
+            return {
+                collectionID: result.id,
+                problemID: problemID
+            };
+        })));
+
         res.json({
             success: true,
-            message: '새로운 시험지를 생성했습니다.',
+            message: String.format('새로운 %s을 생성했습니다.', type),
             ecode: 200
-        });
+        })
     }
     catch (error) {
         res.json({

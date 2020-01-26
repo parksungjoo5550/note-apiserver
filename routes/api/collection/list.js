@@ -1,11 +1,12 @@
 // Models
-const Exam = require('../../../models/').exam;
+const Collection = require('../../../models/').collection;
+const CollectionProblem = require('../../../models').collection_problem;
 
 const typeTable = ["assigned", "homework"];
 /* 
-    * List exam list made by logged in user
+    * List collection made by logged in user
     
-    POST /api/exam/list
+    POST /api/collection/list
     {
         * not required *
     }
@@ -23,23 +24,21 @@ module.exports = async (req, res) => {
         if ( isDone != undefined )
             options.where.isDone = isDone;
         
-        results = await Exam.findAll(options);
-        examList = [];
+        results = await Collection.findAll(options);
+        collectionList = [];
         
-        // Make a array contains problemList.
+        // Make an array contains problemList.
         for (let i = 0; i < results.length; i++){
-            problemIDList = results[i].dataValues.problemIDList.split(' ');
-            
+            problemIDList = await CollectionProblem.listProblemIdByCollectionId(results[i].dataValues.index);
             results[i].dataValues.problemCount = problemIDList.length;
-            
-            examList.push(results[i].dataValues);
+            collectionList.push(results[i].dataValues);
         }
         
         res.json({
             success: true,
-            message: '모든 시험지 리스트를 조회 완료했습니다.',
+            message: '모든 컬렉션 리스트를 조회 완료했습니다.',
             ecode: 200,
-            data: { examList: examList }
+            data: { collectionList: collectionList }
         });
     }
     catch (error) {

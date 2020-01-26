@@ -24,10 +24,12 @@ module.exports = async (req, res) => {
                 message: '학생 정보 조회를 완료했습니다.',
                 ecode: 200,
                 data: {
+                    studentId: student.dataValues.studentId,
                     name: student.dataValues.name,
                     school: student.dataValues.school,
                     admissionYear: student.dataValues.admissionYear,
-                    mathGrade: student.dataValues.mathGrade
+                    mathGrade: student.dataValues.mathGrade,
+                    isRegular: student.dataValues.isRegular
                 }
             });
         }

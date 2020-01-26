@@ -5,22 +5,18 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        userid: { type: DataTypes.STRING },
-        examID: { type: DataTypes.INTEGER },
+        collectionID: { type: DataTypes.INTEGER },
+        publishID: { type: DataTypes.INTEGER },
         problemID: { type: DataTypes.INTEGER },
+        teacherID: { type: DataTypes.STRING },
+        studentID: { type: DataTypes.STRING },
         submit: { type: DataTypes.STRING },
-        state: { type: DataTypes.INTEGER },
+        isCorrect: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
         createdAt: { type: DataTypes.STRING }
     });
-    
-    Note.INCORRECT = 0;
-    Note.CORRECT = 1;
-    Note.UNCONFIRMED = 2;
-    Note.ASSIGNED = 3;
-    
-    Note.changeState = function (options, state) {
-        return this.update({ state: state }, options);
-    }
     
     return Note;
 }

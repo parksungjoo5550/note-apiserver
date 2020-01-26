@@ -9,13 +9,14 @@ const Student = require('../../../models/').student;
         name              {string},
         school            {string},
         admissionYear     {string},
-        mathGrade         {string}
+        mathGrade         {string},
+        isRegular         {boolean}
     }
 */
 
 module.exports = async (req, res) => {
     const userid = req.token.userid;
-    const { name, school, admissionYear, mathGrade } = req.body;
+    const { name, school, admissionYear, mathGrade, isRegular } = req.body;
    
     try {
         let options = {};
@@ -28,9 +29,11 @@ module.exports = async (req, res) => {
             options.admissionYear = admissionYear;
         if ( mathGrade !== undefined && mathGrade !== '' )
             options.mathGrade = mathGrade;
+        if ( isRegular !== undefined && mathGrade !== '')
+            options.isRegular = isRegular;
         
         if ( await Student.findOneByUserid(userid) )
-            await Student.update(options, { where: { userid: userid } });
+            await Student.update(options, { where: { studentId: userid } });
         else
             throw new Error('학생 정보 변경 중 오류가 발생했습니다.');
         

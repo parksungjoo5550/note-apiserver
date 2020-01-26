@@ -10,7 +10,13 @@
     <div class="container-fluid">
         <div class="row col-sm-5 border-bottom">
             <h1>
-                안녕하세요. <%= token.userid %> 님
+                <% if (token.admin) { %>
+                    안녕하세요. <%= token.userid %> 관리자님
+                <% } else if (token.type === "teacher") { %>
+                    안녕하세요. <%= token.userid %> 선생님
+                <% } else { %>
+                    안녕하세요. <%= token.userid %>
+                <% } %>
             </h1>
         </div><br>
         
@@ -23,8 +29,9 @@
         <% } %>
         
         <div class="list-group w-25">
-            <% if ( token.admin ) { %>
-                    <a href="/front/problem/create" class="list-group-item list-group-item-action list-group-item-light"> 문제 만들기 </a>
+            <% if ( token.admin || token.type === "teacher" ) { %>
+                <a href="/front/auth/register" class="list-group-item list-group-item-action list-group-item-light"> 계정 만들기 </a>
+                <a href="/front/problem/create" class="list-group-item list-group-item-action list-group-item-light"> 문제 만들기 </a>
             <% } %>
             <a href="/front/problem/list" class="list-group-item list-group-item-action list-group-item-light">문제 리스트 조회</a>
             <a href="/front/exam/create" class="list-group-item list-group-item-action list-group-item-light">시험지 만들기</a>

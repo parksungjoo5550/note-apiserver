@@ -12,7 +12,8 @@ module.exports = (req, res) => {
         ecode: 200,
         data: { 
             userid: req.token.userid,
-            admin: req.token.admin
+            admin: req.token.admin,
+            type: req.token.type
         }
     });
 }

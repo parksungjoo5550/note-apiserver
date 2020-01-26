@@ -1,5 +1,6 @@
 // Models
 const User = require('../../../models/').user;
+const Teacher = require('../../../models/').teacher;
 const Student = require('../../../models/').student;
 
 /* 
@@ -13,18 +14,19 @@ const Student = require('../../../models/').student;
         name,
         school,
         admissionYear,
-        mathGrade
+        mathGrade,
+        token
     }
 */
 
 module.exports = async (req, res) => {
-    const { userid, password, password2, name, school, admissionYear, mathGrade } = req.body;
+    const { userid, password, password2, type, name, school, admissionYear, mathGrade, token } = req.body;
     
     try {
-        if ( !userid || !password || !password2 || !name || !school || !admissionYear || !mathGrade ) {
+        if ( !userid || !password || !password2 || !type || (type === "teacher" && !name) || (type === "student" && (!name || !school || !admissionYear || !mathGrade)) ) {
             throw new Error('모든 항목을 입력해주세요.');
         }
-        else if ( password != password2 ) {
+        else if ( password !== password2 ) {
             throw new Error('확인 비밀번호가 일치하지 않습니다.');
         }
         else if ( password.length < 6 ) {
@@ -35,10 +37,28 @@ module.exports = async (req, res) => {
         }
         
         // Create a user.
-        await User.create( { userid: userid, password: password } );
-        // Create a student.
-        await Student.create({ userid: userid, name: name, school: school, admissionYear: admissionYear, mathGrade: mathGrade });
-        
+        await User.create({
+            userid: userid,
+            password: password,
+            admin: type === "admin" ? true : false,
+            type: type
+        });
+        // Write additional information by type.
+        if ( type === "teacher" ) {
+            await Teacher.create({
+                teacherId: userid,
+                name: name
+            });
+        } else if ( type === "student" ) {
+            await Student.create({
+                studentId: userid,
+                teacherId: token.userid,
+                name: name,
+                school: school,
+                admissionYear: admissionYear,
+                mathGrade: mathGrade
+            });
+        }
         res.json({
             success: true,
             message: '회원 가입이 완료됐습니다.',

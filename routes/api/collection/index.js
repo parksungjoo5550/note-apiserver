@@ -10,8 +10,8 @@ router.post('/list', require('./list'));
 router.use('/get', auth.login);
 router.post('/get', require('./get'));
 
-router.use('/confirm', auth.login);
-router.post('/confirm', require('./confirm'));
+router.use('/publish', auth.login);
+router.post('/publish', require('./publish'));
 
 router.use('/delete', auth.login);
 router.post('/delete', require('./delete'));

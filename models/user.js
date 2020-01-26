@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
             userid: { type: DataTypes.STRING },
             password: { type: DataTypes.STRING },
             admin: { type: DataTypes.BOOLEAN, defaultValue: false },
+            type: { type: DataTypes.STRING }
         }, { timestamps: false });
     
     User.findOneByUserid = function (userid) {
