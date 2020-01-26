@@ -3,6 +3,7 @@ goorm.manifest
 test.js
 .env
 details.txt
+nohup.out
 
 # Uploads
 uploads/problems/*
