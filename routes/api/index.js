@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const auth = require("./auth");
-const categories = require("./category");
+const categories = require("./categories");
 const collection = require("./collection");
 const notes = require("./notes");
 const problems = require("./problems");

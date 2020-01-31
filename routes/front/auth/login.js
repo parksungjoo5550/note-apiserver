@@ -17,7 +17,7 @@ exports.post = (req, res) => {
         const options = {
             uri: 'login', 
             body: {
-                userid: req.body.userid,
+                username: req.body.userid,
                 password: req.body.password
             },
         }
