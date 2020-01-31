@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       bigChapter: { type: DataTypes.STRING },
       middleChapter: { type: DataTypes.STRING },
       smallChapter: { type: DataTypes.STRING },
-      level: { type: DataTypes.INTEGER },
+      level: { type: DataTypes.STRING }, // need to fix
       source: { type: DataTypes.STRING },
       date: { type: DataTypes.STRING },
       active: {

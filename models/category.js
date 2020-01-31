@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Category = sequelize.define('category', {
-        index: {
+        id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
         type: { type: DataTypes.INTEGER }
     }, { timestamps: false });
     
-    Category.findOneByindex = function (idx) {
-        return this.findOne({ where: { index: idx } });
+    Category.findOneById = function (id) {
+        return this.findOne({ where: { id: id } });
     }
     
     Category.COURSE = 1;

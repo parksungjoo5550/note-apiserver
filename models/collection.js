@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true
       },
-      userId: { type: DataTypes.STRING },
+      userId: { type: DataTypes.INTEGER },
       title: { type: DataTypes.STRING },
       pdfURL: { type: DataTypes.STRING },
       timeLimit: {
@@ -30,9 +30,6 @@ module.exports = (sequelize, DataTypes) => {
   Collection.HOMEWORK = "homework";
   Collection.WORKPAPER = "workpaper";
 
-  Collection.findOneByUserid = function(userid) {
-    return this.findOne({ where: { userid: userid } });
-  };
   Collection.findOneById = function(id) {
     return this.findOne({ where: { id: id } });
   };
