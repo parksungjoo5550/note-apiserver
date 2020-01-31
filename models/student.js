@@ -1,23 +1,40 @@
 module.exports = (sequelize, DataTypes) => {
-    const Student = sequelize.define('student', {
-        studentId: { type: DataTypes.STRING },
-        name: { type: DataTypes.STRING },
-        school: { type: DataTypes.STRING },
-        admissionYear: { type: DataTypes.STRING },
-        mathGrade: { type: DataTypes.STRING },
-        isRegular: { type: DataTypes.BOOLEAN, defaultValue: false },
-        teacherId: { type: DataTypes.STRING }
-    }, { timestamps: false });
-    
-    Student.findOneByUserid = function (userid) {
-        return this.findOne({where: { studentId: userid } });
-    }
-    
-    Student.associate = function(models) {
-        Student.belongsTo(models.teacher, {
-          foreignKey: 'teacherId'
-        });
-    };
-    
-    return Student;
-}
+  const Student = sequelize.define(
+    "student",
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      userId: { type: DataTypes.INTEGER },
+      teacherUserId: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      name: { type: DataTypes.STRING },
+      school: { type: DataTypes.STRING },
+      admissionYear: { type: DataTypes.STRING },
+      mathGrade: { type: DataTypes.STRING },
+      isRegular: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      }
+    },
+    { timestamps: false }
+  );
+
+  Student.findOneByUserId = function(userId) {
+    return this.findOne({ where: { userId: userId } });
+  };
+
+  Student.findAllByName = function(name) {
+    return this.findOne({ where: { name: name } });
+  };
+
+  Student.findAllByTeacherUserId = function(teacherUserId) {
+    return this.findAll({ where: { teacherUserId: teacherUserId } });
+  };
+
+  return Student;
+};

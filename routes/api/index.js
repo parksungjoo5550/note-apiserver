@@ -1,22 +1,18 @@
-const router = require('express').Router();
-const auth = require('./auth');
-const student = require('./student');
-const teacher = require('./teacher');
-const user = require('./user');
-const problem = require('./problem');
-const collection = require('./collection');
-const note = require('./note');
-const category = require('./category');
-const publish = require('./publish');
+const router = require("express").Router();
+const auth = require("./auth");
+const categories = require("./category");
+const collection = require("./collection");
+const notes = require("./notes");
+const problems = require("./problems");
+const publishes = require("./publishes");
+const users = require("./users");
 
-router.use('/auth', auth);
-router.use('/student', student);
-router.use('/teacher', teacher);
-router.use('/user', user);
-router.use('/problem', problem);
-router.use('/collection', collection);
-router.use('/note', note);
-router.use('/category', category);
-router.use('/publish', publish);
+router.use("/auth", auth);
+router.use("/users", users);
+router.use("/problems", problems);
+router.use("/:collectionType(/^exams|homeworks|workpapers$/)", collection);
+router.use("/publishes", publishes);
+router.use("/notes", notes);
+router.use("/categories", categories);
 
 module.exports = router;

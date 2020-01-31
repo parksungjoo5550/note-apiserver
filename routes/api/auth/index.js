@@ -1,18 +1,12 @@
-const router = require('express').Router();
-const auth = require('../../../middlewares/auth');
+const router = require("express").Router();
+const auth = require("../../../middlewares/auth");
 
-router.post('/register', require('./register'));
+router.post("/login", require("./login"));
 
-router.post('/login', require('./login'));
+router.use("/me", auth.login);
+router.get("/me", require("./authMe"));
 
-router.use('/resign', auth.login);
-router.post('/resign', require('./resign'));
-
-router.use('/validate', auth.login);
-router.post('/validate', require('./validate'));
-
-router.use('/resign', auth.login);
-router.post('/resign', require('./resign'));
-
+router.use("/refresh", auth.login);
+router.get("/refresh", require("./refreshToken"));
 
 module.exports = router;

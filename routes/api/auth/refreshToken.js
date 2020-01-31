@@ -2,19 +2,14 @@
 const jwt = require("jsonwebtoken");
 
 // Models
-const User = require("../../../models/").user;
+const User = require("../../../models").user;
 
 module.exports = async (req, res) => {
-  const { username, password } = req.body;
-
   try {
-    if (!username || !password) throw new Error("모든 항목을 입력해주세요.");
-    let user = await User.findOneByUsername(username);
+    let user = await User.findOneById(req.token.userId);
     if (!user) throw new Error("존재하지 않는 아이디입니다.");
-    if (!user.verify(password))
-      throw new Error("비밀번호가 일치하지 않습니다.");
 
-    // Create a jwt token.
+    // Create a newer jwt token.
     const token = await jwt.sign(
       {
         userId: user.dataValues.id,
@@ -28,10 +23,9 @@ module.exports = async (req, res) => {
         subject: "userInfo"
       }
     );
-
     res.json({
       success: true,
-      message: "로그인 했습니다.",
+      message: "토큰을 재발급했습니다.",
       ecode: 200,
       data: {
         token: token

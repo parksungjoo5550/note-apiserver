@@ -1,22 +1,31 @@
 module.exports = (sequelize, DataTypes) => {
-    const Note = sequelize.define('note', {
-       index: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        collectionID: { type: DataTypes.INTEGER },
-        publishID: { type: DataTypes.INTEGER },
-        problemID: { type: DataTypes.INTEGER },
-        teacherID: { type: DataTypes.STRING },
-        studentID: { type: DataTypes.STRING },
-        submit: { type: DataTypes.STRING },
-        isCorrect: {
-            type: DataTypes.INTEGER,
-            allowNull: true
-        },
-        createdAt: { type: DataTypes.STRING }
-    });
-    
-    return Note;
-}
+  const Note = sequelize.define("note", {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    collectionId: { type: DataTypes.INTEGER },
+    publishId: { type: DataTypes.INTEGER },
+    problemId: { type: DataTypes.INTEGER },
+    teacherUserId: { type: DataTypes.INTEGER },
+    studentUserId: { type: DataTypes.INTEGER },
+    submit: { type: DataTypes.STRING },
+    state: {
+      type: DataTypes.STRING,
+      defaultValue: "unconfirmed",
+      allowNull: false
+    },
+    createdAt: { type: DataTypes.STRING }
+  });
+
+  Note.UNCONFIRMED = "unconfirmed";
+  Note.CORRECT = "correct";
+  Note.INCORRECT = "incorrect";
+
+  Note.findAllByPublishId = function(publishId) {
+    return this.findAll({ where: { publishId: publishId } });
+  };
+
+  return Note;
+};

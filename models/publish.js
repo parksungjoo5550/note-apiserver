@@ -1,43 +1,58 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
-  const publish = sequelize.define('publish', {
-    id: {
+  const Publish = sequelize.define(
+    "publish",
+    {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
+      },
+      title: {
+        type: DataTypes.STRING
+      },
+      teacherUserId: {
+        type: DataTypes.INTEGER
+      },
+      studentUserId: {
+        type: DataTypes.INTEGER
+      },
+      collectionType: {
+        type: DataTypes.STRING
+      },
+      collectionId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      remainingTime: {
+        type: DataTypes.INTEGER
+      },
+      state: {
+        type: DataTypes.STRING,
+        defaultValue: "published",
+        allowNull: false
+      }
     },
-    teacherID: {
-      type: DataTypes.STRING
-    },
-    studentID: {
-      type: DataTypes.STRING
-    },
-    collectionID: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    remainingTime: {
-      type: DataTypes.INTEGER
-    },
-    state: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
-  }, {});
-  publish.PUBLISHED = 'published';
-  publish.OPENED = 'opened';
-  publish.SAVED = 'saved';
-  publish.SUBMITTED = 'submitted';
-  publish.CONFIRMED = 'confirmed;'
-  publish.associate = function(models) {
-    // associations can be defined here
+    {}
+  );
+  Publish.PUBLISHED = "published";
+  Publish.OPENED = "opened";
+  Publish.SAVED = "saved";
+  Publish.SUBMITTED = "submitted";
+  Publish.CONFIRMED = "confirmed";
+
+  Publish.findOneById = function(id) {
+    return this.findOne({ where: { id: id } });
   };
-  publish.listByTeacherId = function (teacherID) {
-    return this.findAll({ where: {teacherID: teacherID} });
+
+  Publish.listByTeacherUserId = function(teacherUserId) {
+    return this.findAll({ where: { teacherUserId: teacherUserId } });
   };
-  publish.listByStudentId = function (studentID) {
-    return this.findAll({ where: {studentID: studentID} });
+
+  Publish.listByStudentUserId = function(studentUserId) {
+    return this.findAll({ where: { studentUserId: studentUserId } });
   };
-  return publish;
+
+  return Publish;
 };
