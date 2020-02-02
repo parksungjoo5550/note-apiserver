@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true
       },
-      userId: { type: DataTypes.INTEGER },
+      studentUserId: { type: DataTypes.INTEGER },
       teacherUserId: {
         type: DataTypes.INTEGER,
         allowNull: true
@@ -24,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     { timestamps: false }
   );
 
-  Student.findOneByUserId = function(userId) {
-    return this.findOne({ where: { userId: userId } });
+  Student.findOneByUserId = function(studentUserId) {
+    return this.findOne({ where: { studentUserId: studentUserId } });
   };
 
   Student.findAllByName = function(name) {

@@ -26,6 +26,7 @@ module.exports = async (req, res) => {
     if (!title || !problemIds || (reqType === "exams" && !timeLimit))
       throw new Error("모든 항목을 입력해주세요.");
 
+    console.log(problemIds);
     let problemIds2 = Array.from(new Set(problemIds));
 
     // Create a PDF file.
