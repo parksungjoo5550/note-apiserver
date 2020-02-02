@@ -127,7 +127,7 @@ module.exports = async (req, res) => {
 
     res.json({
       success: true,
-      message: String.format("새로운 %s을 생성했습니다.", reqType.slice(0, -1)),
+      message: "새로운 " + reqType.slice(0, -1) + "을 생성했습니다.",
       ecode: 200
     });
   } catch (error) {

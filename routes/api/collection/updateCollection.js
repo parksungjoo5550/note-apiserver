@@ -151,7 +151,7 @@ module.exports = async (req, res) => {
 
     res.json({
       success: true,
-      message: String.format("%s을 수정했습니다.", reqType.slice(0, -1)),
+      message: reqType.slice(0, -1) + "을 수정했습니다.",
       ecode: 200
     });
   } catch (error) {

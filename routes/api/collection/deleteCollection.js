@@ -58,7 +58,7 @@ module.exports = async (req, res) => {
 
     res.json({
       success: true,
-      message: String.format("%s을 삭제했습니다.", reqType.slice(0, -1)),
+      message: reqType.slice(0, -1) + "을 삭제했습니다.",
       ecode: 200
     });
   } catch (error) {
