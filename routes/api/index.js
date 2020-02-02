@@ -10,7 +10,7 @@ const users = require("./users");
 router.use("/auth", auth);
 router.use("/users", users);
 router.use("/problems", problems);
-router.use("/:collectionType(/^exams|homeworks|workpapers$/)", collection);
+router.use("/:collectionType(/^|exams|homeworks|workpapers|$/)", collection);
 router.use("/publishes", publishes);
 router.use("/notes", notes);
 router.use("/categories", categories);
