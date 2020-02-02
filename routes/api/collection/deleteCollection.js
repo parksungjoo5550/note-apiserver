@@ -8,7 +8,7 @@ const CollectionProblem = require("../../../models").collection_problem;
 const Publish = require("../../../models").publish;
 
 module.exports = async (req, res) => {
-  const reqType = req.params.collectionType;
+  const reqType = req.baseUrl.slice(5);
   const { examId, homeworkId, workpaperId } = req.query;
 
   try {

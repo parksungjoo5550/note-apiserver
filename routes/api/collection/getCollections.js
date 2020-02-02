@@ -5,11 +5,11 @@ const Problem = require("../../../models/").problem;
 const Teacher = require("../../../models/").teacher;
 
 module.exports = async (req, res) => {
-  const reqType = req.params.collectionType;
+  const reqType = req.baseUrl.slice(5);
   const { examId, homeworkId, workpaperId } = req.query;
 
   try {
-    let optionsCollection = { where: { type: reqType.slice(0, -1) } };
+    let optionsCollection = { where: { type: reqType } };
     let data = {};
     if (!examId && !homeworkId && !workpaperId) {
       if (req.token.type !== "admin") {
@@ -50,7 +50,7 @@ module.exports = async (req, res) => {
 
     res.json({
       success: true,
-      message: String.format("%s 조회 완료했습니다.", reqType.slice(0, -1)),
+      message: reqType + " 조회 완료했습니다.",
       ecode: 200,
       data: data
     });

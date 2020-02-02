@@ -10,7 +10,7 @@ const Collection = require("../../../models").collection;
 const CollectionProblem = require("../../../models").collection_problem;
 
 module.exports = async (req, res) => {
-  const reqType = req.params.collectionType;
+  const reqType = req.baseUrl.slice(5);
   const { title, problemIds, timeLimit } = req.body;
 
   try {
@@ -66,7 +66,7 @@ module.exports = async (req, res) => {
         .stroke();
 
       // Image 1
-      let problem = await Problem.findOneByindex(problemIds2[0]);
+      let problem = await Problem.findOneById(problemIds2[0]);
       if (problem == null || problem.dataValues.active == false)
         throw new Error(`${problemIds[0]}번 문제는 이용할 수 없습니다.`);
 
@@ -82,7 +82,7 @@ module.exports = async (req, res) => {
 
       // Image 2
       if (problemIds2.length > 0) {
-        problem = await Problem.findOneByindex(problemIds[0]);
+        problem = await Problem.findOneById(problemIds[0]);
         if (problem == null || problem.dataValues.active == false)
           throw new Error(`${problemIds2[0]}번 문제는 이용할 수 없습니다.`);
 
