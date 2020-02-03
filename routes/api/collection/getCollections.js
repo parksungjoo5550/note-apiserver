@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   const { examId, homeworkId, workpaperId } = req.query;
 
   try {
-    let optionsCollection = { where: { type: reqType } };
+    let optionsCollection = { where: { type: reqType.slice(0, -1) } };
     let data = {};
     if (!examId && !homeworkId && !workpaperId) {
       if (req.token.type !== "admin") {
@@ -17,10 +17,10 @@ module.exports = async (req, res) => {
       }
       let results = await Collection.findAll(optionsCollection);
       data[reqType] = await Promise.all(
-        results.map(r => {
+        results.map(async(r) => {
           let collection = r.dataValues;
           if (collection.type !== Collection.WORKPAPER) {
-            let teacher = Teacher.findByUserId(collection.userId);
+            let teacher = Teacher.findOneByUserId(collection.userId);
             if (!teacher)
               throw new Error("시험을 만든 선생이 존재하지 않습니다.");
             collection.teacher = teacher.dataValues;
@@ -29,10 +29,11 @@ module.exports = async (req, res) => {
             collectionId: collection.id,
             raw: true
           });
-          collection.problems = collectionProblems.map(collectionProblem => {
+          collection.problems = await collectionProblems.map(async(collectionProblem) => {
             let problemId = collectionProblem.problemId;
-            let problem = Problem.findOneById(problemId);
+            let problem = await Problem.findOneById(problemId);
             if (!problem) throw new Error("문제가 존재하지 않습니다.");
+            return problem.dataValues;
           });
           return collection;
         })
@@ -46,6 +47,16 @@ module.exports = async (req, res) => {
       let result = await Collection.findOne(optionsCollection);
       if (!result) throw new Error("해당 컬렉션은 존재하지 않습니다.");
       data[reqType.slice(0, -1)] = result.dataValues;
+      let collectionProblems = CollectionProblem.findAll({
+        collectionId: data[reqType.slice(0, -1)].id,
+        raw: true
+      });
+      data[reqType.slice(0, -1)].problems = await collectionProblems.map(async(collectionProblem) => {
+        let problemId = collectionProblem.problemId;
+        let problem = await Problem.findOneById(problemId);
+        if (!problem) throw new Error("문제가 존재하지 않습니다.");
+        return problem.dataValues;
+      });
     }
 
     res.json({
