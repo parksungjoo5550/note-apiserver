@@ -25,8 +25,9 @@ module.exports = async (req, res) => {
     }
     if (!title || !problemIds || (reqType === "exams" && !timeLimit))
       throw new Error("모든 항목을 입력해주세요.");
-
-    let problemIds2 = Array.from(new Set(problemIds));
+    if (problemIds.length !== Array.from(new Set(problemIds)).length)
+      throw new Error("중복되는 문제가 있습니다.");
+    let problemIds2 = problemIds;
 
     // Create a PDF file.
     let doc = new pdfDocument();
@@ -68,7 +69,7 @@ module.exports = async (req, res) => {
       // Image 1
       let problem = await Problem.findOneById(problemIds2[0]);
       if (problem == null || problem.dataValues.active == false)
-        throw new Error(`${problemIds[0]}번 문제는 이용할 수 없습니다.`);
+        throw new Error(`${problemIds2[0]}번 문제는 이용할 수 없습니다.`);
 
       problemIds2.shift();
       doc.image(
@@ -82,7 +83,7 @@ module.exports = async (req, res) => {
 
       // Image 2
       if (problemIds2.length > 0) {
-        problem = await Problem.findOneById(problemIds[0]);
+        problem = await Problem.findOneById(problemIds2[0]);
         if (problem == null || problem.dataValues.active == false)
           throw new Error(`${problemIds2[0]}번 문제는 이용할 수 없습니다.`);
 
@@ -115,7 +116,7 @@ module.exports = async (req, res) => {
         .substring(0, 19)
         .replace("T", " ")
     });
-    problemIds2 = Array.from(new Set(problemIds));
+    problemIds2 = problemIds;
     let collection_problems_form = await problemIds2.map(problemId => {
       return {
         collectionId: collection.id,
