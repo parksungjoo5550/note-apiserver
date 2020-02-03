@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
       throw new Error("모든 항목을 입력해주세요.");
     if (problemIds.length !== Array.from(new Set(problemIds)).length)
       throw new Error("중복되는 문제가 있습니다.");
-    let problemIds2 = problemIds;
+    let problemIds2 = JSON.parse(JSON.stringify(problemIds));
 
     // Create a PDF file.
     let doc = new pdfDocument();
@@ -116,7 +116,7 @@ module.exports = async (req, res) => {
         .substring(0, 19)
         .replace("T", " ")
     });
-    problemIds2 = problemIds;
+    problemIds2 = JSON.parse(JSON.stringify(problemIds));
     let collection_problems_form = await problemIds2.map(problemId => {
       return {
         collectionId: collection.id,
