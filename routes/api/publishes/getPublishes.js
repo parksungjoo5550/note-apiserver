@@ -1,6 +1,8 @@
 // Models
-const Collection = require("../../../models").collection;
-const Publish = require("../../../models").publish;
+const Collection = require("../../../models/").collection;
+const CollectionProblem = require("../../../models/").collection_problem;
+const Problem = require("../../../models/").problem;
+const Publish = require("../../../models/").publish;
 
 module.exports = async (req, res) => {
   const { publishId, type, state } = req.query;
@@ -18,6 +20,15 @@ module.exports = async (req, res) => {
           throw new Error("본인 소유의 발행만 조회할 수 있습니다.");
       }
       data.publish = publish.dataValues;
+      let collection = await Collection.findOneById(publish.dataValues.collectionId);
+      if (!collection) throw new Error("존재하지 않는 컬렉션입니다.");
+      data.publish[publish.dataValues.collectionType] = collection.dataValues;
+      let collection_problems = await CollectionProblem.listProblemIdByCollectionId(publish.dataValues.collectionId);
+      data.publish[publish.dataValues.collectionType].problems = await collection_problems.map(async(r) => {
+        let problem = await Problem.findOneById(r.dataValues.problemId);
+        if (!problem) throw new Error("해당 문제를 찾을 수 없습니다.");
+        return problem.dataValues;
+      });
     } else {
       let options = {
         where: {}
@@ -32,21 +43,26 @@ module.exports = async (req, res) => {
 
       let results = await Publish.findAll(options);
       let publishes = await Promise.all(
-        results.map(r => {
+        results.map(async(r) => {
           let item = {
             id: r.dataValues.id,
             title: r.dataValues.title,
             state: r.dataValues.state
           };
-          let collection = Collection.findOneById(r.dataValues.collectionId);
+          let collection = await Collection.findOneById(r.dataValues.collectionId);
           if (!collection) throw new Error("존재하지 않는 시험입니다.");
           if (collection.dataValues.type === Collection.EXAM) {
             item.remainingTime = r.dataValues.remainingTime;
           }
           item[collection.dataValues.type] = collection.dataValues;
+          let collection_problems = await CollectionProblem.listProblemIdByCollectionId(publish.dataValues.collectionId);
+        item[collection.dataValues.type].problems = await Promise.all(collection_problems.map(async(r) => {
+          let problem = await Problem.findOneById(r.dataValues.problemId);
+          if (!problem) throw new Error("해당 문제를 찾을 수 없습니다.");
+          return problem.dataValues;
+        }));
           return item;
-        })
-      );
+        }));
       data.publishes = publishes;
     }
 

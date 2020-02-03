@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 
 // Models
 const User = require("../../../models/").user;
+const Student = require("../../../models/").student;
+const Teacher = require("../../../models/").teacher;
 
 module.exports = async (req, res) => {
   const { username, password } = req.body;
@@ -28,14 +30,30 @@ module.exports = async (req, res) => {
         subject: "userInfo"
       }
     );
+    
+    let data = {};
+    data.token = token;
+    data.user = {
+      id: user.dataValues.id,
+      username: user.dataValues.username,
+      type: user.dataValues.type
+    };
+    
+    if (user.dataValues.type === "teacher") {
+      let teacher = await Teacher.findOneByUserId(user.dataValues.id);
+      if (!teacher) throw new Error("선생 정보가 존재하지 않습니다.");
+      data.user.teacher = teacher.dataValues;
+    } else if (user.dataValues.type === "student") {
+      let student = await Student.findOneByUserId(user.dataValues.id);
+      if (!student) throw new Error("학생 정보가 존재하지 않습니다.");
+      data.user.student = student.dataValues;
+    }
 
     res.json({
       success: true,
       message: "로그인 했습니다.",
       ecode: 200,
-      data: {
-        token: token
-      }
+      data: data
     });
   } catch (error) {
     res.json({
