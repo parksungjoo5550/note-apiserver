@@ -14,12 +14,12 @@ module.exports = async (req, res) => {
       if (req.token.type === "admin") {
         let users = await User.getAll();
         let data = await Promise.all(
-          users.map(user => {
+          users.map(async(user) => {
             if (user.type === "teacher") {
-              let teacher = Teacher.findOneByUserId(user.id);
+              let teacher = await Teacher.findOneByUserId(user.id);
               user.teacher = !teacher ? null : teacher.dataValues;
             } else if (user.type === "student") {
-              let student = Student.findOneByUserId(user.id);
+              let student = await Student.findOneByUserId(user.id);
               user.student = !student ? null : student.dataValues;
             }
             return user;
@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
           data: data
         });
       } else {
-        let user = User.findOneById(req.token.userId);
+        let user = await User.findOneById(req.token.userId);
         if (!user) throw new Error("해당 유저는 존재하지 않습니다.");
         let data = {
           user: {

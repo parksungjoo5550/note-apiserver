@@ -5,7 +5,27 @@ exports.login = async (req, res, next) => {
   try {
     if (!token) throw new Error("로그인을 해주세요.");
     req.token = await jwt.verify(token, req.app.get("jwt-secret"));
+    req.cookies.token = req.token;
     next();
+  } catch (error) {
+    res.status(403).json({
+      success: false,
+      message: error.message,
+      ecode: 403
+    });
+  }
+};
+
+exports.users = async (req, res, next) => {
+  const token = req.headers["x-access-token"] || req.cookies.token;
+  try {
+    console.log(req.method);
+    if (req.method === "POST") next();
+    else if (!token) throw new Error("로그인을 해주세요.");
+    else {
+      req.token = await jwt.verify(token, req.app.get("jwt-secret"));
+    next();
+    }
   } catch (error) {
     res.status(403).json({
       success: false,

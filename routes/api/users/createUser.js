@@ -36,26 +36,28 @@ module.exports = async (req, res) => {
     }
 
     // Create a user.
-    let user = await User.create({
+    User.create({
       username: username,
       password: password,
       type: type
-    });
+    }).then(async(user) => {
+      if (type === "teacher") {
+        await Teacher.create({
+          teacherUserId: user.dataValues.id,
+          name: name
+        });
+      } else if (type === "student") {
+        await Student.create({
+          studentUserId: user.dataValues.id,
+          name: name,
+          school: school,
+          admissionYear: admissionYear,
+          mathGrade: mathGrade
+        });
+      }
+    }).catch(err => {throw new Error(err)});
     // Write additional information by type.
-    if (type === "teacher") {
-      await Teacher.create({
-        userId: user.dataValues.id,
-        name: name
-      });
-    } else if (type === "student") {
-      await Student.create({
-        userId: user.dataValues.id,
-        name: name,
-        school: school,
-        admissionYear: admissionYear,
-        mathGrade: mathGrade
-      });
-    }
+    
     res.json({
       success: true,
       message: "User를 생성했습니다.",
