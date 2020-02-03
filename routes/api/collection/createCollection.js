@@ -26,7 +26,6 @@ module.exports = async (req, res) => {
     if (!title || !problemIds || (reqType === "exams" && !timeLimit))
       throw new Error("모든 항목을 입력해주세요.");
 
-    console.log(problemIds);
     let problemIds2 = Array.from(new Set(problemIds));
 
     // Create a PDF file.
@@ -105,7 +104,7 @@ module.exports = async (req, res) => {
     doc.end();
 
     // DB
-    Collection.create({
+    let collection = await Collection.create({
       userId: req.token.userId,
       title: title,
       pdfURL: pdfURL,
@@ -115,16 +114,15 @@ module.exports = async (req, res) => {
         .toISOString()
         .substring(0, 19)
         .replace("T", " ")
-    }).then(result =>
-      CollectionProblem.bulkCreate(
-        problemIds2.map(problemId => {
-          return {
-            collectionId: result.id,
-            problemId: problemId
-          };
-        })
-      )
-    );
+    });
+    problemIds2 = Array.from(new Set(problemIds));
+    let collection_problems_form = await problemIds2.map(problemId => {
+      return {
+        collectionId: collection.id,
+        problemId: problemId
+      };
+    });
+    await CollectionProblem.bulkCreate(collection_problems_form);
 
     res.json({
       success: true,
