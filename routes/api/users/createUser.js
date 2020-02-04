@@ -36,26 +36,25 @@ module.exports = async (req, res) => {
     }
 
     // Create a user.
-    User.create({
+    let user = await User.create({
       username: username,
       password: password,
       type: type
-    }).then(async(user) => {
-      if (type === "teacher") {
-        await Teacher.create({
-          teacherUserId: user.dataValues.id,
-          name: name
-        });
-      } else if (type === "student") {
-        await Student.create({
-          studentUserId: user.dataValues.id,
-          name: name,
-          school: school,
-          admissionYear: admissionYear,
-          mathGrade: mathGrade
-        });
-      }
-    }).catch(err => {throw new Error(err)});
+    })
+    if (type === "teacher") {
+      await Teacher.create({
+        teacherUserId: user.dataValues.id,
+        name: name
+      });
+    } else if (type === "student") {
+      await Student.create({
+        studentUserId: user.dataValues.id,
+        name: name,
+        school: school,
+        admissionYear: admissionYear,
+        mathGrade: mathGrade
+      });
+    }
     // Write additional information by type.
     
     res.json({
