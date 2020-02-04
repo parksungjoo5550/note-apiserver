@@ -18,8 +18,8 @@ module.exports = async (req, res) => {
       let student = await Student.findOneByUserId(token.userId);
       if (!student) throw new Error("계정 정보가 손상되었습니다.");
       if (
-        student.dataValues.isRegular === false ||
-        !(targetUserIds.length === 1 && targetUserIds.includes(token.userid))
+        student.dataValues.isRegular == false ||
+        !(targetUserIds.length === 1 && targetUserIds.includes(token.userId))
       )
         throw new Error("권한이 없습니다.");
     }
