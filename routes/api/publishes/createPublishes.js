@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
           teacherID: token.type === "student" ? null : token.userId,
           studentID: targetUserId,
           collectionType: type,
-          collectionID: sourceId,
+          collectionId: sourceId,
           remainingTime:
             collection.dataValues.type === Collection.EXAM
               ? collection.dataValues.timeLimit
