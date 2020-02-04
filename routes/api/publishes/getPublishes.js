@@ -44,11 +44,7 @@ module.exports = async (req, res) => {
       let results = await Publish.findAll(options);
       let publishes = await Promise.all(
         results.map(async(r) => {
-          let item = {
-            id: r.dataValues.id,
-            title: r.dataValues.title,
-            state: r.dataValues.state
-          };
+          let item = r.dataValues;
           let collection = await Collection.findOneById(r.dataValues.collectionId);
           if (!collection) throw new Error("존재하지 않는 시험입니다.");
           if (collection.dataValues.type === Collection.EXAM) {
