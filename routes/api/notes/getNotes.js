@@ -4,7 +4,7 @@ const Problem = require("../../../models").problem;
 
 module.exports = async (req, res) => {
   const userId = req.token.userId;
-  const { noteId, state } = req.query;
+  const { noteId, publishId, state } = req.query;
 
   try {
     let options = {
@@ -24,6 +24,7 @@ module.exports = async (req, res) => {
       data.note.problem = problem.dataValues;
     } else {
       if (state) options.where.state = state;
+      if (publishId) options.where.publishId = publishId;
       let notes = await Note.findAll(options);
       if (notes.length === 0)
         throw new Error("해당 유저는 문제 풀이 기록이 없습니다.");
