@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: "unconfirmed",
       allowNull: false
     },
-    createdAt: { type: DataTypes.STRING }
+    createdAt: { type: DataTypes.STRING },
+    updatedAt: { type: DataTypes.STRING }
   }, { timestamps: false }
   );
 
