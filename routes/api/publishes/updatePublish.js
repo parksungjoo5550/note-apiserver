@@ -60,7 +60,10 @@ module.exports = async (req, res) => {
           })
         );
       }
-      publish.state = state;
+      if (state === Publish.SUBMITTED &&
+          collection.dataValues.type !== Collection.EXAM)
+        publish.state = Publish.CONFIRMED;
+      else publish.state = state;
     }
 
     await publish.save();

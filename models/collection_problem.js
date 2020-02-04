@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
 
-  collection_problem.listProblemIdByCollectionId = function(collectionID) {
-    return this.findAll({ where: { collectionID: collectionID } });
+  collection_problem.listProblemIdByCollectionId = function(collectionId) {
+    return this.findAll({ where: { collectionId: collectionId } });
   };
 
   return collection_problem;
