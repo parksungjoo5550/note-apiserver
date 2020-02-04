@@ -55,7 +55,7 @@ module.exports = async (req, res) => {
             item.remainingTime = r.dataValues.remainingTime;
           }
           item[collection.dataValues.type] = collection.dataValues;
-          let collection_problems = await CollectionProblem.listProblemIdByCollectionId(publish.dataValues.collectionId);
+          let collection_problems = await CollectionProblem.listProblemIdByCollectionId(r.dataValues.collectionId);
           item[collection.dataValues.type].problems = await Promise.all(collection_problems.map(async(r) => {
             let problem = await Problem.findOneById(r.dataValues.problemId);
             if (!problem) throw new Error("해당 문제를 찾을 수 없습니다.");
