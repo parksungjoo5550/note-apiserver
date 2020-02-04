@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     createdAt: { type: DataTypes.STRING }
-  });
+  }, { timestamps: false }
+  );
 
   Note.UNCONFIRMED = "unconfirmed";
   Note.CORRECT = "correct";
