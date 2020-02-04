@@ -36,10 +36,10 @@ module.exports = async (req, res) => {
         })
       );
     } else {
-      if (reqType === "exams" && !examId) optionsCollection.where.id = examId;
-      if (reqType === "homeworks" && !homeworkId)
+      if (reqType === "exams" && examId) optionsCollection.where.id = examId;
+      if (reqType === "homeworks" && homeworkId)
         optionsCollection.where.id = homeworkId;
-      if (reqType === "workpapers" && !workpaperId)
+      if (reqType === "workpapers" && workpaperId)
         optionsCollection.where.id = workpaperId;
       let result = await Collection.findOne(optionsCollection);
       if (!result) throw new Error("해당 컬렉션은 존재하지 않습니다.");
