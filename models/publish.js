@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       remainingTime: {
         type: DataTypes.INTEGER
       },
+      startPosition: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
       state: {
         type: DataTypes.STRING,
         defaultValue: "published",

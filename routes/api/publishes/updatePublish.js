@@ -7,7 +7,7 @@ const Note = require("../../../models").note;
 
 module.exports = async (req, res) => {
   const { publishId } = req.query;
-  const { title, remainingTime, state } = req.body;
+  const { title, remainingTime, startPosition, state } = req.body;
 
   try {
     if (!publishId) throw new Error("발행을 지정해야 합니다.");
@@ -32,6 +32,7 @@ module.exports = async (req, res) => {
         throw new Error("시험이 아니므로 제한시간이 없습니다.");
       publish.remainingTime = remainingTime;
     }
+    if (startPosition) publish.startPosition = startPosition;
     if (state) {
       // 채점하는 경우
       if (
