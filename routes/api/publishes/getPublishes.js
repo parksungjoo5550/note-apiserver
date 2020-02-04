@@ -24,11 +24,11 @@ module.exports = async (req, res) => {
       if (!collection) throw new Error("존재하지 않는 컬렉션입니다.");
       data.publish[publish.dataValues.collectionType] = collection.dataValues;
       let collection_problems = await CollectionProblem.listProblemIdByCollectionId(publish.dataValues.collectionId);
-      data.publish[publish.dataValues.collectionType].problems = await collection_problems.map(async(r) => {
+      data.publish[publish.dataValues.collectionType].problems = await Promise.all(collection_problems.map(async(r) => {
         let problem = await Problem.findOneById(r.dataValues.problemId);
         if (!problem) throw new Error("해당 문제를 찾을 수 없습니다.");
         return problem.dataValues;
-      });
+      }));
     } else {
       let options = {
         where: {}
@@ -56,11 +56,11 @@ module.exports = async (req, res) => {
           }
           item[collection.dataValues.type] = collection.dataValues;
           let collection_problems = await CollectionProblem.listProblemIdByCollectionId(publish.dataValues.collectionId);
-        item[collection.dataValues.type].problems = await Promise.all(collection_problems.map(async(r) => {
-          let problem = await Problem.findOneById(r.dataValues.problemId);
-          if (!problem) throw new Error("해당 문제를 찾을 수 없습니다.");
-          return problem.dataValues;
-        }));
+          item[collection.dataValues.type].problems = await Promise.all(collection_problems.map(async(r) => {
+            let problem = await Problem.findOneById(r.dataValues.problemId);
+            if (!problem) throw new Error("해당 문제를 찾을 수 없습니다.");
+            return problem.dataValues;
+          }));
           return item;
         }));
       data.publishes = publishes;
