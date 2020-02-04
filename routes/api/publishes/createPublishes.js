@@ -31,6 +31,7 @@ module.exports = async (req, res) => {
     let publishes = await Publish.bulkCreate(
       targetUserIds.map(targetUserId => {
         return {
+          title: title,
           teacherUserId: token.type === "student" ? null : token.userId,
           studentUserId: targetUserId,
           collectionType: type,
