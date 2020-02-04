@@ -4,7 +4,7 @@ const Problem = require("../../../models").problem;
 
 module.exports = async (req, res) => {
   const userId = req.token.userId;
-  const { noteId, publishId, state } = req.query;
+  const { noteId, publishId, problemId, state } = req.query;
 
   try {
     let options = {
@@ -25,13 +25,14 @@ module.exports = async (req, res) => {
     } else {
       if (state) options.where.state = state;
       if (publishId) options.where.publishId = publishId;
+      if (problemId) options.where.problemId = problemId;
       let notes = await Note.findAll(options);
       if (notes.length === 0)
-        throw new Error("해당 유저는 문제 풀이 기록이 없습니다.");
+        throw new Error("해당하는 풀이 기록이 없습니다.");
       data.notes = await Promise.all(
-        notes.map(note => {
+        notes.map(async(note) => {
           let ret = note.dataValues;
-          let problem = Problem.findOneById(ret.problemId);
+          let problem = await Problem.findOneById(ret.problemId);
           if (!problem) throw new Error("잘못된 풀이 기록입니다.");
           ret.problem = problem.dataValues;
           return ret;
