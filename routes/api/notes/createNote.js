@@ -9,6 +9,8 @@ module.exports = async (req, res) => {
   try {
     if (!publishId || !problemId || !submit)
       throw new Error("모든 항목을 입력해주세요.");
+    let duplicate = await Note.findOneByPublishIdAndProblemId(publishId, problemId);
+    if (duplicate) throw new Error("publishId와 problemId가 같은 노트를 중복해서 생성할 수 없습니다.");
     let publish = await Publish.findOneById(publishId);
     if (!publish) throw new Error("잘못된 파라미터입니다.");
     let problem = await problem.findOneById(problemId);

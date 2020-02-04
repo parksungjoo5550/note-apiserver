@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
   Note.findAllByPublishId = function(publishId) {
     return this.findAll({ where: { publishId: publishId } });
   };
+  
+  Note.findOneByPublishIdAndProblemId = function(publishId, problemId) {
+    return this.findOne({ where: { publishId: publishId, problemId: problemId } });
+  }
 
   return Note;
 };
