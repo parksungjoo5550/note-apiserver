@@ -1,6 +1,7 @@
 // Models
 const Note = require("../../../models").note;
 const Publish = require("../../../models").publish;
+const Problem = require("../../../models").problem;
 
 module.exports = async (req, res) => {
   const userId = req.token.userId;
@@ -12,9 +13,9 @@ module.exports = async (req, res) => {
     let duplicate = await Note.findOneByPublishIdAndProblemId(publishId, problemId);
     if (duplicate) throw new Error("publishId와 problemId가 같은 노트를 중복해서 생성할 수 없습니다.");
     let publish = await Publish.findOneById(publishId);
-    if (!publish) throw new Error("잘못된 파라미터입니다.");
-    let problem = await problem.findOneById(problemId);
-    if (!problem) throw new Error("잘못된 파라미터입니다.");
+    if (!publish) throw new Error("존재하지 않는 publish입니다.");
+    let problem = await Problem.findOneById(problemId);
+    if (!problem) throw new Error("존재하지 않는 problem입니다.");
     let note = {
       collectionId: publish.dataValues.collectionId,
       publishId: publishId,
