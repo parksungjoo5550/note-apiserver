@@ -5,6 +5,7 @@ module.exports = async (req, res) => {
   const { course, bigChapter, middleChapter, smallChapter } = req.body;
 
   try {
+    if (req.token.type === "student") throw new Error("권한이 없습니다.");
     let category = course
       ? course +
         (bigChapter ? "$$" + bigChapter : "") +
