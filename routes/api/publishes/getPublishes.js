@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
       if (req.token.type === "teacher") {
         options.where.teacherUserId = req.token.userId;
       } else if (req.token.type === "student") {
-        options.where.studentUserId = req.token.userid;
+        options.where.studentUserId = req.token.userId;
       }
       if (type) options.where.collectionType = type;
       if (state) options.where.state = state;
