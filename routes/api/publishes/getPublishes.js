@@ -34,12 +34,22 @@ module.exports = async (req, res) => {
             type: user.dataValues.type
           };
         } else {
-          data.publish.teacher = teacher.dataValues; 
+          data.publish.teacher = {
+            id: teacher.dataValues.id,
+            name: teacher.dataValues.name
+          }; 
         }
       }
       let student = await Student.findOneByUserId(publish.dataValues.studentUserId);
       if (!student) throw new Error("발행을 받은 학생 정보가 존재하지 않습니다.");
-      data.publish.student = student.dataValues;
+      data.publish.student = {
+        id: student.dataValues.id,
+        name: student.dataValues.name,
+        admissionYear: student.dataValues.admissionYear,
+        school: student.dataValues.school,
+        mathGrade: student.dataValues.mathGrade,
+        isRegular: student.dataValues.isRegular
+      };
       let collection = await Collection.findOneById(publish.dataValues.collectionId);
       if (!collection) throw new Error("존재하지 않는 컬렉션입니다.");
       data.publish[publish.dataValues.collectionType] = collection.dataValues;
@@ -76,12 +86,22 @@ module.exports = async (req, res) => {
                 type: user.dataValues.type
               };
             } else {
-              item.teacher = teacher.dataValues; 
+              item.teacher = {
+                id: teacher.dataValues.id,
+                name: teacher.dataValues.name
+              }; 
             }
           }
           let student = await Student.findOneByUserId(r.dataValues.studentUserId);
           if (!student) throw new Error("발행을 받은 학생 정보가 존재하지 않습니다.");
-          item.student = student.dataValues;
+          item.student = {
+            id: student.dataValues.id,
+            name: student.dataValues.name,
+            admissionYear: student.dataValues.admissionYear,
+            school: student.dataValues.school,
+            mathGrade: student.dataValues.mathGrade,
+            isRegular: student.dataValues.isRegular
+          };
           let collection = await Collection.findOneById(r.dataValues.collectionId);
           if (!collection) throw new Error("존재하지 않는 시험입니다.");
           if (collection.dataValues.type === Collection.EXAM) {
