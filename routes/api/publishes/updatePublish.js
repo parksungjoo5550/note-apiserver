@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
   try {
     if (!publishId) throw new Error("발행을 지정해야 합니다.");
 
-    let publish = await Publish.findOne({ where: { id: publishId } });
+    let publish = await Publish.findOneById(publishId);
     if (!publish) throw new Error("발행이 존재하지 않습니다.");
 
     if (req.token.type === "student") {
@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
     if (!collection) throw new Error("존재하지 않는 시험입니다.");
     if (title) publish.title = title;
     if (remainingTime) {
-      if (collection.dataValues.type !== "exam")
+      if (publish.dataValues.collectionType !== "exam")
         throw new Error("시험이 아니므로 제한시간이 없습니다.");
       publish.remainingTime = remainingTime;
     }
@@ -36,9 +36,9 @@ module.exports = async (req, res) => {
     if (state) {
       // 채점하는 경우
       if (
-        state === Publish.CONFIRMED ||
-        (state === Publish.SUBMITTED &&
-          collection.dataValues.type !== Collection.EXAM)
+        state === "confirmed" ||
+        (state === "submitted" &&
+          publish.dataValues.collectionType !== "exam")
       ) {
         let notes = await Note.findAllByPublishId(publishId);
         let problemIds = await CollectionProblem.listProblemIdByCollectionId(
@@ -54,25 +54,26 @@ module.exports = async (req, res) => {
                 "존재하지 않는 문제의 풀이는 채점할 수 없습니다."
               );
             if (note.dataValues.submit == problem.dataValues.answer)
-              note.state = Note.CORRECT;
-            else note.state = Note.INCORRECT;
+              note.state = "correct";
+            else note.state = "incorrect";
             await note.save();
           })
         );
       }
-      if (state === Publish.SUBMITTED &&
-          collection.dataValues.type !== Collection.EXAM)
-        publish.state = Publish.CONFIRMED;
+      if (state === "submitted" &&
+          publish.dataValues.collectionType !== "exam")
+        publish.state = "confirmed";
       else publish.state = state;
     }
 
     await publish.save();
+    await publish.reload();
 
     let message = "발행물 정보를 수정했습니다.";
-    if (state === Publish.OPENED) message = "발행물을 풀기 시작했습니다.";
-    else if (state === Publish.SAVED) message = "발행물을 중간 저장했습니다.";
-    else if (state === Publish.SUBMITTED) message = "발행물을 제출했습니다.";
-    else if (state === Publish.CONFIRMED) message = "발행물을 채점했습니다.";
+    if (publish.dataValues.state === "opened") message = "발행물을 풀기 시작했습니다.";
+    else if (publish.dataValues.state === "saved") message = "발행물을 중간 저장했습니다.";
+    else if (publish.dataValues.state === "submitted") message = "발행물을 제출했습니다.";
+    else if (publish.dataValues.state === "confirmed") message = "발행물을 채점했습니다.";
 
     res.json({
       success: true,
