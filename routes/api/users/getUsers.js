@@ -93,7 +93,7 @@ module.exports = async (req, res) => {
       let teacherUser = null;
       let studentUser = null;
       if (teacherByName) teacherUser = await User.findOneById(teacherByName.dataValues.teacherUserId);
-      if (studentByName) studentUser = await User.findOneById(studentByName.dataValues.studentUserId)
+      if (studentByName) studentUser = await User.findOneById(studentByName.dataValues.studentUserId);
       let user =
         userByUserId ||
         userByUsername ||
@@ -110,9 +110,15 @@ module.exports = async (req, res) => {
         }
       };
       if (user.dataValues.type === "student") {
-        data.user.student = studentByName.dataValues;
+        let student = await Student.findOneByUserId(user.dataValues.id);
+        if (!student)
+          throw new Error("해당 유저의 정보가 올바르지 않습니다.");
+        data.user.student = student.dataValues;
       } else if (user.dataValues.type === "teacher") {
-        data.user.teacher = teacherByName.dataValues;
+        let teacher = await Teacher.findOneByUserId(user.dataValues.id);
+        if (!teacher)
+          throw new Error("해당 유저의 정보가 올바르지 않습니다.");
+        data.user.teacher = teacher.dataValues;
       }
       res.json({
         success: true,
