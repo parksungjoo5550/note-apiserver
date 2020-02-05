@@ -74,7 +74,7 @@ module.exports = async (req, res) => {
       let teacherByName = null;
       let studentByName = null;
       if (userIdExists) userByUserId = await User.findOneById(userId);
-      if (usernameExists) userByUsername = await User.findOneById(username);
+      if (usernameExists) userByUsername = await User.findOneByUsername(username);
       if (nameExists) {
         teacherByName = await Teacher.findOneByName(name);
         studentByName = await Student.findOneByName(name);
