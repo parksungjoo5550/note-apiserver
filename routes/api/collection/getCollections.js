@@ -45,12 +45,12 @@ module.exports = async (req, res) => {
       if (!result) throw new Error("해당 컬렉션은 존재하지 않습니다.");
       data[reqType.slice(0, -1)] = result.dataValues;
       let collectionProblems = await CollectionProblem.listProblemIdByCollectionId(optionsCollection.where.id);
-      data[reqType.slice(0, -1)].problems = await collectionProblems.map(async(collectionProblem) => {
+      data[reqType.slice(0, -1)].problems = await Promise.all(collectionProblems.map(async(collectionProblem) => {
         let problemId = collectionProblem.problemId;
         let problem = await Problem.findOneById(problemId);
         if (!problem) throw new Error("문제가 존재하지 않습니다.");
         return problem.dataValues;
-      });
+      }));
     }
 
     res.json({
