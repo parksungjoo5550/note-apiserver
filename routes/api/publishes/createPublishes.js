@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
     }));
     
     let data = {};
-    data.publishes = await Promise.all(
+    let result = await Promise.all(
       publishes.map(publish => {
         let item = publish.dataValues;
         item[collection.dataValues.type] = collection.dataValues;
@@ -61,6 +61,9 @@ module.exports = async (req, res) => {
         return item;
       })
     );
+    if (publishes.length === 1)
+      data.publish = result[0];
+    else data.publishes = result;
     
     res.json({
       success: true,
