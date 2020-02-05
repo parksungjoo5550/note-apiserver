@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Student.findAllByName = function(name) {
-    return this.findOne({ where: { name: name } });
+    return this.findAll({ where: { name: name } });
   };
 
   Student.findAllByTeacherUserId = function(teacherUserId) {

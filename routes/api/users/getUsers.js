@@ -109,7 +109,7 @@ module.exports = async (req, res) => {
   } catch (error) {
     res.json({
       success: false,
-      message: "",
+      message: error.message,
       ecode: 403
     });
   }
