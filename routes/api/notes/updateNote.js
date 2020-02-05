@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
   const { submit } = req.body;
 
   try {
-    if (!noteId || !submit) throw new Error("모든 항목을 입력해주세요.");
+    if (!noteId || !submit || submit == '') throw new Error("모든 항목을 입력해주세요.");
     let options = { where: { studentUserId: userId, id: noteId } };
     let note = await Note.findOne(options);
     if (!note) throw new Error("조건에 맞는 풀이 기록이 없습니다.");

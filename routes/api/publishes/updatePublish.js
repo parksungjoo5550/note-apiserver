@@ -46,17 +46,21 @@ module.exports = async (req, res) => {
         );
         if (notes.length !== problemIds.length)
           throw new Error("모든 문제 풀이를 저장해야 합니다.");
-        await Promise.all(
-          notes.forEach(async(note) => {
+        notes = await Promise.all(
+          notes.map(async(note) => {
             let problem = await Problem.findOneById(note.dataValues.problemId);
             if (!problem)
               throw new Error(
                 "존재하지 않는 문제의 풀이는 채점할 수 없습니다."
               );
+            if (note.dataValues.submit == '') throw new Error("풀이에 답안이 없어 채점할 수 없습니다.");
+            if (problem.dataValues.answer == '') throw new Error("문제에 정답이 없어 채점할 수 없습니다.");
             if (note.dataValues.submit == problem.dataValues.answer)
               note.state = "correct";
             else note.state = "incorrect";
             await note.save();
+            await note.reload();
+            return note;
           })
         );
       }
