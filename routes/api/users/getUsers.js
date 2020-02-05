@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
               let student = await Student.findOneByUserId(user.dataValues.id);
               item.student = !student ? null : student.dataValues;
             }
-            return user;
+            return item;
           })
         );
         if (abandoned === "true") {
