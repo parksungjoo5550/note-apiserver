@@ -44,6 +44,12 @@ module.exports = async (req, res) => {
       let result = await Collection.findOne(optionsCollection);
       if (!result) throw new Error("해당 컬렉션은 존재하지 않습니다.");
       data[reqType.slice(0, -1)] = result.dataValues;
+      if (result.dataValues.type !== Collection.WORKPAPER) {
+        let teacher = Teacher.findOneByUserId(collection.userId);
+        if (!teacher)
+          throw new Error("시험을 만든 선생이 존재하지 않습니다.");
+        data[reqType.slice(0, -1)].teacher = teacher.dataValues;
+      }
       let collectionProblems = await CollectionProblem.listProblemIdByCollectionId(optionsCollection.where.id);
       data[reqType.slice(0, -1)].problems = await Promise.all(collectionProblems.map(async(collectionProblem) => {
         let problemId = collectionProblem.problemId;
