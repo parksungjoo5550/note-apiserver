@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
         throw new Error("권한이 없습니다.");
     }
     let collection = await Collection.findOne({
-      where: { id: sourceId, userId: token.userId }
+      where: { id: sourceId }
     });
     if (!collection) throw new Error("해당 소스가 존재하지 않습니다.");
 
