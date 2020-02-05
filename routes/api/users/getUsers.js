@@ -60,10 +60,16 @@ module.exports = async (req, res) => {
         });
       }
     } else {
-      let userByUserId = await User.findOneById(userId);
-      let userByUsername = await User.findOneById(username);
-      let teacherByName = await Teacher.findOneByName(name);
-      let studentByName = await Student.findOneByName(name);
+      let userByUserId = null;
+      let userByUsername = null;
+      let teacherByName = null;
+      let studentByName = null;
+      if (userIdExists) userByUserId = await User.findOneById(userId);
+      if (usernameExists) userByUsername = await User.findOneById(username);
+      if (nameExists) {
+        teacherByName = await Teacher.findOneByName(name);
+        studentByName = await Student.findOneByName(name);
+      }
       if (
         !userByUserId &&
         !userByUsername &&
@@ -75,11 +81,15 @@ module.exports = async (req, res) => {
         throw new Error(
           "이름이 중복되는 학생과 선생이 있습니다. 다른 파라미터를 사용해주세요."
         );
+      let teacherUser = null;
+      let studentUser = null;
+      if (teacherByName) teacherUser = await User.findOneById(teacherByName.dataValues.teacherUserId);
+      if (studentByName) studentUser = await User.findOneById(studentByName.dataValues.studentUserId)
       let user =
         userByUserId ||
         userByUsername ||
-        (await User.findOneById(teacherByName.dataValues.teacherUserId)) ||
-        (await User.findOneById(studentByName.dataValues.studentUserId));
+        teacherUser ||
+        studentUser;
       if (user === null || user === undefined)
         user = await User.findOneById(req.token.userId);
       if (!user) throw new Error("해당 유저는 존재하지 않습니다.");
