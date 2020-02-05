@@ -4,7 +4,7 @@ const Student = require("../../../models").student;
 const Teacher = require("../../../models").teacher;
 
 module.exports = async (req, res) => {
-  const { userId, username, name } = req.query;
+  const { userId, username, name, type, abandoned } = req.query;
   try {
     let userIdExists = userId && !username && !name;
     let usernameExists = !userId && username && !name;
@@ -12,19 +12,28 @@ module.exports = async (req, res) => {
     let oneOfThreeExists = userIdExists + usernameExists + nameExists === 1;
     if (!userId && !username && !name) {
       if (req.token.type === "admin") {
-        let users = await User.getAll();
-        let data = await Promise.all(
+        let optionsUser = { where: {} };
+        if (type) optionsUser.where.type = type;
+        let users = await User.findAll(optionsUser);
+        let data = {};
+        data.users = await Promise.all(
           users.map(async(user) => {
-            if (user.type === "teacher") {
-              let teacher = await Teacher.findOneByUserId(user.id);
-              user.teacher = !teacher ? null : teacher.dataValues;
-            } else if (user.type === "student") {
-              let student = await Student.findOneByUserId(user.id);
-              user.student = !student ? null : student.dataValues;
+            let item = user.dataValues;
+            if (user.dataValues.type === "teacher") {
+              let teacher = await Teacher.findOneByUserId(user.dataValues.id);
+              item.teacher = !teacher ? null : teacher.dataValues;
+            } else if (user.dataValues.type === "student") {
+              let student = await Student.findOneByUserId(user.dataValues.id);
+              item.student = !student ? null : student.dataValues;
             }
             return user;
           })
         );
+        if (abandoned === "true") {
+          data.users = data.users.filter(item => !item.student.teacherUserId);
+        } else if (abandoned === "false") {
+          data.users = data.users.filter(item => item.student.teacherUserId);
+        }
         res.json({
           success: true,
           message: "모든 유저의 정보를 조회했습니다.",
