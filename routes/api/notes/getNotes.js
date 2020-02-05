@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
         notes.map(async(note) => {
           let ret = note.dataValues;
           let problem = await Problem.findOneById(ret.problemId);
-          if (!problem) throw new Error("잘못된 풀이 기록입니다.");
+          if (!problem) throw new Error("존재하지 않는 문제에 대한 풀이 기록입니다.");
           ret.problem = problem.dataValues;
           return ret;
         })
