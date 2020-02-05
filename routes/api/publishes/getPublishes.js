@@ -5,6 +5,7 @@ const Problem = require("../../../models/").problem;
 const Publish = require("../../../models/").publish;
 const Teacher = require("../../../models/").teacher;
 const Student = require("../../../models/").student;
+const User = require("../../../models/").user;
 
 module.exports = async (req, res) => {
   const { publishId, type, state } = req.query;
@@ -22,9 +23,20 @@ module.exports = async (req, res) => {
           throw new Error("본인 소유의 발행만 조회할 수 있습니다.");
       }
       data.publish = publish.dataValues;
-      let teacher = await Teacher.findOneByUserId(publish.dataValues.teacherUserId);
-      if (!teacher) throw new Error("발행을 한 선생 정보가 존재하지 않습니다.");
-      data.publish.teacher = teacher.dataValues;
+      if (publish.dataValues.teacherUserId) {
+        let teacher = await Teacher.findOneByUserId(r.dataValues.teacherUserId);
+        if (!teacher) {
+          let user = await User.findOneById(r.dataValues.teacherUserId);
+          if (!user) throw new Error("발행을 한 선생 정보가 존재하지 않습니다.");
+          if (user.dataValues.type === "admin") data.publish.user = {
+            id: user.dataValues.id,
+            username: user.dataValues.username,
+            type: user.dataValues.type
+          };
+        } else {
+          data.publish.teacher = teacher.dataValues; 
+        }
+      }
       let student = await Student.findOneByUserId(publish.dataValues.studentUserId);
       if (!student) throw new Error("발행을 받은 학생 정보가 존재하지 않습니다.");
       data.publish.student = student.dataValues;
@@ -53,9 +65,20 @@ module.exports = async (req, res) => {
       let publishes = await Promise.all(
         results.map(async(r) => {
           let item = r.dataValues;
-          let teacher = await Teacher.findOneByUserId(r.dataValues.teacherUserId);
-          if (!teacher) throw new Error("발행을 한 선생 정보가 존재하지 않습니다.");
-          item.teacher = teacher.dataValues;
+          if (r.dataValues.teacherUserId) {
+            let teacher = await Teacher.findOneByUserId(r.dataValues.teacherUserId);
+            if (!teacher) {
+              let user = await User.findOneById(r.dataValues.teacherUserId);
+              if (!user) throw new Error("발행을 한 선생 정보가 존재하지 않습니다.");
+              if (user.dataValues.type === "admin") item.user = {
+                id: user.dataValues.id,
+                username: user.dataValues.username,
+                type: user.dataValues.type
+              };
+            } else {
+              item.teacher = teacher.dataValues; 
+            }
+          }
           let student = await Student.findOneByUserId(r.dataValues.studentUserId);
           if (!student) throw new Error("발행을 받은 학생 정보가 존재하지 않습니다.");
           item.student = student.dataValues;
