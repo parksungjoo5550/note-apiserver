@@ -3,6 +3,8 @@ const Collection = require("../../../models/").collection;
 const CollectionProblem = require("../../../models/").collection_problem;
 const Problem = require("../../../models/").problem;
 const Publish = require("../../../models/").publish;
+const Teacher = require("../../../models/").teacher;
+const Student = require("../../../models/").student;
 
 module.exports = async (req, res) => {
   const { publishId, type, state } = req.query;
@@ -20,6 +22,12 @@ module.exports = async (req, res) => {
           throw new Error("본인 소유의 발행만 조회할 수 있습니다.");
       }
       data.publish = publish.dataValues;
+      let teacher = await Teacher.findOneByUserId(publish.dataValues.teacherUserId);
+      if (!teacher) throw new Error("발행을 한 선생 정보가 존재하지 않습니다.");
+      data.publish.teacher = teacher.dataValues;
+      let student = await Student.findOneByUserId(publish.dataValues.studentUserId);
+      if (!student) throw new Error("발행을 받은 학생 정보가 존재하지 않습니다.");
+      data.publish.student = student.dataValues;
       let collection = await Collection.findOneById(publish.dataValues.collectionId);
       if (!collection) throw new Error("존재하지 않는 컬렉션입니다.");
       data.publish[publish.dataValues.collectionType] = collection.dataValues;
@@ -45,6 +53,12 @@ module.exports = async (req, res) => {
       let publishes = await Promise.all(
         results.map(async(r) => {
           let item = r.dataValues;
+          let teacher = await Teacher.findOneByUserId(r.dataValues.teacherUserId);
+          if (!teacher) throw new Error("발행을 한 선생 정보가 존재하지 않습니다.");
+          item.teacher = teacher.dataValues;
+          let student = await Student.findOneByUserId(r.dataValues.studentUserId);
+          if (!student) throw new Error("발행을 받은 학생 정보가 존재하지 않습니다.");
+          item.student = student.dataValues;
           let collection = await Collection.findOneById(r.dataValues.collectionId);
           if (!collection) throw new Error("존재하지 않는 시험입니다.");
           if (collection.dataValues.type === Collection.EXAM) {
