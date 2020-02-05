@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       mathGrade: { type: DataTypes.STRING },
       isRegular: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
+        defaultValue: true
       }
     },
     { timestamps: false }
