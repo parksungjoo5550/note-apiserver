@@ -23,9 +23,7 @@ module.exports = async (req, res) => {
       )
         throw new Error("권한이 없습니다.");
     }
-    let collection = await Collection.findOne({
-      where: { id: sourceId }
-    });
+    let collection = await Collection.findOneById(sourceId);
     if (!collection) throw new Error("해당 소스가 존재하지 않습니다.");
 
     let publishes = await Publish.bulkCreate(
@@ -57,7 +55,7 @@ module.exports = async (req, res) => {
       publishes.map(publish => {
         let item = publish.dataValues;
         item[collection.dataValues.type] = collection.dataValues;
-        item.problems = problems;
+        item[collection.dataValues.type].problems = problems;
         return item;
       })
     );
