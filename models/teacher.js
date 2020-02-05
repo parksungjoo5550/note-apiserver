@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     return this.findOne({ where: { teacherUserId: teacherUserId } });
   };
 
-  Teacher.findAllByName = function(name) {
-    return this.findAll({ where: { name: name } });
+  Teacher.findOneByName = function(name) {
+    return this.findOne({ where: { name: name } });
   };
 
   return Teacher;

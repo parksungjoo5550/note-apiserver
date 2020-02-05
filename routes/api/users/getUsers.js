@@ -62,24 +62,24 @@ module.exports = async (req, res) => {
     } else {
       let userByUserId = await User.findOneById(userId);
       let userByUsername = await User.findOneById(username);
-      let teachersByName = await Teacher.findAllByName(name);
-      let studentsByName = await Student.findAllByName(name);
+      let teacherByName = await Teacher.findOneByName(name);
+      let studentByName = await Student.findOneByName(name);
       if (
         !userByUserId &&
         !userByUsername &&
-        teachersByName.length === 0 &&
-        studentsByName.length === 0
+        !teacherByName &&
+        !studentByName
       )
         throw new Error("존재하지 않는 계정입니다.");
-      else if (teachersByName.length + studentsByName.length > 1)
+      else if (teacherByName && studentByName)
         throw new Error(
-          "이름이 중복되는 계정들이 있습니다. 다른 파라미터를 사용해주세요."
+          "이름이 중복되는 학생과 선생이 있습니다. 다른 파라미터를 사용해주세요."
         );
       let user =
         userByUserId ||
         userByUsername ||
-        (await User.findOneById(teachersByName[0].dataValues.userId)) ||
-        (await User.findOneById(studentsByName[0].dataValues.userId));
+        (await User.findOneById(teacherByName.dataValues.teacherUserId)) ||
+        (await User.findOneById(studentByName.dataValues.studentUserId));
       if (user === null || user === undefined)
         user = await User.findOneById(req.token.userId);
       if (!user) throw new Error("해당 유저는 존재하지 않습니다.");
@@ -91,13 +91,9 @@ module.exports = async (req, res) => {
         }
       };
       if (user.dataValues.type === "student") {
-        let student = await Student.findOneByUserId(user.dataValues.id);
-        if (!student) throw new Error("해당 유저의 정보가 올바르지 않습니다.");
-        data.user.student = student.dataValues;
+        data.user.student = studentByName.dataValues;
       } else if (user.dataValues.type === "teacher") {
-        let teacher = await Teacher.findOneByUserId(user.dataValues.id);
-        if (!teacher) throw new Error("해당 유저의 정보가 올바르지 않습니다.");
-        data.user.teacher = teacher.dataValues;
+        data.user.teacher = teacherByName.dataValues;
       }
       res.json({
         success: true,
