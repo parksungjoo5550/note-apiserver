@@ -25,8 +25,7 @@ module.exports = async (req, res) => {
     }
     let collection = await Collection.findOneById(sourceId);
     if (!collection) throw new Error("해당 소스가 존재하지 않습니다.");
-
-    let publishes = await Publish.bulkCreate(
+    let payload = await Promise.all(
       targetUserIds.map(targetUserId => {
         return {
           title: title,
@@ -42,6 +41,7 @@ module.exports = async (req, res) => {
         };
       })
     );
+    let publishes = await Publish.bulkCreate(payload);
     
     let collection_problems = await CollectionProblem.listProblemIdByCollectionId(collection.dataValues.id);
     let problems = await Promise.all(collection_problems.map(async(r) => {
