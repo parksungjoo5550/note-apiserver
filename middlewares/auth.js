@@ -56,7 +56,7 @@ exports.teacher = async (req, res, next) => {
   try {
     if (!token) throw new Error("로그인이 필요합니다.");
     req.token = await jwt.verify(token, req.app.get("jwt-secret"));
-    if (req.token.type !== "admin" || req.token.type !== "teacher")
+    if (req.token.type !== "admin" && req.token.type !== "teacher")
       throw new Error("선생 권한이 없습니다.");
     else next();
   } catch (error) {
@@ -73,8 +73,8 @@ exports.student = async (req, res, next) => {
   try {
     if (!token) throw new Error("로그인이 필요합니다.");
     req.token = await jwt.verify(token, req.app.get("jwt-secret"));
-    if (req.token.type !== "admin" || req.token.type !== "student")
-      throw new Error("선생 권한이 없습니다.");
+    if (req.token.type !== "admin" && req.token.type !== "teacher" &&  req.token.type !== "student")
+      throw new Error("학생 권한이 없습니다.");
     else next();
   } catch (error) {
     res.status(403).json({
