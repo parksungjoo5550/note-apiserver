@@ -63,6 +63,28 @@ module.exports = async (req, res) => {
             return note;
           })
         );
+      } else if (state === "partial-confirmed") {
+        if (publish.dataValues.collectionType === "exam") {
+          throw new Error("Exam은 중간 채점을 할 수 없습니다.");
+        }
+        let notes = await Note.findAllByPublishId(publishId);
+        notes = await Promise.all(
+          notes.map(async(note) => {
+            let problem = await Problem.findOneById(note.dataValues.problemId);
+            if (!problem)
+              throw new Error(
+                "존재하지 않는 문제의 풀이는 채점할 수 없습니다."
+              );
+            if (note.dataValues.submit == '') throw new Error("풀이에 답안이 없어 채점할 수 없습니다.");
+            if (problem.dataValues.answer == '') throw new Error("문제에 정답이 없어 채점할 수 없습니다.");
+            if (note.dataValues.submit == problem.dataValues.answer)
+              note.state = "correct";
+            else note.state = "incorrect";
+            await note.save();
+            await note.reload();
+            return note;
+          })
+        );
       }
       if (state === "submitted" &&
           publish.dataValues.collectionType !== "exam")
@@ -78,7 +100,8 @@ module.exports = async (req, res) => {
     else if (publish.dataValues.state === "saved") message = "발행물을 중간 저장했습니다.";
     else if (publish.dataValues.state === "submitted") message = "발행물을 제출했습니다.";
     else if (publish.dataValues.state === "confirmed") message = "발행물을 채점했습니다.";
-
+    else if (publish.dataValues.state === "partial-confirmed") message = "발행물을 중간채점했습니다.";
+    
     res.json({
       success: true,
       message: message,
