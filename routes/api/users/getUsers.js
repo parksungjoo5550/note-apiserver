@@ -29,13 +29,15 @@ module.exports = async (req, res) => {
             return item;
           })
         );
-        if (abandoned === "true") {
-          data.users = data.users.filter(item => !item.student.teacherUserId);
-        } else if (abandoned === "false") {
-          data.users = data.users.filter(item => item.student.teacherUserId);
-        }
-        if (!teacherUserId) {
-          data.users = data.users.filter(item => item.student.teacherUserId == teacherUserId);
+        if (type === "student") {
+          if (abandoned === "true") {
+            data.users = data.users.filter(item => !item.student.teacherUserId);
+          } else if (abandoned === "false") {
+            data.users = data.users.filter(item => item.student.teacherUserId);
+          }
+          if (!teacherUserId) {
+            data.users = data.users.filter(item => item.student.teacherUserId == teacherUserId);
+          }
         }
         res.json({
           success: true,
