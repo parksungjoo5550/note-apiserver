@@ -4,14 +4,14 @@ const Student = require("../../../models").student;
 const Teacher = require("../../../models").teacher;
 
 module.exports = async (req, res) => {
-  const { userId, username, name, type, abandoned } = req.query;
+  const { userId, username, name, type, abandoned, teacherUserId } = req.query;
   try {
     let userIdExists = userId && !username && !name;
     let usernameExists = !userId && username && !name;
     let nameExists = !userId && !username && name;
     let oneOfThreeExists = userIdExists + usernameExists + nameExists === 1;
     if (!userId && !username && !name) {
-      if (req.token.type === "admin") {
+      if (req.token.type === "admin" || req.token.type === "teacher") {
         let optionsUser = { where: {} };
         if (type) optionsUser.where.type = type;
         let users = await User.findAll(optionsUser);
@@ -33,6 +33,9 @@ module.exports = async (req, res) => {
           data.users = data.users.filter(item => !item.student.teacherUserId);
         } else if (abandoned === "false") {
           data.users = data.users.filter(item => item.student.teacherUserId);
+        }
+        if (!teacherUserId) {
+          data.users = data.users.filter(item => item.student.teacherUserrId == teacherUserId);
         }
         res.json({
           success: true,

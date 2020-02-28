@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
     let usernameExists = !userId && username && !name;
     let nameExists = !userId && !username && name;
     let oneOfThreeExists = userIdExists + usernameExists + nameExists === 1;
-    if (req.token.type !== "admin") {
+    if (req.token.type !== "admin" || req.token.type !== "teacher") {
       if (!oneOfThreeExists) throw new Error("하나의 파라미터만 입력해주세요.");
       if (!password) throw new Error("비밀번호를 입력해주세요.");
       let userEqual = true;
@@ -23,28 +23,39 @@ module.exports = async (req, res) => {
         throw new Error("본인 계정만 수정할 수 있습니다.");
     }
 
-    let userByUserId = await User.findOneById(userId);
-    let userByUsername = await User.findOneById(username);
-    let teachersByName = await Teacher.findAllByName(name);
-    let studentsByName = await Student.findAllByName(name);
+    let userByUserId = null;
+    let userByUsername = null;
+    let teacherByName = null;
+    let studentByName = null;
+    if (userIdExists) userByUserId = await User.findOneById(userId);
+    if (usernameExists) userByUsername = await User.findOneByUsername(username);
+    if (nameExists) {
+      teacherByName = await Teacher.findOneByName(name);
+      studentByName = await Student.findOneByName(name);
+    }
     if (
       !userByUserId &&
       !userByUsername &&
-      teachersByName.length === 0 &&
-      studentsByName.length === 0
+      !teacherByName &&
+      !studentByName
     )
       throw new Error("존재하지 않는 계정입니다.");
-    else if (teachersByName.length + studentsByName.length > 1)
+    else if (teacherByName && studentByName)
       throw new Error(
-        "이름이 중복되는 계정들이 있습니다. 다른 파라미터를 사용해주세요."
+        "이름이 중복되는 학생과 선생이 있습니다. 다른 파라미터를 사용해주세요."
       );
+    let teacherUser = null;
+    let studentUser = null;
+    if (teacherByName) teacherUser = await User.findOneById(teacherByName.dataValues.teacherUserId);
+    if (studentByName) studentUser = await User.findOneById(studentByName.dataValues.studentUserId);
     let user =
       userByUserId ||
       userByUsername ||
-      (await User.findOneById(teachersByName[0].dataValues.userId)) ||
-      (await User.findOneById(studentsByName[0].dataValues.userId));
+      teacherUser ||
+      studentUser;
     if (user === null || user === undefined)
       user = await User.findOneById(req.token.userId);
+    if (!user) throw new Error("해당 유저는 존재하지 않습니다.");
     if (password && password2 && password === password2) {
       user.password = password;
       await user.save();
