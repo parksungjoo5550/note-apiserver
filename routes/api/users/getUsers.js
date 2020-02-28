@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
           data.users = data.users.filter(item => item.student.teacherUserId);
         }
         if (!teacherUserId) {
-          data.users = data.users.filter(item => item.student.teacherUserrId == teacherUserId);
+          data.users = data.users.filter(item => item.student.teacherUserId == teacherUserId);
         }
         res.json({
           success: true,
