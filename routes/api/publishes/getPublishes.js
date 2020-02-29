@@ -8,7 +8,7 @@ const Student = require("../../../models/").student;
 const User = require("../../../models/").user;
 
 module.exports = async (req, res) => {
-  const { publishId, type, state } = req.query;
+  const { publishId, type, state, teacherUserId, studentUserId } = req.query;
 
   try {
     let data = {};
@@ -63,10 +63,20 @@ module.exports = async (req, res) => {
       let options = {
         where: {}
       };
-      if (req.token.type === "teacher") {
-        options.where.teacherUserId = req.token.userId;
-      } else if (req.token.type === "student") {
-        options.where.studentUserId = req.token.userId;
+      
+      if (!teacherUserId && !studentUserId) {
+        if (req.token.type === "teacher") {
+          options.where.teacherUserId = req.token.userId;
+        } else if (req.token.type === "student") {
+          options.where.studentUserId = req.token.userId;
+        }
+      } else {
+        if (teacherUserId) {
+          options.where.teacherUserId = teacherUserId;
+        }
+        if (studentUserId) {
+          options.where.studentUserId = studentUserId;
+        }
       }
       if (type) options.where.collectionType = type;
       if (state) options.where.state = state;
