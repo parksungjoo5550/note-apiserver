@@ -11,7 +11,7 @@ const CollectionProblem = require("../../../models").collection_problem;
 
 module.exports = async (req, res) => {
   const reqType = req.baseUrl.slice(5);
-  const { examId, homeworkId, workpaperId } = req.query;
+  const { examId, homeworkId, workpaperId, workbookId } = req.query;
   const { title, problemIds, timeLimit } = req.body;
 
   try {
@@ -29,6 +29,10 @@ module.exports = async (req, res) => {
       if (!workpaperId) throw new Error("항목을 입력해주세요.");
       optionsCollection.where.id = workpaperId;
       optionsCollectionProblem.where.collectionId = workpaperId;
+    } else if (reqType === "workbooks") {
+      if (!workbookId) throw new Error("항목을 입력해주세요.");
+      optionsCollection.where.id = workbookId;
+      optionsCollectionProblem.where.collectionId = workbookId;
     }
 
     let collection = await Collection.findOne(optionsCollection);

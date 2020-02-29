@@ -13,6 +13,7 @@ router.use("/problems", problems);
 router.use("/exams", collection);
 router.use("/homeworks", collection);
 router.use("/workpapers", collection);
+router.use("/workbooks", collection);
 router.use("/publishes", publishes);
 router.use("/notes", notes);
 router.use("/categories", categories);

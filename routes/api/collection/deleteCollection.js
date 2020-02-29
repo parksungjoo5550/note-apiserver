@@ -9,7 +9,7 @@ const Publish = require("../../../models").publish;
 
 module.exports = async (req, res) => {
   const reqType = req.baseUrl.slice(5);
-  const { examId, homeworkId, workpaperId } = req.query;
+  const { examId, homeworkId, workpaperId, workbookId } = req.query;
 
   try {
     let optionsCollection = { where: { id: -1 } };
@@ -26,7 +26,11 @@ module.exports = async (req, res) => {
       if (!workpaperId) throw new Error("항목을 입력해주세요.");
       optionsCollection.where.id = workpaperId;
       optionsPublish.where.collectionId = workpaperId;
-    }
+    } else if (reqType === "workbooks") {
+      if (!workbookId) throw new Error("항목을 입력해주세요.");
+      optionsCollection.where.id = workbookId;
+      optionsPublish.where.collectionId = workbookId;
+    } 
     let optionsCollectionProblem = optionsPublish;
 
     let collection = await Collection.findOne(optionsCollection);

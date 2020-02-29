@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
   Collection.EXAM = "exam";
   Collection.HOMEWORK = "homework";
   Collection.WORKPAPER = "workpaper";
+  Collection.WORKBOOK = "workbook";
 
   Collection.findOneById = function(id) {
     return this.findOne({ where: { id: id } });
