@@ -30,12 +30,13 @@ module.exports = async (req, res) => {
           })
         );
         if (type === "student") {
+          data.users = data.users.filter(item => item.type === "student");
           if (abandoned === "true") {
             data.users = data.users.filter(item => !item.student.teacherUserId);
           } else if (abandoned === "false") {
             data.users = data.users.filter(item => item.student.teacherUserId);
           }
-          if (!teacherUserId) {
+          if (teacherUserId) {
             data.users = data.users.filter(item => item.student.teacherUserId == teacherUserId);
           }
         }
